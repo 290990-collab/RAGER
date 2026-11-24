@@ -21,28 +21,31 @@ at the same context budget.</p>
 
 A hospital knows a patient as `H:3`. A pharmacy knows the same patient as `P:1`. Ask a RAG system which drugs
 `H:3` received, and it reads the hospital record, answers "Insulin" and never sees the Aspirin on the
-pharmacy side. RAGER gives the retriever a global ID (GID) from Entity Resolution, then measures what that
-link is worth on 180 synthetic datasets with known ground truth.
+pharmacy side. Entity Resolution (ER) is the step that recognises `H:3` and `P:1` as one person and gives
+them a shared global ID (GID). RAGER measures what that link is worth to retrieval, on 180 synthetic datasets
+where the right answer is known.
 
 ## Results at a glance
 
-Answer accuracy, k = 4 documents, mean over 5 seeds ([all tables](results/tables.md)):
+Share of correct answers with 4 records in the context, mean over 5 seeds ([all tables](results/tables.md)):
 
-| Query | BASE | BASE+seed | **ER+seed** | ER-pool | ORACLE |
+| Question | Semantic search | Patient ID only | **Patient ID + linking** | Linking every hit | Perfect retrieval |
 |---|---|---|---|---|---|
-| Evidence split across sources | 0.09 | 0.50 | **1.00** | 0.11 | 1.00 |
-| Evidence in one source | 0.03 | 1.00 | **1.00** | 0.21 | 1.00 |
+| Answer split across two sources | 9 % | 50 % | **100 %** | 11 % | 100 % |
+| Answer in one source | 3 % | 100 % | **100 %** | 21 % | 100 % |
 
-- **Linkage pays exactly where evidence is split.** Over the same seed without linkage, ER adds 0, 0.5 and
-  1.0 accuracy as complementarity α goes 0, 0.5, 1. Source overlap ω barely moves it.
-- **Blind expansion wastes the budget.** Pulling in every entity found by search (ER-pool) fills the k slots
-  with the wrong people: 0.11 against 1.00 for targeted expansion.
-- **Never let RAG count.** Counting distinct patients on the retrieved context misses by 76–99 %.
-  `COUNT(DISTINCT gid)` on metadata is exact.
-- **Dense search does not read IDs.** BASE puts the asked-about person in its top-k for 11–46 % of queries.
-- **An LLM agrees.** Two local Qwen models reproduce the deterministic reader's verdicts in 97 % of cases.
+- **Linking pays exactly where the answer is split.** When no patient's records differ between sources,
+  linking adds nothing; when half do, it adds 50 points; when all do, 100. How many patients the two
+  sources share barely changes it.
+- **Linking everything wastes the context.** Expanding every patient that search turns up fills the 4 slots
+  with the wrong people: 11 % against 100 % for linking the patient that was asked about.
+- **Never let RAG count.** Counting distinct patients from the retrieved text misses by 76–99 %.
+  A `COUNT(DISTINCT gid)` on the metadata is exact.
+- **Semantic search does not read IDs.** It puts the asked-about patient in its top results for only
+  11–46 % of questions.
+- **An LLM agrees.** Two local Qwen models reproduce these verdicts in 97 % of cases.
 
-![With evidence split across two sources, only linkage stays at 1](results/plots/en/G1_accuracy_alpha.png)
+![Split records: only linking answers correctly](results/plots/en/G1_accuracy_alpha.png)
 
 ## Quick start
 
@@ -89,13 +92,13 @@ synthetic sources → documents (local_id, source, GID in metadata) → embeddin
 
 All of them return at most k documents.
 
-| System | Document selection |
-|---|---|
-| `BASE` | semantic top-k |
-| `BASE+seed` | documents of the local ID named in the query, reranked; the fair baseline |
-| `ER+seed` | documents of the seed's GID, reranked |
-| `ER-pool` | BASE top-k, then every document of the GIDs found, entity by entity |
-| `ORACLE` | ground-truth evidence, reranked (upper bound) |
+| In the figures | Code name | Document selection |
+|---|---|---|
+| Semantic search | `BASE` | semantic top-k |
+| Patient ID only | `BASE+seed` | documents of the local ID named in the query, reranked; the fair baseline |
+| Patient ID + linking | `ER+seed` | documents of the seed's GID, reranked |
+| Linking every hit | `ER-pool` | BASE top-k, then every document of the GIDs found, entity by entity |
+| Perfect retrieval | `ORACLE` | ground-truth evidence, reranked (upper bound) |
 
 ### Readers
 
@@ -139,16 +142,16 @@ entities the two sources report different drugs, so a complete answer needs both
 
 <table>
   <tr>
-    <td><img src="results/plots/en/G2_gain_omega.png" alt="The gain of linkage follows alpha, not omega"></td>
-    <td><img src="results/plots/en/G3_duplicates_budget.png" alt="Near-duplicates eat a small budget"></td>
+    <td><img src="results/plots/en/G2_gain_omega.png" alt="Linking helps as much as the evidence is split, whatever the overlap"></td>
+    <td><img src="results/plots/en/G3_duplicates_budget.png" alt="Duplicate records crowd out evidence when the context is small"></td>
   </tr>
   <tr>
-    <td><img src="results/plots/en/G5_counts.png" alt="Counting on the retrieved context is off by about 90 percent"></td>
-    <td><img src="results/plots/en/G4_disambiguation.png" alt="A dense retriever rarely finds the person behind a local ID"></td>
+    <td><img src="results/plots/en/G5_counts.png" alt="Counting patients from retrieved text is off by about 90 percent"></td>
+    <td><img src="results/plots/en/G4_disambiguation.png" alt="Semantic search rarely finds the patient named by an ID"></td>
   </tr>
 </table>
 
-![Wrong links: false positives cost accuracy, false negatives erode it gradually](results/plots/en/G6_false_matches.png)
+![Wrong links cost accuracy, missing links erode it slowly](results/plots/en/G6_false_matches.png)
 
 ## Optional: LLM generation
 

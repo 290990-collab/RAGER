@@ -32,54 +32,56 @@ plt.rcParams.update({"figure.facecolor": SFONDO, "axes.facecolor": SFONDO, "axes
 # Testi dei grafici nelle due lingue. Chiave: (grafico, elemento).
 T = {
     "it": {
-        "sd": "fascia = ± 1 deviazione standard fra 5 seed",
+        "sd": "Fascia = ± 1 deviazione standard fra 5 seed.",
         "G1": ("Con le evidenze divise fra due fonti, solo il linkage resta a 1",
-               "Query multi-source, k = 4, ω > 0",
+               "Query multi-source, k = 4, ω > 0.",
                "α = quota di entità condivise con farmaci diversi nelle due fonti", "Accuratezza della risposta"),
         "G2": ("Il guadagno del linkage segue α, non ω",
-               "ER+seed meno BASE+seed, query multi-source, k = 4",
+               "ER+seed meno BASE+seed, query multi-source, k = 4.",
                "ω = sovrapposizione delle identità fra le fonti", "Guadagno di accuratezza"),
         "G3": ("I quasi-duplicati consumano un budget piccolo",
-               "ER+seed, query multi-source, ε = quota di eventi con un quasi-duplicato, N = 500, ω = α = 0,5",
+               "ER+seed, query multi-source, ε = quota di eventi con un quasi-duplicato, N = 500, ω = α = 0,5.",
                "Budget k (documenti nel contesto)", "Completezza delle evidenze"),
         "G4": ("Il retriever denso raramente trova la persona indicata da un ID locale",
-               "BASE: quota di query con l'entità del seed nei top-k",
+               "BASE: quota di query con l'entità del seed nei top-k.",
                "Budget k (documenti nel contesto)", "Quota di query"),
         "G5": ("Contare sul contesto recuperato sbaglia di circa il 90 %",
-               "Errore relativo rispetto a COUNT(DISTINCT gid), BASE, k = 8, media su 5 seed",
+               "Errore relativo rispetto a COUNT(DISTINCT gid), BASE, k = 8, media su 5 seed.",
                "ω = sovrapposizione delle identità fra le fonti", "Errore relativo"),
         "G6": ("Link sbagliati: i falsi positivi tolgono accuratezza, i falsi negativi la riducono gradualmente",
-               "k = 4, N = 500, ω = α = 0,5",
+               "k = 4, N = 500, ω = α = 0,5.",
                "Quota di falsi positivi", "Quota di falsi negativi", "Accuratezza della risposta",
                "Query single-source", "Query multi-source"),
         "eps": "ε = {v}", "N": "N = {v}", "alpha": "α = {v}",
         "g5": ["Somma dei conteggi locali (per farmaco)", "γ − 1 sul totale (teorico)",
                "Conteggio sul contesto (RAG)"],
+        "nomi": {},
     },
     "en": {
-        "sd": "band = ± 1 standard deviation over 5 seeds",
-        "G1": ("With evidence split across two sources, only linkage stays at 1",
-               "Multi-source queries, k = 4, ω > 0",
-               "α = share of shared entities with different drugs in the two sources", "Answer accuracy"),
-        "G2": ("The gain of linkage follows α, not ω",
-               "ER+seed minus BASE+seed, multi-source queries, k = 4",
-               "ω = identity overlap between sources", "Accuracy gain"),
-        "G3": ("Near-duplicates eat a small budget",
-               "ER+seed, multi-source queries, ε = share of events with a near-duplicate, N = 500, ω = α = 0.5",
-               "Budget k (documents in context)", "Evidence completeness"),
-        "G4": ("A dense retriever rarely finds the person behind a local ID",
-               "BASE: share of queries with the seed's entity in the top-k",
-               "Budget k (documents in context)", "Share of queries"),
-        "G5": ("Counting on the retrieved context is off by about 90 %",
-               "Relative error against COUNT(DISTINCT gid), BASE, k = 8, mean over 5 seeds",
-               "ω = identity overlap between sources", "Relative error"),
-        "G6": ("Wrong links: false positives cost accuracy, false negatives erode it gradually",
-               "k = 4, N = 500, ω = α = 0.5",
-               "False-positive rate", "False-negative rate", "Answer accuracy",
-               "Single-source queries", "Multi-source queries"),
-        "eps": "ε = {v}", "N": "N = {v}", "alpha": "α = {v}",
-        "g5": ["Sum of per-source counts (per drug)", "γ − 1 on the total (theory)",
-               "Count on retrieved context (RAG)"],
+        "sd": "Bands: spread over 5 seeds.",
+        "G1": ("Split records: only linking answers correctly",
+               "Questions about one patient, answered from 4 retrieved records.",
+               "Share of patients whose hospital and pharmacy list different drugs", "Correct answers"),
+        "G2": ("Linking helps as much as the evidence is split, whatever the overlap",
+               "Correct answers with linking minus those with the patient ID alone.",
+               "Share of patients present in both sources", "Gain from linking"),
+        "G3": ("Duplicate records crowd out evidence when the context is small",
+               "Patient ID + linking. Each line is a share of records that have a near-copy.",
+               "Records in the context", "Evidence found"),
+        "G4": ("Semantic search rarely finds the patient named by an ID",
+               "Share of questions whose top results include the patient that was asked about.",
+               "Records in the context", "Questions"),
+        "G5": ("Counting patients from retrieved text is off by about 90 %",
+               "Error against the exact count of distinct patients, semantic search, 8 records.",
+               "Share of patients present in both sources", "Error"),
+        "G6": ("Wrong links cost accuracy, missing links erode it slowly",
+               "Linking with errors, against the patient ID alone, 4 records.",
+               "Share of wrong links", "Share of missing links", "Correct answers",
+               "Answer in one source", "Answer split across two sources"),
+        "eps": "{v:.0%} copies", "N": "{v} patients per source", "alpha": "{v:.0%} of patients split",
+        "g5": ["Sum of per-source counts", "Overcount from overlap (theory)", "Count from retrieved text"],
+        "nomi": {"BASE": "Semantic search", "BASE+seed": "Patient ID only", "ER+seed": "Patient ID + linking",
+                 "ER-pool": "Linking every hit", "ORACLE": "Perfect retrieval"},
     },
 }
 
@@ -132,13 +134,24 @@ def linee(ax, t, x, gruppo, ordine, colori, marcatori, fmt=str, gap=0.06, sinist
         etichette(ax, finali, hi, 0.06 * (hi - lo), gap)
 
 
+def percento(ax, lingua, x=False, y=False):
+    """[MIO] Nella versione inglese (README) le quote si leggono in percentuale."""
+    if lingua != "en":
+        return
+    f = matplotlib.ticker.PercentFormatter(1.0, decimals=0)
+    if x:
+        ax.xaxis.set_major_formatter(f)
+    if y:
+        ax.yaxis.set_major_formatter(f)
+
+
 def figura(w=7.6, h=4.4, **kw):
     return plt.subplots(figsize=(w, h), **kw)
 
 
 def salva(fig, cartella, nome, titolo, sottotitolo, nota):
     fig.text(0.015, 0.975, titolo, ha="left", va="top", fontsize=12.5, fontweight="bold")
-    fig.text(0.015, 0.915, f"{sottotitolo}  ·  {nota}" if nota else sottotitolo, ha="left", va="top",
+    fig.text(0.015, 0.915, f"{sottotitolo} {nota}" if nota else sottotitolo, ha="left", va="top",
              fontsize=9.5, color=MUTO)
     fig.tight_layout(rect=(0, 0, 1, 0.87))
     fig.savefig(cartella / nome, dpi=200)
@@ -150,13 +163,15 @@ def grafici(lingua, q, e, c):
     out = R / "plots" if lingua == "it" else R / "plots" / "en"
     out.mkdir(parents=True, exist_ok=True)
     sist = list(COLORE)
+    nome = lambda g: L["nomi"].get(g, g)
 
     # G1 (H1, H2): accuracy multi-source al variare di alpha
     m = q[(q.k == 4) & (q.omega > 0) & (q.tipo == "multi-source")]
     tit, sub, xl, yl = L["G1"]
     fig, ax = figura()
-    linee(ax, media_std(m, "alpha", "sistema", "accuracy"), "alpha", "sistema", sist, COLORE, MARK)
+    linee(ax, media_std(m, "alpha", "sistema", "accuracy"), "alpha", "sistema", sist, COLORE, MARK, fmt=nome)
     ax.set(xlabel=xl, ylabel=yl, ylim=(-0.05, 1.08), xticks=[0, 0.5, 1])
+    percento(ax, lingua, x=True, y=True)
     fig.subplots_adjust(right=0.8)
     salva(fig, out, "G1_accuracy_alpha.png", tit, sub, L["sd"])
 
@@ -168,6 +183,7 @@ def grafici(lingua, q, e, c):
     fig, ax = figura()
     linee(ax, g, "omega", "alpha", [0, 0.5, 1], SERIE, MARK_S, fmt=lambda v: L["alpha"].format(v=v))
     ax.set(xlabel=xl, ylabel=yl, ylim=(-0.05, 1.08), xticks=[0.25, 0.5, 0.75])
+    percento(ax, lingua, x=True, y=True)
     salva(fig, out, "G2_gain_omega.png", tit, sub, L["sd"])
 
     # G3 (H3): completezza di ER+seed al variare di k con quasi-duplicati
@@ -177,6 +193,7 @@ def grafici(lingua, q, e, c):
     linee(ax, media_std(d, "k", "x", "completezza"), "k", "x", [0, 0.25, 0.5], SERIE, MARK_S,
           fmt=lambda v: L["eps"].format(v=v), gap=0.03, sinistra=True)
     ax.set(xlabel=xl, ylabel=yl, ylim=(0.6, 1.03), xticks=[2, 4, 8])
+    percento(ax, lingua, y=True)
     salva(fig, out, "G3_duplicates_budget.png", tit, sub, "")
 
     # G4: disambiguazione di BASE per N e k
@@ -203,6 +220,7 @@ def grafici(lingua, q, e, c):
                 linestyle=stile, label=L["g5"][i])
         finali.append((t[col].iloc[-1], L["g5"][i], SERIE[i]))
     ax.set(xlabel=xl, ylabel=yl, ylim=(0, 1.05), xticks=[0, 0.25, 0.5, 0.75], xlim=(-0.03, 0.78))
+    percento(ax, lingua, x=True)
     ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0))
     etichette(ax, finali, 0.75, 0.04, 0.06)
     fig.subplots_adjust(right=0.7)
@@ -215,8 +233,10 @@ def grafici(lingua, q, e, c):
     for ax, tipo, x, fisso, lab, tt in [(a1, "single-source", "y", "x", xfp, t1),
                                         (a2, "multi-source", "x", "y", xfn, t2)]:
         s = f[(f.tipo == tipo) & (f[fisso] == 0)]
-        linee(ax, media_std(s, x, "sistema", "accuracy"), x, "sistema", ["BASE+seed", "ER+seed"], COLORE, MARK)
+        linee(ax, media_std(s, x, "sistema", "accuracy"), x, "sistema", ["BASE+seed", "ER+seed"], COLORE, MARK,
+              fmt=nome)
         ax.set(xlabel=lab, title=tt, ylim=(0.4, 1.05))
+        percento(ax, lingua, x=True, y=True)
     a1.set_ylabel(yl)
     salva(fig, out, "G6_false_matches.png", tit, sub, L["sd"])
     print("Grafici salvati in", out)
