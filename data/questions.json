@@ -1,0 +1,334 @@
+[
+  {
+    "qid": "Q1",
+    "tipo": "entity-centric",
+    "query": "Quali farmaci risultano per H:3 in tutte le sorgenti?",
+    "seed": "H:3",
+    "ground_truth": {
+      "gid_0": {
+        "gold_docs": [
+          "d3"
+        ],
+        "risposta": [
+          "Insulina"
+        ]
+      },
+      "gid_1": {
+        "gold_docs": [
+          "d3",
+          "d4",
+          "d5"
+        ],
+        "risposta": [
+          "Aspirina",
+          "Insulina"
+        ]
+      },
+      "gid_2": {
+        "gold_docs": [
+          "d3",
+          "d4",
+          "d5"
+        ],
+        "risposta": [
+          "Aspirina",
+          "Insulina"
+        ]
+      },
+      "gid_3": {
+        "gold_docs": [
+          "d1",
+          "d3",
+          "d4",
+          "d5"
+        ],
+        "risposta": [
+          "Aspirina",
+          "Insulina",
+          "Metformina"
+        ]
+      }
+    }
+  },
+  {
+    "qid": "Q2",
+    "tipo": "entity-centric",
+    "query": "Quali farmaci risultano per P:2 in tutte le sorgenti?",
+    "seed": "P:2",
+    "ground_truth": {
+      "gid_0": {
+        "gold_docs": [
+          "d6"
+        ],
+        "risposta": [
+          "Aspirina"
+        ]
+      },
+      "gid_1": {
+        "gold_docs": [
+          "d6"
+        ],
+        "risposta": [
+          "Aspirina"
+        ]
+      },
+      "gid_2": {
+        "gold_docs": [
+          "d1",
+          "d6"
+        ],
+        "risposta": [
+          "Aspirina",
+          "Metformina"
+        ]
+      },
+      "gid_3": {
+        "gold_docs": [
+          "d6"
+        ],
+        "risposta": [
+          "Aspirina"
+        ]
+      }
+    }
+  },
+  {
+    "qid": "Q3",
+    "tipo": "entity-centric",
+    "query": "Quali farmaci risultano per H:2 in tutte le sorgenti?",
+    "seed": "H:2",
+    "ground_truth": {
+      "gid_0": {
+        "gold_docs": [
+          "d2"
+        ],
+        "risposta": [
+          "Metformina"
+        ]
+      },
+      "gid_1": {
+        "gold_docs": [
+          "d2",
+          "d7"
+        ],
+        "risposta": [
+          "Metformina"
+        ]
+      },
+      "gid_2": {
+        "gold_docs": [
+          "d2",
+          "d7"
+        ],
+        "risposta": [
+          "Metformina"
+        ]
+      },
+      "gid_3": {
+        "gold_docs": [
+          "d2",
+          "d7",
+          "d8"
+        ],
+        "risposta": [
+          "Insulina",
+          "Metformina"
+        ]
+      }
+    }
+  },
+  {
+    "qid": "Q4",
+    "tipo": "multi-hop",
+    "query": "Chi ha eventi di Insulina e Aspirina su fonti distinte?",
+    "seed": null,
+    "ground_truth": {
+      "gid_0": {
+        "gold_docs": [],
+        "risposta": []
+      },
+      "gid_1": {
+        "gold_docs": [
+          "d3",
+          "d4",
+          "d5"
+        ],
+        "risposta": [
+          "HP3"
+        ]
+      },
+      "gid_2": {
+        "gold_docs": [
+          "d3",
+          "d4",
+          "d5"
+        ],
+        "risposta": [
+          "HP3"
+        ]
+      },
+      "gid_3": {
+        "gold_docs": [
+          "d3",
+          "d4",
+          "d5"
+        ],
+        "risposta": [
+          "HP13"
+        ]
+      }
+    }
+  },
+  {
+    "qid": "Q5a",
+    "tipo": "counting",
+    "query": "Quanti pazienti distinti hanno eventi di Metformina?",
+    "seed": null,
+    "ground_truth": {
+      "gid_0": {
+        "gold_docs": [
+          "d1",
+          "d2",
+          "d7"
+        ],
+        "risposta": 3,
+        "record_locali": 3
+      },
+      "gid_1": {
+        "gold_docs": [
+          "d1",
+          "d2",
+          "d7"
+        ],
+        "risposta": 2,
+        "record_locali": 3
+      },
+      "gid_2": {
+        "gold_docs": [
+          "d1",
+          "d2",
+          "d7"
+        ],
+        "risposta": 2,
+        "record_locali": 3
+      },
+      "gid_3": {
+        "gold_docs": [
+          "d1",
+          "d2",
+          "d7"
+        ],
+        "risposta": 2,
+        "record_locali": 3
+      }
+    }
+  },
+  {
+    "qid": "Q5b",
+    "tipo": "counting",
+    "query": "Quanti pazienti distinti hanno eventi di Insulina?",
+    "seed": null,
+    "ground_truth": {
+      "gid_0": {
+        "gold_docs": [
+          "d3",
+          "d5",
+          "d8"
+        ],
+        "risposta": 3,
+        "record_locali": 3
+      },
+      "gid_1": {
+        "gold_docs": [
+          "d3",
+          "d5",
+          "d8"
+        ],
+        "risposta": 2,
+        "record_locali": 3
+      },
+      "gid_2": {
+        "gold_docs": [
+          "d3",
+          "d5",
+          "d8"
+        ],
+        "risposta": 2,
+        "record_locali": 3
+      },
+      "gid_3": {
+        "gold_docs": [
+          "d3",
+          "d5",
+          "d8"
+        ],
+        "risposta": 2,
+        "record_locali": 3
+      }
+    }
+  },
+  {
+    "qid": "Q5c",
+    "tipo": "counting",
+    "query": "Quanti pazienti distinti hanno eventi di Aspirina?",
+    "seed": null,
+    "ground_truth": {
+      "gid_0": {
+        "gold_docs": [
+          "d4",
+          "d6"
+        ],
+        "risposta": 2,
+        "record_locali": 2
+      },
+      "gid_1": {
+        "gold_docs": [
+          "d4",
+          "d6"
+        ],
+        "risposta": 2,
+        "record_locali": 2
+      },
+      "gid_2": {
+        "gold_docs": [
+          "d4",
+          "d6"
+        ],
+        "risposta": 2,
+        "record_locali": 2
+      },
+      "gid_3": {
+        "gold_docs": [
+          "d4",
+          "d6"
+        ],
+        "risposta": 2,
+        "record_locali": 2
+      }
+    }
+  },
+  {
+    "qid": "Q6",
+    "tipo": "negativa",
+    "query": "Quali pazienti ricevono Paracetamolo?",
+    "seed": null,
+    "ground_truth": {
+      "gid_0": {
+        "gold_docs": [],
+        "risposta": []
+      },
+      "gid_1": {
+        "gold_docs": [],
+        "risposta": []
+      },
+      "gid_2": {
+        "gold_docs": [],
+        "risposta": []
+      },
+      "gid_3": {
+        "gold_docs": [],
+        "risposta": []
+      }
+    }
+  }
+]

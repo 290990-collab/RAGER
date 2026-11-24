@@ -1,0 +1,361 @@
+partizione,qid,tipo,k,sistema,recuperati,recall,precision,n_doc,n_token,completezza,accuracy,risposta,conteggio_rag,conteggio_esatto,accuracy_rag
+gid_0,Q1,entity-centric,2,BASE,d3 d2,1.0,0.5,2,27,1.0,1.0,['Insulina'],,,
+gid_0,Q1,entity-centric,2,BASE+seed,d3,1.0,1.0,1,13,1.0,1.0,['Insulina'],,,
+gid_0,Q1,entity-centric,2,ER+seed,d3,1.0,1.0,1,13,1.0,1.0,['Insulina'],,,
+gid_0,Q1,entity-centric,2,ER-pool,d3 d2,1.0,0.5,2,27,1.0,1.0,['Insulina'],,,
+gid_0,Q1,entity-centric,2,ORACLE,d3,1.0,1.0,1,13,1.0,1.0,['Insulina'],,,
+gid_0,Q1,entity-centric,3,BASE,d3 d2 d1,1.0,0.3333333333333333,3,40,1.0,1.0,['Insulina'],,,
+gid_0,Q1,entity-centric,3,BASE+seed,d3,1.0,1.0,1,13,1.0,1.0,['Insulina'],,,
+gid_0,Q1,entity-centric,3,ER+seed,d3,1.0,1.0,1,13,1.0,1.0,['Insulina'],,,
+gid_0,Q1,entity-centric,3,ER-pool,d3 d2 d1,1.0,0.3333333333333333,3,40,1.0,1.0,['Insulina'],,,
+gid_0,Q1,entity-centric,3,ORACLE,d3,1.0,1.0,1,13,1.0,1.0,['Insulina'],,,
+gid_0,Q1,entity-centric,4,BASE,d3 d2 d1 d7,1.0,0.25,4,54,1.0,1.0,['Insulina'],,,
+gid_0,Q1,entity-centric,4,BASE+seed,d3,1.0,1.0,1,13,1.0,1.0,['Insulina'],,,
+gid_0,Q1,entity-centric,4,ER+seed,d3,1.0,1.0,1,13,1.0,1.0,['Insulina'],,,
+gid_0,Q1,entity-centric,4,ER-pool,d3 d2 d1 d7,1.0,0.25,4,54,1.0,1.0,['Insulina'],,,
+gid_0,Q1,entity-centric,4,ORACLE,d3,1.0,1.0,1,13,1.0,1.0,['Insulina'],,,
+gid_0,Q2,entity-centric,2,BASE,d6 d8,1.0,0.5,2,27,1.0,1.0,['Aspirina'],,,
+gid_0,Q2,entity-centric,2,BASE+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_0,Q2,entity-centric,2,ER+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_0,Q2,entity-centric,2,ER-pool,d6 d8,1.0,0.5,2,27,1.0,1.0,['Aspirina'],,,
+gid_0,Q2,entity-centric,2,ORACLE,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_0,Q2,entity-centric,3,BASE,d6 d8 d5,1.0,0.3333333333333333,3,39,1.0,1.0,['Aspirina'],,,
+gid_0,Q2,entity-centric,3,BASE+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_0,Q2,entity-centric,3,ER+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_0,Q2,entity-centric,3,ER-pool,d6 d8 d5,1.0,0.3333333333333333,3,39,1.0,1.0,['Aspirina'],,,
+gid_0,Q2,entity-centric,3,ORACLE,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_0,Q2,entity-centric,4,BASE,d6 d8 d5 d7,1.0,0.25,4,53,1.0,1.0,['Aspirina'],,,
+gid_0,Q2,entity-centric,4,BASE+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_0,Q2,entity-centric,4,ER+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_0,Q2,entity-centric,4,ER-pool,d6 d8 d5 d4,1.0,0.25,4,52,1.0,1.0,['Aspirina'],,,
+gid_0,Q2,entity-centric,4,ORACLE,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_0,Q3,entity-centric,2,BASE,d2 d3,1.0,0.5,2,27,1.0,1.0,['Metformina'],,,
+gid_0,Q3,entity-centric,2,BASE+seed,d2,1.0,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_0,Q3,entity-centric,2,ER+seed,d2,1.0,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_0,Q3,entity-centric,2,ER-pool,d2 d3,1.0,0.5,2,27,1.0,1.0,['Metformina'],,,
+gid_0,Q3,entity-centric,2,ORACLE,d2,1.0,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_0,Q3,entity-centric,3,BASE,d2 d3 d1,1.0,0.3333333333333333,3,40,1.0,1.0,['Metformina'],,,
+gid_0,Q3,entity-centric,3,BASE+seed,d2,1.0,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_0,Q3,entity-centric,3,ER+seed,d2,1.0,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_0,Q3,entity-centric,3,ER-pool,d2 d3 d1,1.0,0.3333333333333333,3,40,1.0,1.0,['Metformina'],,,
+gid_0,Q3,entity-centric,3,ORACLE,d2,1.0,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_0,Q3,entity-centric,4,BASE,d2 d3 d1 d6,1.0,0.25,4,54,1.0,1.0,['Metformina'],,,
+gid_0,Q3,entity-centric,4,BASE+seed,d2,1.0,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_0,Q3,entity-centric,4,ER+seed,d2,1.0,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_0,Q3,entity-centric,4,ER-pool,d2 d3 d1 d6,1.0,0.25,4,54,1.0,1.0,['Metformina'],,,
+gid_0,Q3,entity-centric,4,ORACLE,d2,1.0,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_0,Q4,multi-hop,2,BASE,d6 d8,0.0,0.0,2,27,1.0,1.0,[],,,
+gid_0,Q4,multi-hop,2,ER-pool,d6 d8,0.0,0.0,2,27,1.0,1.0,[],,,
+gid_0,Q4,multi-hop,2,ORACLE,,1.0,1.0,0,0,1.0,1.0,[],,,
+gid_0,Q4,multi-hop,3,BASE,d6 d8 d4,0.0,0.0,3,40,1.0,1.0,[],,,
+gid_0,Q4,multi-hop,3,ER-pool,d6 d8 d4,0.0,0.0,3,40,1.0,1.0,[],,,
+gid_0,Q4,multi-hop,3,ORACLE,,1.0,1.0,0,0,1.0,1.0,[],,,
+gid_0,Q4,multi-hop,4,BASE,d6 d8 d4 d3,0.0,0.0,4,53,1.0,1.0,[],,,
+gid_0,Q4,multi-hop,4,ER-pool,d6 d8 d4 d5,0.0,0.0,4,52,1.0,1.0,[],,,
+gid_0,Q4,multi-hop,4,ORACLE,,1.0,1.0,0,0,1.0,1.0,[],,,
+gid_0,Q5a,counting,2,BASE,d7 d2,0.6666666666666666,1.0,2,28,,1.0,2,2.0,3.0,0.0
+gid_0,Q5a,counting,2,ER-pool,d7 d2,0.6666666666666666,1.0,2,28,,1.0,2,2.0,3.0,0.0
+gid_0,Q5a,counting,2,ORACLE,d7 d2,0.6666666666666666,1.0,2,28,,1.0,2,2.0,3.0,0.0
+gid_0,Q5a,counting,3,BASE,d7 d2 d1,1.0,1.0,3,41,,1.0,3,3.0,3.0,1.0
+gid_0,Q5a,counting,3,ER-pool,d7 d2 d1,1.0,1.0,3,41,,1.0,3,3.0,3.0,1.0
+gid_0,Q5a,counting,3,ORACLE,d7 d2 d1,1.0,1.0,3,41,,1.0,3,3.0,3.0,1.0
+gid_0,Q5a,counting,4,BASE,d7 d2 d1 d8,1.0,0.75,4,54,,1.0,3,3.0,3.0,1.0
+gid_0,Q5a,counting,4,ER-pool,d7 d2 d1 d8,1.0,0.75,4,54,,1.0,3,3.0,3.0,1.0
+gid_0,Q5a,counting,4,ORACLE,d7 d2 d1,1.0,1.0,3,41,,1.0,3,3.0,3.0,1.0
+gid_0,Q5b,counting,2,BASE,d8 d3,0.6666666666666666,1.0,2,26,,1.0,2,2.0,3.0,0.0
+gid_0,Q5b,counting,2,ER-pool,d8 d3,0.6666666666666666,1.0,2,26,,1.0,2,2.0,3.0,0.0
+gid_0,Q5b,counting,2,ORACLE,d8 d3,0.6666666666666666,1.0,2,26,,1.0,2,2.0,3.0,0.0
+gid_0,Q5b,counting,3,BASE,d8 d3 d5,1.0,1.0,3,38,,1.0,3,3.0,3.0,1.0
+gid_0,Q5b,counting,3,ER-pool,d8 d3 d5,1.0,1.0,3,38,,1.0,3,3.0,3.0,1.0
+gid_0,Q5b,counting,3,ORACLE,d8 d3 d5,1.0,1.0,3,38,,1.0,3,3.0,3.0,1.0
+gid_0,Q5b,counting,4,BASE,d8 d3 d5 d4,1.0,0.75,4,51,,1.0,3,3.0,3.0,1.0
+gid_0,Q5b,counting,4,ER-pool,d8 d3 d5 d4,1.0,0.75,4,51,,1.0,3,3.0,3.0,1.0
+gid_0,Q5b,counting,4,ORACLE,d8 d3 d5,1.0,1.0,3,38,,1.0,3,3.0,3.0,1.0
+gid_0,Q5c,counting,2,BASE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_0,Q5c,counting,2,ER-pool,d4 d5,0.5,0.5,2,25,,1.0,1,1.0,2.0,0.0
+gid_0,Q5c,counting,2,ORACLE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_0,Q5c,counting,3,BASE,d4 d6 d8,1.0,0.6666666666666666,3,40,,1.0,2,2.0,2.0,1.0
+gid_0,Q5c,counting,3,ER-pool,d4 d5 d6,1.0,0.6666666666666666,3,39,,1.0,2,2.0,2.0,1.0
+gid_0,Q5c,counting,3,ORACLE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_0,Q5c,counting,4,BASE,d4 d6 d8 d5,1.0,0.5,4,52,,1.0,2,2.0,2.0,1.0
+gid_0,Q5c,counting,4,ER-pool,d4 d5 d6 d8,1.0,0.5,4,52,,1.0,2,2.0,2.0,1.0
+gid_0,Q5c,counting,4,ORACLE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_0,Q6,negativa,2,BASE,d8 d3,0.0,0.0,2,26,,1.0,[],,,
+gid_0,Q6,negativa,2,ER-pool,d8 d3,0.0,0.0,2,26,,1.0,[],,,
+gid_0,Q6,negativa,2,ORACLE,,1.0,1.0,0,0,,1.0,[],,,
+gid_0,Q6,negativa,3,BASE,d8 d3 d5,0.0,0.0,3,38,,1.0,[],,,
+gid_0,Q6,negativa,3,ER-pool,d8 d3 d5,0.0,0.0,3,38,,1.0,[],,,
+gid_0,Q6,negativa,3,ORACLE,,1.0,1.0,0,0,,1.0,[],,,
+gid_0,Q6,negativa,4,BASE,d8 d3 d5 d7,0.0,0.0,4,52,,1.0,[],,,
+gid_0,Q6,negativa,4,ER-pool,d8 d3 d5 d4,0.0,0.0,4,51,,1.0,[],,,
+gid_0,Q6,negativa,4,ORACLE,,1.0,1.0,0,0,,1.0,[],,,
+gid_1,Q1,entity-centric,2,BASE,d3 d2,0.3333333333333333,0.5,2,27,0.0,0.0,['Insulina'],,,
+gid_1,Q1,entity-centric,2,BASE+seed,d3,0.3333333333333333,1.0,1,13,0.0,0.0,['Insulina'],,,
+gid_1,Q1,entity-centric,2,ER+seed,d3 d5,0.6666666666666666,1.0,2,25,0.0,0.0,['Insulina'],,,
+gid_1,Q1,entity-centric,2,ER-pool,d3 d5,0.6666666666666666,1.0,2,25,0.0,0.0,['Insulina'],,,
+gid_1,Q1,entity-centric,2,ORACLE,d3 d5,0.6666666666666666,1.0,2,25,0.0,0.0,['Insulina'],,,
+gid_1,Q1,entity-centric,3,BASE,d3 d2 d1,0.3333333333333333,0.3333333333333333,3,40,0.0,0.0,['Insulina'],,,
+gid_1,Q1,entity-centric,3,BASE+seed,d3,0.3333333333333333,1.0,1,13,0.0,0.0,['Insulina'],,,
+gid_1,Q1,entity-centric,3,ER+seed,d3 d5 d4,1.0,1.0,3,38,1.0,1.0,"['Aspirina', 'Insulina']",,,
+gid_1,Q1,entity-centric,3,ER-pool,d3 d5 d4,1.0,1.0,3,38,1.0,1.0,"['Aspirina', 'Insulina']",,,
+gid_1,Q1,entity-centric,3,ORACLE,d3 d5 d4,1.0,1.0,3,38,1.0,1.0,"['Aspirina', 'Insulina']",,,
+gid_1,Q1,entity-centric,4,BASE,d3 d2 d1 d7,0.3333333333333333,0.25,4,54,0.0,0.0,['Insulina'],,,
+gid_1,Q1,entity-centric,4,BASE+seed,d3,0.3333333333333333,1.0,1,13,0.0,0.0,['Insulina'],,,
+gid_1,Q1,entity-centric,4,ER+seed,d3 d5 d4,1.0,1.0,3,38,1.0,1.0,"['Aspirina', 'Insulina']",,,
+gid_1,Q1,entity-centric,4,ER-pool,d3 d5 d4 d2,1.0,0.75,4,52,1.0,1.0,"['Aspirina', 'Insulina']",,,
+gid_1,Q1,entity-centric,4,ORACLE,d3 d5 d4,1.0,1.0,3,38,1.0,1.0,"['Aspirina', 'Insulina']",,,
+gid_1,Q2,entity-centric,2,BASE,d6 d8,1.0,0.5,2,27,1.0,1.0,['Aspirina'],,,
+gid_1,Q2,entity-centric,2,BASE+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_1,Q2,entity-centric,2,ER+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_1,Q2,entity-centric,2,ER-pool,d6 d8,1.0,0.5,2,27,1.0,1.0,['Aspirina'],,,
+gid_1,Q2,entity-centric,2,ORACLE,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_1,Q2,entity-centric,3,BASE,d6 d8 d5,1.0,0.3333333333333333,3,39,1.0,1.0,['Aspirina'],,,
+gid_1,Q2,entity-centric,3,BASE+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_1,Q2,entity-centric,3,ER+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_1,Q2,entity-centric,3,ER-pool,d6 d8 d5,1.0,0.3333333333333333,3,39,1.0,1.0,['Aspirina'],,,
+gid_1,Q2,entity-centric,3,ORACLE,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_1,Q2,entity-centric,4,BASE,d6 d8 d5 d7,1.0,0.25,4,53,1.0,1.0,['Aspirina'],,,
+gid_1,Q2,entity-centric,4,BASE+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_1,Q2,entity-centric,4,ER+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_1,Q2,entity-centric,4,ER-pool,d6 d8 d5 d4,1.0,0.25,4,52,1.0,1.0,['Aspirina'],,,
+gid_1,Q2,entity-centric,4,ORACLE,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_1,Q3,entity-centric,2,BASE,d2 d3,0.5,0.5,2,27,1.0,1.0,['Metformina'],,,
+gid_1,Q3,entity-centric,2,BASE+seed,d2,0.5,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_1,Q3,entity-centric,2,ER+seed,d2 d7,1.0,1.0,2,28,1.0,1.0,['Metformina'],,,
+gid_1,Q3,entity-centric,2,ER-pool,d2 d7,1.0,1.0,2,28,1.0,1.0,['Metformina'],,,
+gid_1,Q3,entity-centric,2,ORACLE,d2 d7,1.0,1.0,2,28,1.0,1.0,['Metformina'],,,
+gid_1,Q3,entity-centric,3,BASE,d2 d3 d1,0.5,0.3333333333333333,3,40,1.0,1.0,['Metformina'],,,
+gid_1,Q3,entity-centric,3,BASE+seed,d2,0.5,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_1,Q3,entity-centric,3,ER+seed,d2 d7,1.0,1.0,2,28,1.0,1.0,['Metformina'],,,
+gid_1,Q3,entity-centric,3,ER-pool,d2 d7 d3,1.0,0.6666666666666666,3,41,1.0,1.0,['Metformina'],,,
+gid_1,Q3,entity-centric,3,ORACLE,d2 d7,1.0,1.0,2,28,1.0,1.0,['Metformina'],,,
+gid_1,Q3,entity-centric,4,BASE,d2 d3 d1 d6,0.5,0.25,4,54,1.0,1.0,['Metformina'],,,
+gid_1,Q3,entity-centric,4,BASE+seed,d2,0.5,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_1,Q3,entity-centric,4,ER+seed,d2 d7,1.0,1.0,2,28,1.0,1.0,['Metformina'],,,
+gid_1,Q3,entity-centric,4,ER-pool,d2 d7 d3 d5,1.0,0.5,4,53,1.0,1.0,['Metformina'],,,
+gid_1,Q3,entity-centric,4,ORACLE,d2 d7,1.0,1.0,2,28,1.0,1.0,['Metformina'],,,
+gid_1,Q4,multi-hop,2,BASE,d6 d8,0.0,0.0,2,27,0.0,0.0,[],,,
+gid_1,Q4,multi-hop,2,ER-pool,d6 d8,0.0,0.0,2,27,0.0,0.0,[],,,
+gid_1,Q4,multi-hop,2,ORACLE,d4 d3,0.6666666666666666,1.0,2,26,1.0,1.0,['HP3'],,,
+gid_1,Q4,multi-hop,3,BASE,d6 d8 d4,0.3333333333333333,0.3333333333333333,3,40,0.0,0.0,[],,,
+gid_1,Q4,multi-hop,3,ER-pool,d6 d8 d4,0.3333333333333333,0.3333333333333333,3,40,0.0,0.0,[],,,
+gid_1,Q4,multi-hop,3,ORACLE,d4 d3 d5,1.0,1.0,3,38,1.0,1.0,['HP3'],,,
+gid_1,Q4,multi-hop,4,BASE,d6 d8 d4 d3,0.6666666666666666,0.5,4,53,1.0,0.0,[],,,
+gid_1,Q4,multi-hop,4,ER-pool,d6 d8 d4 d3,0.6666666666666666,0.5,4,53,1.0,1.0,['HP3'],,,
+gid_1,Q4,multi-hop,4,ORACLE,d4 d3 d5,1.0,1.0,3,38,1.0,1.0,['HP3'],,,
+gid_1,Q5a,counting,2,BASE,d7 d2,0.6666666666666666,1.0,2,28,,1.0,2,2.0,2.0,1.0
+gid_1,Q5a,counting,2,ER-pool,d7 d2,0.6666666666666666,1.0,2,28,,1.0,1,1.0,2.0,0.0
+gid_1,Q5a,counting,2,ORACLE,d7 d2,0.6666666666666666,1.0,2,28,,1.0,1,1.0,2.0,0.0
+gid_1,Q5a,counting,3,BASE,d7 d2 d1,1.0,1.0,3,41,,1.0,3,3.0,2.0,0.0
+gid_1,Q5a,counting,3,ER-pool,d7 d2 d1,1.0,1.0,3,41,,1.0,2,2.0,2.0,1.0
+gid_1,Q5a,counting,3,ORACLE,d7 d2 d1,1.0,1.0,3,41,,1.0,2,2.0,2.0,1.0
+gid_1,Q5a,counting,4,BASE,d7 d2 d1 d8,1.0,0.75,4,54,,1.0,3,3.0,2.0,0.0
+gid_1,Q5a,counting,4,ER-pool,d7 d2 d1 d8,1.0,0.75,4,54,,1.0,2,2.0,2.0,1.0
+gid_1,Q5a,counting,4,ORACLE,d7 d2 d1,1.0,1.0,3,41,,1.0,2,2.0,2.0,1.0
+gid_1,Q5b,counting,2,BASE,d8 d3,0.6666666666666666,1.0,2,26,,1.0,2,2.0,2.0,1.0
+gid_1,Q5b,counting,2,ER-pool,d8 d3,0.6666666666666666,1.0,2,26,,1.0,2,2.0,2.0,1.0
+gid_1,Q5b,counting,2,ORACLE,d8 d3,0.6666666666666666,1.0,2,26,,1.0,2,2.0,2.0,1.0
+gid_1,Q5b,counting,3,BASE,d8 d3 d5,1.0,1.0,3,38,,1.0,3,3.0,2.0,0.0
+gid_1,Q5b,counting,3,ER-pool,d8 d3 d5,1.0,1.0,3,38,,1.0,2,2.0,2.0,1.0
+gid_1,Q5b,counting,3,ORACLE,d8 d3 d5,1.0,1.0,3,38,,1.0,2,2.0,2.0,1.0
+gid_1,Q5b,counting,4,BASE,d8 d3 d5 d4,1.0,0.75,4,51,,1.0,3,3.0,2.0,0.0
+gid_1,Q5b,counting,4,ER-pool,d8 d3 d5 d4,1.0,0.75,4,51,,1.0,2,2.0,2.0,1.0
+gid_1,Q5b,counting,4,ORACLE,d8 d3 d5,1.0,1.0,3,38,,1.0,2,2.0,2.0,1.0
+gid_1,Q5c,counting,2,BASE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_1,Q5c,counting,2,ER-pool,d4 d5,0.5,0.5,2,25,,1.0,1,1.0,2.0,0.0
+gid_1,Q5c,counting,2,ORACLE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_1,Q5c,counting,3,BASE,d4 d6 d8,1.0,0.6666666666666666,3,40,,1.0,2,2.0,2.0,1.0
+gid_1,Q5c,counting,3,ER-pool,d4 d5 d3,0.5,0.3333333333333333,3,38,,1.0,1,1.0,2.0,0.0
+gid_1,Q5c,counting,3,ORACLE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_1,Q5c,counting,4,BASE,d4 d6 d8 d5,1.0,0.5,4,52,,1.0,2,2.0,2.0,1.0
+gid_1,Q5c,counting,4,ER-pool,d4 d5 d3 d6,1.0,0.5,4,52,,1.0,2,2.0,2.0,1.0
+gid_1,Q5c,counting,4,ORACLE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_1,Q6,negativa,2,BASE,d8 d3,0.0,0.0,2,26,,1.0,[],,,
+gid_1,Q6,negativa,2,ER-pool,d8 d3,0.0,0.0,2,26,,1.0,[],,,
+gid_1,Q6,negativa,2,ORACLE,,1.0,1.0,0,0,,1.0,[],,,
+gid_1,Q6,negativa,3,BASE,d8 d3 d5,0.0,0.0,3,38,,1.0,[],,,
+gid_1,Q6,negativa,3,ER-pool,d8 d3 d5,0.0,0.0,3,38,,1.0,[],,,
+gid_1,Q6,negativa,3,ORACLE,,1.0,1.0,0,0,,1.0,[],,,
+gid_1,Q6,negativa,4,BASE,d8 d3 d5 d7,0.0,0.0,4,52,,1.0,[],,,
+gid_1,Q6,negativa,4,ER-pool,d8 d3 d5 d4,0.0,0.0,4,51,,1.0,[],,,
+gid_1,Q6,negativa,4,ORACLE,,1.0,1.0,0,0,,1.0,[],,,
+gid_2,Q1,entity-centric,2,BASE,d3 d2,0.3333333333333333,0.5,2,27,0.0,0.0,['Insulina'],,,
+gid_2,Q1,entity-centric,2,BASE+seed,d3,0.3333333333333333,1.0,1,13,0.0,0.0,['Insulina'],,,
+gid_2,Q1,entity-centric,2,ER+seed,d3 d5,0.6666666666666666,1.0,2,25,0.0,0.0,['Insulina'],,,
+gid_2,Q1,entity-centric,2,ER-pool,d3 d5,0.6666666666666666,1.0,2,25,0.0,0.0,['Insulina'],,,
+gid_2,Q1,entity-centric,2,ORACLE,d3 d5,0.6666666666666666,1.0,2,25,0.0,0.0,['Insulina'],,,
+gid_2,Q1,entity-centric,3,BASE,d3 d2 d1,0.3333333333333333,0.3333333333333333,3,40,0.0,0.0,['Insulina'],,,
+gid_2,Q1,entity-centric,3,BASE+seed,d3,0.3333333333333333,1.0,1,13,0.0,0.0,['Insulina'],,,
+gid_2,Q1,entity-centric,3,ER+seed,d3 d5 d4,1.0,1.0,3,38,1.0,1.0,"['Aspirina', 'Insulina']",,,
+gid_2,Q1,entity-centric,3,ER-pool,d3 d5 d4,1.0,1.0,3,38,1.0,1.0,"['Aspirina', 'Insulina']",,,
+gid_2,Q1,entity-centric,3,ORACLE,d3 d5 d4,1.0,1.0,3,38,1.0,1.0,"['Aspirina', 'Insulina']",,,
+gid_2,Q1,entity-centric,4,BASE,d3 d2 d1 d7,0.3333333333333333,0.25,4,54,0.0,0.0,['Insulina'],,,
+gid_2,Q1,entity-centric,4,BASE+seed,d3,0.3333333333333333,1.0,1,13,0.0,0.0,['Insulina'],,,
+gid_2,Q1,entity-centric,4,ER+seed,d3 d5 d4,1.0,1.0,3,38,1.0,1.0,"['Aspirina', 'Insulina']",,,
+gid_2,Q1,entity-centric,4,ER-pool,d3 d5 d4 d2,1.0,0.75,4,52,1.0,1.0,"['Aspirina', 'Insulina']",,,
+gid_2,Q1,entity-centric,4,ORACLE,d3 d5 d4,1.0,1.0,3,38,1.0,1.0,"['Aspirina', 'Insulina']",,,
+gid_2,Q2,entity-centric,2,BASE,d6 d8,0.5,0.5,2,27,0.0,0.0,['Aspirina'],,,
+gid_2,Q2,entity-centric,2,BASE+seed,d6,0.5,1.0,1,14,0.0,0.0,['Aspirina'],,,
+gid_2,Q2,entity-centric,2,ER+seed,d6 d1,1.0,1.0,2,27,1.0,1.0,"['Aspirina', 'Metformina']",,,
+gid_2,Q2,entity-centric,2,ER-pool,d6 d1,1.0,1.0,2,27,1.0,1.0,"['Aspirina', 'Metformina']",,,
+gid_2,Q2,entity-centric,2,ORACLE,d6 d1,1.0,1.0,2,27,1.0,1.0,"['Aspirina', 'Metformina']",,,
+gid_2,Q2,entity-centric,3,BASE,d6 d8 d5,0.5,0.3333333333333333,3,39,0.0,0.0,['Aspirina'],,,
+gid_2,Q2,entity-centric,3,BASE+seed,d6,0.5,1.0,1,14,0.0,0.0,['Aspirina'],,,
+gid_2,Q2,entity-centric,3,ER+seed,d6 d1,1.0,1.0,2,27,1.0,1.0,"['Aspirina', 'Metformina']",,,
+gid_2,Q2,entity-centric,3,ER-pool,d6 d1 d8,1.0,0.6666666666666666,3,40,1.0,1.0,"['Aspirina', 'Metformina']",,,
+gid_2,Q2,entity-centric,3,ORACLE,d6 d1,1.0,1.0,2,27,1.0,1.0,"['Aspirina', 'Metformina']",,,
+gid_2,Q2,entity-centric,4,BASE,d6 d8 d5 d7,0.5,0.25,4,53,0.0,0.0,['Aspirina'],,,
+gid_2,Q2,entity-centric,4,BASE+seed,d6,0.5,1.0,1,14,0.0,0.0,['Aspirina'],,,
+gid_2,Q2,entity-centric,4,ER+seed,d6 d1,1.0,1.0,2,27,1.0,1.0,"['Aspirina', 'Metformina']",,,
+gid_2,Q2,entity-centric,4,ER-pool,d6 d1 d8 d5,1.0,0.5,4,52,1.0,1.0,"['Aspirina', 'Metformina']",,,
+gid_2,Q2,entity-centric,4,ORACLE,d6 d1,1.0,1.0,2,27,1.0,1.0,"['Aspirina', 'Metformina']",,,
+gid_2,Q3,entity-centric,2,BASE,d2 d3,0.5,0.5,2,27,1.0,1.0,['Metformina'],,,
+gid_2,Q3,entity-centric,2,BASE+seed,d2,0.5,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_2,Q3,entity-centric,2,ER+seed,d2 d7,1.0,1.0,2,28,1.0,1.0,['Metformina'],,,
+gid_2,Q3,entity-centric,2,ER-pool,d2 d7,1.0,1.0,2,28,1.0,1.0,['Metformina'],,,
+gid_2,Q3,entity-centric,2,ORACLE,d2 d7,1.0,1.0,2,28,1.0,1.0,['Metformina'],,,
+gid_2,Q3,entity-centric,3,BASE,d2 d3 d1,0.5,0.3333333333333333,3,40,1.0,1.0,['Metformina'],,,
+gid_2,Q3,entity-centric,3,BASE+seed,d2,0.5,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_2,Q3,entity-centric,3,ER+seed,d2 d7,1.0,1.0,2,28,1.0,1.0,['Metformina'],,,
+gid_2,Q3,entity-centric,3,ER-pool,d2 d7 d3,1.0,0.6666666666666666,3,41,1.0,1.0,['Metformina'],,,
+gid_2,Q3,entity-centric,3,ORACLE,d2 d7,1.0,1.0,2,28,1.0,1.0,['Metformina'],,,
+gid_2,Q3,entity-centric,4,BASE,d2 d3 d1 d6,0.5,0.25,4,54,1.0,1.0,['Metformina'],,,
+gid_2,Q3,entity-centric,4,BASE+seed,d2,0.5,1.0,1,14,1.0,1.0,['Metformina'],,,
+gid_2,Q3,entity-centric,4,ER+seed,d2 d7,1.0,1.0,2,28,1.0,1.0,['Metformina'],,,
+gid_2,Q3,entity-centric,4,ER-pool,d2 d7 d3 d5,1.0,0.5,4,53,1.0,1.0,['Metformina'],,,
+gid_2,Q3,entity-centric,4,ORACLE,d2 d7,1.0,1.0,2,28,1.0,1.0,['Metformina'],,,
+gid_2,Q4,multi-hop,2,BASE,d6 d8,0.0,0.0,2,27,0.0,0.0,[],,,
+gid_2,Q4,multi-hop,2,ER-pool,d6 d1,0.0,0.0,2,27,0.0,0.0,[],,,
+gid_2,Q4,multi-hop,2,ORACLE,d4 d3,0.6666666666666666,1.0,2,26,1.0,1.0,['HP3'],,,
+gid_2,Q4,multi-hop,3,BASE,d6 d8 d4,0.3333333333333333,0.3333333333333333,3,40,0.0,0.0,[],,,
+gid_2,Q4,multi-hop,3,ER-pool,d6 d1 d8,0.0,0.0,3,40,0.0,0.0,[],,,
+gid_2,Q4,multi-hop,3,ORACLE,d4 d3 d5,1.0,1.0,3,38,1.0,1.0,['HP3'],,,
+gid_2,Q4,multi-hop,4,BASE,d6 d8 d4 d3,0.6666666666666666,0.5,4,53,1.0,0.0,[],,,
+gid_2,Q4,multi-hop,4,ER-pool,d6 d1 d8 d4,0.3333333333333333,0.25,4,53,0.0,0.0,[],,,
+gid_2,Q4,multi-hop,4,ORACLE,d4 d3 d5,1.0,1.0,3,38,1.0,1.0,['HP3'],,,
+gid_2,Q5a,counting,2,BASE,d7 d2,0.6666666666666666,1.0,2,28,,1.0,2,2.0,2.0,1.0
+gid_2,Q5a,counting,2,ER-pool,d7 d2,0.6666666666666666,1.0,2,28,,1.0,1,1.0,2.0,0.0
+gid_2,Q5a,counting,2,ORACLE,d7 d2,0.6666666666666666,1.0,2,28,,1.0,1,1.0,2.0,0.0
+gid_2,Q5a,counting,3,BASE,d7 d2 d1,1.0,1.0,3,41,,1.0,3,3.0,2.0,0.0
+gid_2,Q5a,counting,3,ER-pool,d7 d2 d1,1.0,1.0,3,41,,1.0,2,2.0,2.0,1.0
+gid_2,Q5a,counting,3,ORACLE,d7 d2 d1,1.0,1.0,3,41,,1.0,2,2.0,2.0,1.0
+gid_2,Q5a,counting,4,BASE,d7 d2 d1 d8,1.0,0.75,4,54,,1.0,3,3.0,2.0,0.0
+gid_2,Q5a,counting,4,ER-pool,d7 d2 d1 d6,1.0,0.75,4,55,,1.0,2,2.0,2.0,1.0
+gid_2,Q5a,counting,4,ORACLE,d7 d2 d1,1.0,1.0,3,41,,1.0,2,2.0,2.0,1.0
+gid_2,Q5b,counting,2,BASE,d8 d3,0.6666666666666666,1.0,2,26,,1.0,2,2.0,2.0,1.0
+gid_2,Q5b,counting,2,ER-pool,d8 d3,0.6666666666666666,1.0,2,26,,1.0,2,2.0,2.0,1.0
+gid_2,Q5b,counting,2,ORACLE,d8 d3,0.6666666666666666,1.0,2,26,,1.0,2,2.0,2.0,1.0
+gid_2,Q5b,counting,3,BASE,d8 d3 d5,1.0,1.0,3,38,,1.0,3,3.0,2.0,0.0
+gid_2,Q5b,counting,3,ER-pool,d8 d3 d5,1.0,1.0,3,38,,1.0,2,2.0,2.0,1.0
+gid_2,Q5b,counting,3,ORACLE,d8 d3 d5,1.0,1.0,3,38,,1.0,2,2.0,2.0,1.0
+gid_2,Q5b,counting,4,BASE,d8 d3 d5 d4,1.0,0.75,4,51,,1.0,3,3.0,2.0,0.0
+gid_2,Q5b,counting,4,ER-pool,d8 d3 d5 d4,1.0,0.75,4,51,,1.0,2,2.0,2.0,1.0
+gid_2,Q5b,counting,4,ORACLE,d8 d3 d5,1.0,1.0,3,38,,1.0,2,2.0,2.0,1.0
+gid_2,Q5c,counting,2,BASE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_2,Q5c,counting,2,ER-pool,d4 d5,0.5,0.5,2,25,,1.0,1,1.0,2.0,0.0
+gid_2,Q5c,counting,2,ORACLE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_2,Q5c,counting,3,BASE,d4 d6 d8,1.0,0.6666666666666666,3,40,,1.0,2,2.0,2.0,1.0
+gid_2,Q5c,counting,3,ER-pool,d4 d5 d3,0.5,0.3333333333333333,3,38,,1.0,1,1.0,2.0,0.0
+gid_2,Q5c,counting,3,ORACLE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_2,Q5c,counting,4,BASE,d4 d6 d8 d5,1.0,0.5,4,52,,1.0,2,2.0,2.0,1.0
+gid_2,Q5c,counting,4,ER-pool,d4 d5 d3 d6,1.0,0.5,4,52,,1.0,2,2.0,2.0,1.0
+gid_2,Q5c,counting,4,ORACLE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_2,Q6,negativa,2,BASE,d8 d3,0.0,0.0,2,26,,1.0,[],,,
+gid_2,Q6,negativa,2,ER-pool,d8 d3,0.0,0.0,2,26,,1.0,[],,,
+gid_2,Q6,negativa,2,ORACLE,,1.0,1.0,0,0,,1.0,[],,,
+gid_2,Q6,negativa,3,BASE,d8 d3 d5,0.0,0.0,3,38,,1.0,[],,,
+gid_2,Q6,negativa,3,ER-pool,d8 d3 d5,0.0,0.0,3,38,,1.0,[],,,
+gid_2,Q6,negativa,3,ORACLE,,1.0,1.0,0,0,,1.0,[],,,
+gid_2,Q6,negativa,4,BASE,d8 d3 d5 d7,0.0,0.0,4,52,,1.0,[],,,
+gid_2,Q6,negativa,4,ER-pool,d8 d3 d5 d4,0.0,0.0,4,51,,1.0,[],,,
+gid_2,Q6,negativa,4,ORACLE,,1.0,1.0,0,0,,1.0,[],,,
+gid_3,Q1,entity-centric,2,BASE,d3 d2,0.25,0.5,2,27,0.0,0.0,['Insulina'],,,
+gid_3,Q1,entity-centric,2,BASE+seed,d3,0.25,1.0,1,13,0.0,0.0,['Insulina'],,,
+gid_3,Q1,entity-centric,2,ER+seed,d3 d1,0.5,1.0,2,26,0.0,0.0,"['Insulina', 'Metformina']",,,
+gid_3,Q1,entity-centric,2,ER-pool,d3 d1,0.5,1.0,2,26,0.0,0.0,"['Insulina', 'Metformina']",,,
+gid_3,Q1,entity-centric,2,ORACLE,d3 d1,0.5,1.0,2,26,0.0,0.0,"['Insulina', 'Metformina']",,,
+gid_3,Q1,entity-centric,3,BASE,d3 d2 d1,0.5,0.6666666666666666,3,40,0.0,0.0,['Insulina'],,,
+gid_3,Q1,entity-centric,3,BASE+seed,d3,0.25,1.0,1,13,0.0,0.0,['Insulina'],,,
+gid_3,Q1,entity-centric,3,ER+seed,d3 d1 d5,0.75,1.0,3,38,0.0,0.0,"['Insulina', 'Metformina']",,,
+gid_3,Q1,entity-centric,3,ER-pool,d3 d1 d5,0.75,1.0,3,38,0.0,0.0,"['Insulina', 'Metformina']",,,
+gid_3,Q1,entity-centric,3,ORACLE,d3 d1 d5,0.75,1.0,3,38,0.0,0.0,"['Insulina', 'Metformina']",,,
+gid_3,Q1,entity-centric,4,BASE,d3 d2 d1 d7,0.5,0.5,4,54,0.0,0.0,['Insulina'],,,
+gid_3,Q1,entity-centric,4,BASE+seed,d3,0.25,1.0,1,13,0.0,0.0,['Insulina'],,,
+gid_3,Q1,entity-centric,4,ER+seed,d3 d1 d5 d4,1.0,1.0,4,51,1.0,1.0,"['Aspirina', 'Insulina', 'Metformina']",,,
+gid_3,Q1,entity-centric,4,ER-pool,d3 d1 d5 d4,1.0,1.0,4,51,1.0,1.0,"['Aspirina', 'Insulina', 'Metformina']",,,
+gid_3,Q1,entity-centric,4,ORACLE,d3 d1 d5 d4,1.0,1.0,4,51,1.0,1.0,"['Aspirina', 'Insulina', 'Metformina']",,,
+gid_3,Q2,entity-centric,2,BASE,d6 d8,1.0,0.5,2,27,1.0,1.0,['Aspirina'],,,
+gid_3,Q2,entity-centric,2,BASE+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_3,Q2,entity-centric,2,ER+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_3,Q2,entity-centric,2,ER-pool,d6 d8,1.0,0.5,2,27,1.0,1.0,['Aspirina'],,,
+gid_3,Q2,entity-centric,2,ORACLE,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_3,Q2,entity-centric,3,BASE,d6 d8 d5,1.0,0.3333333333333333,3,39,1.0,1.0,['Aspirina'],,,
+gid_3,Q2,entity-centric,3,BASE+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_3,Q2,entity-centric,3,ER+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_3,Q2,entity-centric,3,ER-pool,d6 d8 d7,1.0,0.3333333333333333,3,41,1.0,1.0,['Aspirina'],,,
+gid_3,Q2,entity-centric,3,ORACLE,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_3,Q2,entity-centric,4,BASE,d6 d8 d5 d7,1.0,0.25,4,53,1.0,1.0,['Aspirina'],,,
+gid_3,Q2,entity-centric,4,BASE+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_3,Q2,entity-centric,4,ER+seed,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_3,Q2,entity-centric,4,ER-pool,d6 d8 d7 d2,1.0,0.25,4,55,1.0,1.0,['Aspirina'],,,
+gid_3,Q2,entity-centric,4,ORACLE,d6,1.0,1.0,1,14,1.0,1.0,['Aspirina'],,,
+gid_3,Q3,entity-centric,2,BASE,d2 d3,0.3333333333333333,0.5,2,27,0.0,0.0,['Metformina'],,,
+gid_3,Q3,entity-centric,2,BASE+seed,d2,0.3333333333333333,1.0,1,14,0.0,0.0,['Metformina'],,,
+gid_3,Q3,entity-centric,2,ER+seed,d2 d8,0.6666666666666666,1.0,2,27,1.0,1.0,"['Insulina', 'Metformina']",,,
+gid_3,Q3,entity-centric,2,ER-pool,d2 d8,0.6666666666666666,1.0,2,27,1.0,1.0,"['Insulina', 'Metformina']",,,
+gid_3,Q3,entity-centric,2,ORACLE,d2 d8,0.6666666666666666,1.0,2,27,1.0,1.0,"['Insulina', 'Metformina']",,,
+gid_3,Q3,entity-centric,3,BASE,d2 d3 d1,0.3333333333333333,0.3333333333333333,3,40,0.0,0.0,['Metformina'],,,
+gid_3,Q3,entity-centric,3,BASE+seed,d2,0.3333333333333333,1.0,1,14,0.0,0.0,['Metformina'],,,
+gid_3,Q3,entity-centric,3,ER+seed,d2 d8 d7,1.0,1.0,3,41,1.0,1.0,"['Insulina', 'Metformina']",,,
+gid_3,Q3,entity-centric,3,ER-pool,d2 d8 d7,1.0,1.0,3,41,1.0,1.0,"['Insulina', 'Metformina']",,,
+gid_3,Q3,entity-centric,3,ORACLE,d2 d8 d7,1.0,1.0,3,41,1.0,1.0,"['Insulina', 'Metformina']",,,
+gid_3,Q3,entity-centric,4,BASE,d2 d3 d1 d6,0.3333333333333333,0.25,4,54,0.0,0.0,['Metformina'],,,
+gid_3,Q3,entity-centric,4,BASE+seed,d2,0.3333333333333333,1.0,1,14,0.0,0.0,['Metformina'],,,
+gid_3,Q3,entity-centric,4,ER+seed,d2 d8 d7,1.0,1.0,3,41,1.0,1.0,"['Insulina', 'Metformina']",,,
+gid_3,Q3,entity-centric,4,ER-pool,d2 d8 d7 d3,1.0,0.75,4,54,1.0,1.0,"['Insulina', 'Metformina']",,,
+gid_3,Q3,entity-centric,4,ORACLE,d2 d8 d7,1.0,1.0,3,41,1.0,1.0,"['Insulina', 'Metformina']",,,
+gid_3,Q4,multi-hop,2,BASE,d6 d8,0.0,0.0,2,27,0.0,0.0,[],,,
+gid_3,Q4,multi-hop,2,ER-pool,d6 d8,0.0,0.0,2,27,0.0,0.0,[],,,
+gid_3,Q4,multi-hop,2,ORACLE,d4 d3,0.6666666666666666,1.0,2,26,1.0,1.0,['HP13'],,,
+gid_3,Q4,multi-hop,3,BASE,d6 d8 d4,0.3333333333333333,0.3333333333333333,3,40,0.0,0.0,[],,,
+gid_3,Q4,multi-hop,3,ER-pool,d6 d8 d7,0.0,0.0,3,41,0.0,0.0,[],,,
+gid_3,Q4,multi-hop,3,ORACLE,d4 d3 d5,1.0,1.0,3,38,1.0,1.0,['HP13'],,,
+gid_3,Q4,multi-hop,4,BASE,d6 d8 d4 d3,0.6666666666666666,0.5,4,53,1.0,0.0,[],,,
+gid_3,Q4,multi-hop,4,ER-pool,d6 d8 d7 d2,0.0,0.0,4,55,0.0,0.0,[],,,
+gid_3,Q4,multi-hop,4,ORACLE,d4 d3 d5,1.0,1.0,3,38,1.0,1.0,['HP13'],,,
+gid_3,Q5a,counting,2,BASE,d7 d2,0.6666666666666666,1.0,2,28,,1.0,2,2.0,2.0,1.0
+gid_3,Q5a,counting,2,ER-pool,d7 d2,0.6666666666666666,1.0,2,28,,1.0,1,1.0,2.0,0.0
+gid_3,Q5a,counting,2,ORACLE,d7 d2,0.6666666666666666,1.0,2,28,,1.0,1,1.0,2.0,0.0
+gid_3,Q5a,counting,3,BASE,d7 d2 d1,1.0,1.0,3,41,,1.0,3,3.0,2.0,0.0
+gid_3,Q5a,counting,3,ER-pool,d7 d2 d8,0.6666666666666666,0.6666666666666666,3,41,,1.0,1,1.0,2.0,0.0
+gid_3,Q5a,counting,3,ORACLE,d7 d2 d1,1.0,1.0,3,41,,1.0,2,2.0,2.0,1.0
+gid_3,Q5a,counting,4,BASE,d7 d2 d1 d8,1.0,0.75,4,54,,1.0,3,3.0,2.0,0.0
+gid_3,Q5a,counting,4,ER-pool,d7 d2 d8 d1,1.0,0.75,4,54,,1.0,2,2.0,2.0,1.0
+gid_3,Q5a,counting,4,ORACLE,d7 d2 d1,1.0,1.0,3,41,,1.0,2,2.0,2.0,1.0
+gid_3,Q5b,counting,2,BASE,d8 d3,0.6666666666666666,1.0,2,26,,1.0,2,2.0,2.0,1.0
+gid_3,Q5b,counting,2,ER-pool,d8 d2,0.3333333333333333,0.5,2,27,,1.0,1,1.0,2.0,0.0
+gid_3,Q5b,counting,2,ORACLE,d8 d3,0.6666666666666666,1.0,2,26,,1.0,2,2.0,2.0,1.0
+gid_3,Q5b,counting,3,BASE,d8 d3 d5,1.0,1.0,3,38,,1.0,3,3.0,2.0,0.0
+gid_3,Q5b,counting,3,ER-pool,d8 d2 d7,0.3333333333333333,0.3333333333333333,3,41,,1.0,1,1.0,2.0,0.0
+gid_3,Q5b,counting,3,ORACLE,d8 d3 d5,1.0,1.0,3,38,,1.0,2,2.0,2.0,1.0
+gid_3,Q5b,counting,4,BASE,d8 d3 d5 d4,1.0,0.75,4,51,,1.0,3,3.0,2.0,0.0
+gid_3,Q5b,counting,4,ER-pool,d8 d2 d7 d3,0.6666666666666666,0.5,4,54,,1.0,2,2.0,2.0,1.0
+gid_3,Q5b,counting,4,ORACLE,d8 d3 d5,1.0,1.0,3,38,,1.0,2,2.0,2.0,1.0
+gid_3,Q5c,counting,2,BASE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_3,Q5c,counting,2,ER-pool,d4 d5,0.5,0.5,2,25,,1.0,1,1.0,2.0,0.0
+gid_3,Q5c,counting,2,ORACLE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_3,Q5c,counting,3,BASE,d4 d6 d8,1.0,0.6666666666666666,3,40,,1.0,2,2.0,2.0,1.0
+gid_3,Q5c,counting,3,ER-pool,d4 d5 d3,0.5,0.3333333333333333,3,38,,1.0,1,1.0,2.0,0.0
+gid_3,Q5c,counting,3,ORACLE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_3,Q5c,counting,4,BASE,d4 d6 d8 d5,1.0,0.5,4,52,,1.0,2,2.0,2.0,1.0
+gid_3,Q5c,counting,4,ER-pool,d4 d5 d3 d1,0.5,0.25,4,51,,1.0,1,1.0,2.0,0.0
+gid_3,Q5c,counting,4,ORACLE,d4 d6,1.0,1.0,2,27,,1.0,2,2.0,2.0,1.0
+gid_3,Q6,negativa,2,BASE,d8 d3,0.0,0.0,2,26,,1.0,[],,,
+gid_3,Q6,negativa,2,ER-pool,d8 d7,0.0,0.0,2,27,,1.0,[],,,
+gid_3,Q6,negativa,2,ORACLE,,1.0,1.0,0,0,,1.0,[],,,
+gid_3,Q6,negativa,3,BASE,d8 d3 d5,0.0,0.0,3,38,,1.0,[],,,
+gid_3,Q6,negativa,3,ER-pool,d8 d7 d2,0.0,0.0,3,41,,1.0,[],,,
+gid_3,Q6,negativa,3,ORACLE,,1.0,1.0,0,0,,1.0,[],,,
+gid_3,Q6,negativa,4,BASE,d8 d3 d5 d7,0.0,0.0,4,52,,1.0,[],,,
+gid_3,Q6,negativa,4,ER-pool,d8 d7 d2 d3,0.0,0.0,4,54,,1.0,[],,,
+gid_3,Q6,negativa,4,ORACLE,,1.0,1.0,0,0,,1.0,[],,,

@@ -1,0 +1,130 @@
+[
+  {
+    "doc_id": "d1",
+    "text": "H:1 ha ricevuto Metformina, quantità 30.",
+    "metadata": {
+      "source": "H",
+      "local_id": "H:1",
+      "farmaco": "Metformina",
+      "quantita": 30,
+      "gid_0": "H1",
+      "gid_1": "H1",
+      "gid_2": "HP1",
+      "gid_3": "HP13",
+      "year_of_birth": 1980,
+      "location_id": "Modena"
+    }
+  },
+  {
+    "doc_id": "d2",
+    "text": "H:2 ha ricevuto Metformina, quantità 30.",
+    "metadata": {
+      "source": "H",
+      "local_id": "H:2",
+      "farmaco": "Metformina",
+      "quantita": 30,
+      "gid_0": "H2",
+      "gid_1": "HP2",
+      "gid_2": "HP2",
+      "gid_3": "HP2",
+      "year_of_birth": 1950,
+      "location_id": "Bologna"
+    }
+  },
+  {
+    "doc_id": "d3",
+    "text": "H:3 ha ricevuto Insulina, quantità 20.",
+    "metadata": {
+      "source": "H",
+      "local_id": "H:3",
+      "farmaco": "Insulina",
+      "quantita": 20,
+      "gid_0": "H3",
+      "gid_1": "HP3",
+      "gid_2": "HP3",
+      "gid_3": "HP13",
+      "year_of_birth": 1980,
+      "location_id": "Modena"
+    }
+  },
+  {
+    "doc_id": "d4",
+    "text": "P:1 ha ricevuto Aspirina, quantità 100.",
+    "metadata": {
+      "source": "P",
+      "local_id": "P:1",
+      "farmaco": "Aspirina",
+      "quantita": 100,
+      "gid_0": "P1",
+      "gid_1": "HP3",
+      "gid_2": "HP3",
+      "gid_3": "HP13",
+      "year_of_birth": 1980,
+      "location_id": null
+    }
+  },
+  {
+    "doc_id": "d5",
+    "text": "P:1 ha ricevuto Insulina, quantità 15.",
+    "metadata": {
+      "source": "P",
+      "local_id": "P:1",
+      "farmaco": "Insulina",
+      "quantita": 15,
+      "gid_0": "P1",
+      "gid_1": "HP3",
+      "gid_2": "HP3",
+      "gid_3": "HP13",
+      "year_of_birth": 1980,
+      "location_id": null
+    }
+  },
+  {
+    "doc_id": "d6",
+    "text": "P:2 ha ricevuto Aspirina, quantità 50.",
+    "metadata": {
+      "source": "P",
+      "local_id": "P:2",
+      "farmaco": "Aspirina",
+      "quantita": 50,
+      "gid_0": "P2",
+      "gid_1": "P2",
+      "gid_2": "HP1",
+      "gid_3": "P2",
+      "year_of_birth": 1980,
+      "location_id": null
+    }
+  },
+  {
+    "doc_id": "d7",
+    "text": "P:3 ha ricevuto Metformina, quantità 60.",
+    "metadata": {
+      "source": "P",
+      "local_id": "P:3",
+      "farmaco": "Metformina",
+      "quantita": 60,
+      "gid_0": "P3",
+      "gid_1": "HP2",
+      "gid_2": "HP2",
+      "gid_3": "HP2",
+      "year_of_birth": 1950,
+      "location_id": null
+    }
+  },
+  {
+    "doc_id": "d8",
+    "text": "P:4 ha ricevuto Insulina, quantità 10.",
+    "metadata": {
+      "source": "P",
+      "local_id": "P:4",
+      "farmaco": "Insulina",
+      "quantita": 10,
+      "gid_0": "P4",
+      "gid_1": "P4",
+      "gid_2": "P4",
+      "gid_3": "HP2",
+      "year_of_birth": 1950,
+      "location_id": null
+    }
+  }
+]

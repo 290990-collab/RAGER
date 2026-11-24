@@ -1,0 +1,9 @@
+﻿doc_id,text,source,local_id,farmaco,quantita,gid_0,gid_1,gid_2,gid_3,year_of_birth,location_id
+d1,"H:1 ha ricevuto Metformina, quantità 30.",H,H:1,Metformina,30,H1,H1,HP1,HP13,1980,Modena
+d2,"H:2 ha ricevuto Metformina, quantità 30.",H,H:2,Metformina,30,H2,HP2,HP2,HP2,1950,Bologna
+d3,"H:3 ha ricevuto Insulina, quantità 20.",H,H:3,Insulina,20,H3,HP3,HP3,HP13,1980,Modena
+d4,"P:1 ha ricevuto Aspirina, quantità 100.",P,P:1,Aspirina,100,P1,HP3,HP3,HP13,1980,
+d5,"P:1 ha ricevuto Insulina, quantità 15.",P,P:1,Insulina,15,P1,HP3,HP3,HP13,1980,
+d6,"P:2 ha ricevuto Aspirina, quantità 50.",P,P:2,Aspirina,50,P2,P2,HP1,P2,1980,
+d7,"P:3 ha ricevuto Metformina, quantità 60.",P,P:3,Metformina,60,P3,HP2,HP2,HP2,1950,
+d8,"P:4 ha ricevuto Insulina, quantità 10.",P,P:4,Insulina,10,P4,P4,P4,HP2,1950,

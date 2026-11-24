@@ -1,0 +1,21 @@
+# Whitelist: only code, data, results and public docs are published
+/*
+!/src/
+!/data/
+!/results/
+!/README.md
+!/LICENSE
+!/requirements.txt
+!/.gitignore
+
+# Never published
+__pycache__/
+*.pyc
+chroma_db/
+src/llm_remote.py
+results/log_*
+results/llm_todo.jsonl
+results/llm_responses.jsonl
+results/*_quick.csv
+*api_key*
+.env
