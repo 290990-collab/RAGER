@@ -1,6 +1,7 @@
 # Whitelist: only code, data, results and public docs are published
 /*
 !/src/
+!/assets/
 !/data/
 !/results/
 !/README.md

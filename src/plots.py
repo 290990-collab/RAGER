@@ -1,9 +1,10 @@
 """Grafici aggregati con intervalli di variabilita' (traccia Sez. 13).
 
-Barre di errore = deviazione standard fra i 5 seed (media prima sulle query di ogni seed).
-Colori: palette categoriale validata (slot fissi per sistema); marcatori diversi come seconda codifica.
+Fascia colorata = media +/- deviazione standard fra i 5 seed (media prima sulle query di ogni seed).
+Colori: palette categoriale validata (slot fissi per sistema); marcatori e tratteggi come seconda codifica.
+Titolo = il risultato che il grafico mostra; sottotitolo = le condizioni dell'esperimento.
 I valori numerici corrispondenti sono in results/tables.md.
-Output: results/plots/*.png
+Output: results/plots/*.png (italiano, per la relazione) e results/plots/en/*.png (inglese, per il README).
 """
 from pathlib import Path
 
@@ -13,17 +14,74 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
-R, OUT = ROOT / "results", ROOT / "results" / "plots"
+R = ROOT / "results"
 COLORE = {"BASE": "#2a78d6", "BASE+seed": "#eb6834", "ER+seed": "#1baf7a", "ER-pool": "#eda100", "ORACLE": "#e87ba4"}
 MARK = {"BASE": "o", "BASE+seed": "s", "ER+seed": "^", "ER-pool": "D", "ORACLE": "v"}
 SERIE = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100"]          # per serie non legate ai sistemi
 MARK_S = ["o", "s", "^", "D"]
+SFONDO, INCHIOSTRO, MUTO = "#fcfcfb", "#0b0b0b", "#6b6a66"
 
-plt.rcParams.update({"figure.facecolor": "#fcfcfb", "axes.facecolor": "#fcfcfb", "axes.edgecolor": "#c3c2b7",
+plt.rcParams.update({"figure.facecolor": SFONDO, "axes.facecolor": SFONDO, "axes.edgecolor": "#c3c2b7",
                      "axes.labelcolor": "#52514e", "xtick.color": "#52514e", "ytick.color": "#52514e",
-                     "text.color": "#0b0b0b", "axes.grid": True, "grid.color": "#e6e5e0", "grid.linewidth": 0.6,
-                     "axes.spines.top": False, "axes.spines.right": False, "font.size": 10, "lines.linewidth": 2,
-                     "lines.markersize": 7, "legend.frameon": False})
+                     "text.color": INCHIOSTRO, "axes.grid": True, "axes.grid.axis": "y", "grid.color": "#e6e5e0",
+                     "grid.linewidth": 0.7, "axes.spines.top": False, "axes.spines.right": False,
+                     "axes.spines.left": False, "ytick.left": False, "font.size": 10.5, "lines.linewidth": 2,
+                     "lines.markersize": 7, "legend.frameon": False, "axes.titlesize": 10.5,
+                     "axes.titleweight": "bold", "axes.titlelocation": "left"})
+
+# Testi dei grafici nelle due lingue. Chiave: (grafico, elemento).
+T = {
+    "it": {
+        "sd": "fascia = ± 1 deviazione standard fra 5 seed",
+        "G1": ("Con le evidenze divise fra due fonti, solo il linkage resta a 1",
+               "Query multi-source, k = 4, ω > 0",
+               "α = quota di entità condivise con farmaci diversi nelle due fonti", "Accuratezza della risposta"),
+        "G2": ("Il guadagno del linkage segue α, non ω",
+               "ER+seed meno BASE+seed, query multi-source, k = 4",
+               "ω = sovrapposizione delle identità fra le fonti", "Guadagno di accuratezza"),
+        "G3": ("I quasi-duplicati consumano un budget piccolo",
+               "ER+seed, query multi-source, ε = quota di eventi con un quasi-duplicato, N = 500, ω = α = 0,5",
+               "Budget k (documenti nel contesto)", "Completezza delle evidenze"),
+        "G4": ("Il retriever denso raramente trova la persona indicata da un ID locale",
+               "BASE: quota di query con l'entità del seed nei top-k",
+               "Budget k (documenti nel contesto)", "Quota di query"),
+        "G5": ("Contare sul contesto recuperato sbaglia di circa il 90 %",
+               "Errore relativo rispetto a COUNT(DISTINCT gid), BASE, k = 8, media su 5 seed",
+               "ω = sovrapposizione delle identità fra le fonti", "Errore relativo"),
+        "G6": ("Link sbagliati: i falsi positivi tolgono accuratezza, i falsi negativi la riducono gradualmente",
+               "k = 4, N = 500, ω = α = 0,5",
+               "Quota di falsi positivi", "Quota di falsi negativi", "Accuratezza della risposta",
+               "Query single-source", "Query multi-source"),
+        "eps": "ε = {v}", "N": "N = {v}", "alpha": "α = {v}",
+        "g5": ["Somma dei conteggi locali (per farmaco)", "γ − 1 sul totale (teorico)",
+               "Conteggio sul contesto (RAG)"],
+    },
+    "en": {
+        "sd": "band = ± 1 standard deviation over 5 seeds",
+        "G1": ("With evidence split across two sources, only linkage stays at 1",
+               "Multi-source queries, k = 4, ω > 0",
+               "α = share of shared entities with different drugs in the two sources", "Answer accuracy"),
+        "G2": ("The gain of linkage follows α, not ω",
+               "ER+seed minus BASE+seed, multi-source queries, k = 4",
+               "ω = identity overlap between sources", "Accuracy gain"),
+        "G3": ("Near-duplicates eat a small budget",
+               "ER+seed, multi-source queries, ε = share of events with a near-duplicate, N = 500, ω = α = 0.5",
+               "Budget k (documents in context)", "Evidence completeness"),
+        "G4": ("A dense retriever rarely finds the person behind a local ID",
+               "BASE: share of queries with the seed's entity in the top-k",
+               "Budget k (documents in context)", "Share of queries"),
+        "G5": ("Counting on the retrieved context is off by about 90 %",
+               "Relative error against COUNT(DISTINCT gid), BASE, k = 8, mean over 5 seeds",
+               "ω = identity overlap between sources", "Relative error"),
+        "G6": ("Wrong links: false positives cost accuracy, false negatives erode it gradually",
+               "k = 4, N = 500, ω = α = 0.5",
+               "False-positive rate", "False-negative rate", "Answer accuracy",
+               "Single-source queries", "Multi-source queries"),
+        "eps": "ε = {v}", "N": "N = {v}", "alpha": "α = {v}",
+        "g5": ["Sum of per-source counts (per drug)", "γ − 1 on the total (theory)",
+               "Count on retrieved context (RAG)"],
+    },
+}
 
 
 def media_std(df, x, gruppo, metrica):
@@ -31,99 +89,145 @@ def media_std(df, x, gruppo, metrica):
     return s.groupby([gruppo, x]).agg(["mean", "std"]).reset_index()
 
 
-def linee(ax, t, x, gruppo, ordine, colori, marcatori, fmt=str):
+def etichette(ax, finali, xmax, dx, gap):
+    """Etichette dirette a destra della linea; quelle troppo vicine si uniscono o si scostano."""
+    finali = sorted(finali, key=lambda t: t[0])
+    gruppi = []
+    for y, testo, c in finali:
+        if gruppi and abs(y - gruppi[-1][0]) < 0.005:       # stesse coordinate: un'unica etichetta
+            gruppi[-1][1].append(testo)
+            continue
+        gruppi.append([y, [testo], c])
+    pos = []
+    for y, _, _ in gruppi:
+        pos.append(max(y, pos[-1] + gap) if pos else y)
+    for (y, testi, c), p in zip(gruppi, pos):
+        ax.annotate(", ".join(testi), (xmax, y), xytext=(xmax + dx, p), color=INCHIOSTRO, fontsize=9.5,
+                    va="center", ha="left", annotation_clip=False,
+                    arrowprops=None if abs(p - y) < 1e-9 else dict(arrowstyle="-", color=c, lw=0.8))
+
+
+def linee(ax, t, x, gruppo, ordine, colori, marcatori, fmt=str, gap=0.06, sinistra=False):
+    finali, xs = [], []
     for i, g in enumerate(ordine):
-        d = t[t[gruppo] == g]
+        d = t[t[gruppo] == g].sort_values(x)
         if d.empty:
             continue
         c = colori[g] if isinstance(colori, dict) else colori[i]
         m = marcatori[g] if isinstance(marcatori, dict) else marcatori[i]
-        # ORACLE tratteggiato: spesso coincide con ER+seed (accuracy 1) e lo coprirebbe
-        ax.errorbar(d[x], d["mean"], yerr=d["std"].fillna(0), color=c, marker=m, capsize=3,
-                    markeredgecolor="#fcfcfb", markeredgewidth=1.5, label=fmt(g),
-                    linestyle="--" if g == "ORACLE" else "-", zorder=3 if g == "ORACLE" else 2)
+        sd = d["std"].fillna(0)
+        ax.fill_between(d[x], d["mean"] - sd, d["mean"] + sd, color=c, alpha=0.16, linewidth=0, zorder=1)
+        # ORACLE tratteggiato e sopra: spesso coincide con ER+seed (accuracy 1) e lo coprirebbe
+        ax.plot(d[x], d["mean"], color=c, marker=m, markeredgecolor=SFONDO, markeredgewidth=1.5,
+                linestyle=(0, (4, 2.5)) if g == "ORACLE" else "-", zorder=3 if g == "ORACLE" else 2, label=fmt(g))
+        finali.append((d["mean"].iloc[0 if sinistra else -1], fmt(g), c))
+        xs.extend(d[x].tolist())
+    lo, hi = min(xs), max(xs)
+    ax.set_xlim(lo - 0.04 * (hi - lo), hi + 0.04 * (hi - lo))
+    if sinistra:                       # etichette sotto il primo punto, dentro l'area del grafico
+        for y, testo, c in finali:
+            ax.annotate(testo, (lo, y), xytext=(10, -13), textcoords="offset points", fontsize=9.5,
+                        color=INCHIOSTRO, ha="left", va="center")
+    else:
+        etichette(ax, finali, hi, 0.06 * (hi - lo), gap)
 
 
-def salva(fig, nome, titolo):
-    fig.suptitle(titolo, x=0.02, ha="left", fontsize=11)
-    fig.tight_layout()
-    fig.savefig(OUT / nome, dpi=150)
+def figura(w=7.6, h=4.4, **kw):
+    return plt.subplots(figsize=(w, h), **kw)
+
+
+def salva(fig, cartella, nome, titolo, sottotitolo, nota):
+    fig.text(0.015, 0.975, titolo, ha="left", va="top", fontsize=12.5, fontweight="bold")
+    fig.text(0.015, 0.915, f"{sottotitolo}  ·  {nota}" if nota else sottotitolo, ha="left", va="top",
+             fontsize=9.5, color=MUTO)
+    fig.tight_layout(rect=(0, 0, 1, 0.87))
+    fig.savefig(cartella / nome, dpi=200)
     plt.close(fig)
 
 
-def main():
-    OUT.mkdir(parents=True, exist_ok=True)
-    q = pd.read_csv(R / "experiment_queries.csv")
-    e = pd.read_csv(R / "extension_queries.csv")
-    c = pd.read_csv(R / "experiment_counts.csv")
+def grafici(lingua, q, e, c):
+    L = T[lingua]
+    out = R / "plots" if lingua == "it" else R / "plots" / "en"
+    out.mkdir(parents=True, exist_ok=True)
     sist = list(COLORE)
 
     # G1 (H1, H2): accuracy multi-source al variare di alpha
     m = q[(q.k == 4) & (q.omega > 0) & (q.tipo == "multi-source")]
-    fig, ax = plt.subplots(figsize=(6.4, 4))
+    tit, sub, xl, yl = L["G1"]
+    fig, ax = figura()
     linee(ax, media_std(m, "alpha", "sistema", "accuracy"), "alpha", "sistema", sist, COLORE, MARK)
-    ax.set(xlabel="α (quota di entità condivise con evidenze complementari)", ylabel="Answer accuracy",
-           ylim=(-0.05, 1.05), xticks=[0, 0.5, 1])
-    ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
-    salva(fig, "G1_accuracy_alpha.png", "H1–H2: query multi-source, k = 4, ω > 0")
+    ax.set(xlabel=xl, ylabel=yl, ylim=(-0.05, 1.08), xticks=[0, 0.5, 1])
+    fig.subplots_adjust(right=0.8)
+    salva(fig, out, "G1_accuracy_alpha.png", tit, sub, L["sd"])
 
     # G2 (H4): guadagno del linkage per omega, una linea per alpha
     a = m[m.sistema == "ER+seed"].groupby(["alpha", "omega", "seed"]).accuracy.mean()
     b = m[m.sistema == "BASE+seed"].groupby(["alpha", "omega", "seed"]).accuracy.mean()
     g = (a - b).groupby(["alpha", "omega"]).agg(["mean", "std"]).reset_index()
-    fig, ax = plt.subplots(figsize=(6.4, 4))
-    linee(ax, g, "omega", "alpha", [0, 0.5, 1], SERIE, MARK_S, fmt=lambda v: f"α = {v}")
-    ax.set(xlabel="ω (sovrapposizione delle identità)", ylabel="accuracy(ER+seed) − accuracy(BASE+seed)",
-           ylim=(-0.05, 1.05), xticks=[0.25, 0.5, 0.75])
-    ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
-    salva(fig, "G2_gain_omega.png", "H4: il guadagno per query dipende da α, non da ω (k = 4)")
+    tit, sub, xl, yl = L["G2"]
+    fig, ax = figura()
+    linee(ax, g, "omega", "alpha", [0, 0.5, 1], SERIE, MARK_S, fmt=lambda v: L["alpha"].format(v=v))
+    ax.set(xlabel=xl, ylabel=yl, ylim=(-0.05, 1.08), xticks=[0.25, 0.5, 0.75])
+    salva(fig, out, "G2_gain_omega.png", tit, sub, L["sd"])
 
     # G3 (H3): completezza di ER+seed al variare di k con quasi-duplicati
     d = e[(e.studio == "duplicati") & (e.tipo == "multi-source") & (e.sistema == "ER+seed")]
-    fig, ax = plt.subplots(figsize=(6.4, 4))
+    tit, sub, xl, yl = L["G3"]
+    fig, ax = figura()
     linee(ax, media_std(d, "k", "x", "completezza"), "k", "x", [0, 0.25, 0.5], SERIE, MARK_S,
-          fmt=lambda v: f"ε = {v}")
-    ax.set(xlabel="budget k (documenti)", ylabel="Completezza delle evidenze", ylim=(0.5, 1.05), xticks=[2, 4, 8])
-    ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
-    salva(fig, "G3_duplicates_budget.png", "H3: i quasi-duplicati consumano il budget (ER+seed, multi-source)")
+          fmt=lambda v: L["eps"].format(v=v), gap=0.03, sinistra=True)
+    ax.set(xlabel=xl, ylabel=yl, ylim=(0.6, 1.03), xticks=[2, 4, 8])
+    salva(fig, out, "G3_duplicates_budget.png", tit, sub, "")
 
     # G4: disambiguazione di BASE per N e k
     b = q[q.sistema == "BASE"]
-    fig, ax = plt.subplots(figsize=(6.4, 4))
+    tit, sub, xl, yl = L["G4"]
+    fig, ax = figura()
     linee(ax, media_std(b, "k", "N", "disambiguazione"), "k", "N", [100, 500, 1000], SERIE, MARK_S,
-          fmt=lambda v: f"N = {v}")
-    ax.set(xlabel="budget k (documenti)", ylabel="Quota di query con l'entità nei top-k", ylim=(0, 1),
-           xticks=[2, 4, 8])
-    ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
-    salva(fig, "G4_disambiguation.png", "Disambiguazione: il retriever denso non riconosce gli ID locali")
+          fmt=lambda v: L["N"].format(v=v), gap=0.04)
+    ax.set(xlabel=xl, ylabel=yl, ylim=(0, 1), xticks=[2, 4, 8])
+    ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0))
+    salva(fig, out, "G4_disambiguation.png", tit, sub, L["sd"])
 
     # G5: conteggi, errore relativo per omega
     c8 = c[(c.k == 8) & (c.sistema == "BASE")].copy()
-    c8["somma_locale"] = (c8.somma_locale - c8.esatto) / c8.esatto
-    c8["conteggio sul contesto"] = (c8.rag - c8.esatto).abs() / c8.esatto
-    t = c8.groupby("omega")[["somma_locale", "conteggio sul contesto"]].mean()
-    t["γ − 1 sul totale"] = [2 / (2 - w) - 1 for w in t.index]
-    fig, ax = plt.subplots(figsize=(9, 4))
-    for i, col in enumerate(["somma_locale", "γ − 1 sul totale", "conteggio sul contesto"]):
-        ax.plot(t.index, t[col], color=SERIE[i], marker=MARK_S[i], markeredgecolor="#fcfcfb",
-                label={"somma_locale": "somma dei conteggi locali (per farmaco)"}.get(col, col))
-    ax.set(xlabel="ω", ylabel="Errore relativo rispetto a COUNT(DISTINCT gid)", ylim=(0, 1.05),
-           xticks=[0, 0.25, 0.5, 0.75])
-    ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
-    salva(fig, "G5_counts.png", "Conteggi: γ dipende dalla cella; il conteggio via RAG non è affidabile (k = 8)")
+    c8["locale"] = (c8.somma_locale - c8.esatto) / c8.esatto
+    c8["rag"] = (c8.rag - c8.esatto).abs() / c8.esatto
+    t = c8.groupby("omega")[["locale", "rag"]].mean()
+    t["gamma"] = [2 / (2 - w) - 1 for w in t.index]
+    tit, sub, xl, yl = L["G5"]
+    fig, ax = figura()
+    finali = []
+    for i, (col, stile) in enumerate([("locale", "-"), ("gamma", (0, (4, 2.5))), ("rag", "-")]):
+        ax.plot(t.index, t[col], color=SERIE[i], marker=MARK_S[i], markeredgecolor=SFONDO, markeredgewidth=1.5,
+                linestyle=stile, label=L["g5"][i])
+        finali.append((t[col].iloc[-1], L["g5"][i], SERIE[i]))
+    ax.set(xlabel=xl, ylabel=yl, ylim=(0, 1.05), xticks=[0, 0.25, 0.5, 0.75], xlim=(-0.03, 0.78))
+    ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0))
+    etichette(ax, finali, 0.75, 0.04, 0.06)
+    fig.subplots_adjust(right=0.7)
+    salva(fig, out, "G5_counts.png", tit, sub, "")
 
     # G6: falsi match (ER+seed) - falsi positivi su single-source, falsi negativi su multi-source
     f = e[(e.studio == "falsi") & (e.k == 4)]
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(9, 3.8), sharey=True)
-    for ax, tipo, x, fisso, lab in [(a1, "single-source", "y", "x", "quota di falsi positivi"),
-                                    (a2, "multi-source", "x", "y", "quota di falsi negativi")]:
+    tit, sub, xfp, xfn, yl, t1, t2 = L["G6"]
+    fig, (a1, a2) = figura(9.6, 4.2, ncols=2, sharey=True)
+    for ax, tipo, x, fisso, lab, tt in [(a1, "single-source", "y", "x", xfp, t1),
+                                        (a2, "multi-source", "x", "y", xfn, t2)]:
         s = f[(f.tipo == tipo) & (f[fisso] == 0)]
         linee(ax, media_std(s, x, "sistema", "accuracy"), x, "sistema", ["BASE+seed", "ER+seed"], COLORE, MARK)
-        ax.set(xlabel=lab, title=f"query {tipo}", ylim=(0.4, 1.05))
-    a1.set_ylabel("Answer accuracy")
-    a2.legend(loc="center left", bbox_to_anchor=(1, 0.5))
-    salva(fig, "G6_false_matches.png", "Falsi match del linkage (k = 4, N = 500, ω = 0,5, α = 0,5)")
-    print("Grafici salvati in", OUT)
+        ax.set(xlabel=lab, title=tt, ylim=(0.4, 1.05))
+    a1.set_ylabel(yl)
+    salva(fig, out, "G6_false_matches.png", tit, sub, L["sd"])
+    print("Grafici salvati in", out)
+
+
+def main():
+    q = pd.read_csv(R / "experiment_queries.csv")
+    e = pd.read_csv(R / "extension_queries.csv")
+    c = pd.read_csv(R / "experiment_counts.csv")
+    for lingua in ("it", "en"):
+        grafici(lingua, q, e, c)
 
 
 if __name__ == "__main__":
