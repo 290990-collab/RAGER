@@ -1,0 +1,34 @@
+gruppo,confronto,metrica,n_coppie,media_a,media_b,differenza,ic95_basso,ic95_alto,b_meglio,a_meglio,p_mcnemar,esito
+"Griglia, k = 4","multi-source, alpha = 0: BASE+seed → ER+seed",accuracy,1725,1.0,1.0,0.0,0.0,0.0,0,0,1.0,non distinguibile
+"Griglia, k = 4","multi-source, alpha = 0.5: BASE+seed → ER+seed",accuracy,1725,0.487536231884058,1.0,0.5124637681159421,0.48869565217391303,0.5356521739130434,884,0,1.550650161452515e-266,reale
+"Griglia, k = 4","multi-source, alpha = 1: BASE+seed → ER+seed",accuracy,1725,0.0,1.0,1.0,1.0,1.0,1725,0,0.0,reale
+"Griglia, k = 4",single-source: BASE → ER-pool,accuracy,5400,0.03314814814814815,0.20833333333333334,0.1751851851851852,0.16518055555555555,0.18481481481481482,954,8,9.14176709602423e-271,reale
+"Griglia, k = 4",single-source: ER-pool → ER+seed,accuracy,5400,0.20833333333333334,1.0,0.7916666666666666,0.7814814814814814,0.8016666666666666,4275,0,0.0,reale
+"Griglia, k = 4",multi-source: BASE → ER-pool,accuracy,5175,0.08502415458937199,0.11497584541062802,0.02995169082125604,0.022608695652173914,0.03748792270531401,288,133,3.150925126286365e-14,reale
+"Griglia, k = 4",multi-source: ER-pool → ER+seed,accuracy,5175,0.11497584541062802,1.0,0.885024154589372,0.8763285024154589,0.8933333333333333,4580,0,0.0,reale
+"Falsi match, ER+seed, k = 4",single-source: ER corretta → 25 % falsi positivi,accuracy,200,1.0,0.785,-0.215,-0.27,-0.16,0,43,2.2737367544323206e-13,reale
+"Falsi match, ER+seed, k = 4",multi-source: ER corretta → 25 % falsi negativi,accuracy,200,1.0,0.89,-0.11,-0.155,-0.07,0,22,4.76837158203125e-07,reale
+"Falsi match, ER+seed, k = 4",multi-source: ER corretta → 50 % falsi negativi,accuracy,200,1.0,0.73,-0.27,-0.335,-0.21,0,54,1.1102230246251565e-16,reale
+"Quasi-duplicati, ER+seed, k = 2",multi-source: nessun doppione → 50 % doppioni,completezza,200,1.0,0.76,-0.24,-0.305,-0.18,0,48,7.105427357601002e-15,reale
+"Omonimi 25 %, ER+seed, k = 4",single-source: ER ideale → ER per nome,accuracy,200,1.0,0.765,-0.235,-0.295,-0.18,0,47,1.4210854715202004e-14,reale
+"Omonimi 25 %, ER+seed, k = 4",multi-source: ER ideale → ER per nome,accuracy,200,1.0,0.765,-0.235,-0.295,-0.18,0,47,1.4210854715202004e-14,reale
+"Indice per fonte, k = 4","single-source: BASE → BASE split, merged",accuracy,200,0.025,0.025,0.0,0.0,0.0,0,0,1.0,non distinguibile
+"Indice per fonte, k = 4","single-source: BASE → BASE split, k/2 each",accuracy,200,0.025,0.005,-0.02,-0.04,-0.005,0,4,0.125,non distinguibile
+"Indice per fonte, k = 4","single-source: ER-pool → ER-pool split, k/2 each",accuracy,200,0.18,0.075,-0.105,-0.15,-0.065,0,21,9.5367431640625e-07,reale
+"Indice per fonte, k = 4","multi-source: BASE → BASE split, merged",accuracy,200,0.075,0.075,0.0,0.0,0.0,0,0,1.0,non distinguibile
+"Indice per fonte, k = 4","multi-source: BASE → BASE split, k/2 each",accuracy,200,0.075,0.065,-0.01,-0.025,0.0,0,2,0.5,non distinguibile
+"Indice per fonte, k = 4","multi-source: ER-pool → ER-pool split, k/2 each",accuracy,200,0.105,0.04,-0.065,-0.105,-0.03,1,14,0.0009765625,reale
+"Doppioni 50 %, k = 2","single-source: ER+seed → ER+seed, source variety",completezza,200,0.61,0.61,0.0,0.0,0.0,0,0,1.0,non distinguibile
+"Doppioni 50 %, k = 2","single-source: ER+seed → ER+seed, MMR",completezza,200,0.61,1.0,0.39,0.325,0.455,78,0,6.617444900424222e-24,reale
+"Doppioni 50 %, k = 2","multi-source: ER+seed → ER+seed, source variety",completezza,200,0.76,1.0,0.24,0.18,0.295,48,0,7.105427357601002e-15,reale
+"Doppioni 50 %, k = 2","multi-source: ER+seed → ER+seed, MMR",completezza,200,0.76,1.0,0.24,0.18,0.3,48,0,7.105427357601002e-15,reale
+"Ricerca per parole e ibrida, k = 4",single-source: BASE → BM25,accuracy,200,0.025,1.0,0.975,0.95,0.995,195,0,3.982729777831131e-59,reale
+"Ricerca per parole e ibrida, k = 4",single-source: BM25 → BM25 + ER,accuracy,200,1.0,1.0,0.0,0.0,0.0,0,0,1.0,non distinguibile
+"Ricerca per parole e ibrida, k = 4",single-source: BM25 + ER → ER+seed,accuracy,200,1.0,1.0,0.0,0.0,0.0,0,0,1.0,non distinguibile
+"Ricerca per parole e ibrida, k = 4",single-source: BM25 → Hybrid,accuracy,200,1.0,0.535,-0.465,-0.535,-0.395,0,93,2.0194839173657902e-28,reale
+"Ricerca per parole e ibrida, k = 4",single-source: Hybrid → Hybrid + ER,accuracy,200,0.535,0.915,0.38,0.314875,0.45,77,1,5.227781471335135e-22,reale
+"Ricerca per parole e ibrida, k = 4",multi-source: BASE → BM25,accuracy,200,0.075,0.54,0.465,0.395,0.53,93,0,2.0194839173657902e-28,reale
+"Ricerca per parole e ibrida, k = 4",multi-source: BM25 → BM25 + ER,accuracy,200,0.54,1.0,0.46,0.39,0.53,92,0,4.0389678347315804e-28,reale
+"Ricerca per parole e ibrida, k = 4",multi-source: BM25 + ER → ER+seed,accuracy,200,1.0,1.0,0.0,0.0,0.0,0,0,1.0,non distinguibile
+"Ricerca per parole e ibrida, k = 4",multi-source: BM25 → Hybrid,accuracy,200,0.54,0.43,-0.11,-0.155,-0.07,0,22,4.76837158203125e-07,reale
+"Ricerca per parole e ibrida, k = 4",multi-source: Hybrid → Hybrid + ER,accuracy,200,0.43,0.595,0.165,0.08487500000000002,0.245,54,21,0.00017630923003028777,reale

@@ -131,6 +131,18 @@ def main():
         blocco("ibrido", "Retriever lessicale e ibrido, per k", "accuracy", ib, chiavi=("k",))
         blocco("ibrido", "Retriever lessicale e ibrido, per k", "trova_paziente", ib, chiavi=("k",))
 
+    sg = R / "significance.csv"
+    if sg.exists():
+        s = pd.read_csv(sg)
+        out.append("\n## S - Confronti appaiati: differenza (B - A), intervallo al 95 % (bootstrap) e test di McNemar\n")
+        out.append("Stesse domande nelle due condizioni. \"reale\" = intervallo che esclude lo zero e p < 0,05.\n")
+        t = pd.DataFrame({
+            "gruppo": s.gruppo, "confronto A → B": s.confronto, "metrica": s.metrica,
+            "A": s.media_a.round(3), "B": s.media_b.round(3), "B - A": s.differenza.round(3),
+            "IC 95 %": "[" + s.ic95_basso.round(3).astype(str) + ", " + s.ic95_alto.round(3).astype(str) + "]",
+            "p": s.p_mcnemar.map(lambda p: "< 0,001" if p < 0.001 else f"{p:.3f}"), "esito": s.esito})
+        out.append(md(t.set_index(["gruppo", "confronto A → B"])))
+
     (R / "tables.md").write_text("\n".join(out) + "\n", encoding="utf-8")
     print("\n".join(out))
 

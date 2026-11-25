@@ -45,7 +45,7 @@ Share of correct answers with 4 records in the context, mean over 5 seeds ([all 
   11–46 % of questions.
 - **An LLM agrees.** Two local Qwen models reproduce these verdicts in 97 % of cases.
 
-![Split records: only linking answers correctly](results/plots/en/G1_accuracy_alpha.png)
+![When does linking the two sources pay off?](results/plots/en/fig1_when_linking_helps.png)
 
 ## Quick start
 
@@ -142,16 +142,23 @@ entities the two sources report different drugs, so a complete answer needs both
 
 <table>
   <tr>
-    <td><img src="results/plots/en/G2_gain_omega.png" alt="Linking helps as much as the evidence is split, whatever the overlap"></td>
-    <td><img src="results/plots/en/G3_duplicates_budget.png" alt="Duplicate records crowd out evidence when the context is small"></td>
+    <td><img src="results/plots/en/fig2_overlap_does_not_matter.png" alt="Does it matter how many patients the sources share?"></td>
+    <td><img src="results/plots/en/fig4_strategies_without_id.png" alt="Given only the question, which strategy answers?"></td>
   </tr>
   <tr>
-    <td><img src="results/plots/en/G5_counts.png" alt="Counting patients from retrieved text is off by about 90 percent"></td>
-    <td><img src="results/plots/en/G4_disambiguation.png" alt="Semantic search rarely finds the patient named by an ID"></td>
+    <td><img src="results/plots/en/fig3_semantic_search_misses_ids.png" alt="Does semantic search find the patient named in the question?"></td>
+    <td><img src="results/plots/en/fig5_er_mistakes.png" alt="What happens when Entity Resolution makes mistakes?"></td>
   </tr>
 </table>
 
-![Wrong links cost accuracy, missing links erode it slowly](results/plots/en/G6_false_matches.png)
+<table>
+  <tr>
+    <td><img src="results/plots/en/fig6_homonyms.png" alt="What if ER links patients by name?"></td>
+    <td><img src="results/plots/en/fig7_duplicates.png" alt="Duplicates take up slots in the context: can it be avoided?"></td>
+  </tr>
+</table>
+
+![Can RAG count how many patients received a drug?](results/plots/en/fig8_counting.png)
 
 ## Optional: LLM generation
 
@@ -185,7 +192,9 @@ src/
   extensions.py          robustness studies
   export_datasets.py     exports the 180 generated datasets
   analysis.py            summary tables
-  plots.py               figures with variability bands
+  plots.py               figures 1–8
+  followups.py           follow-up studies (homonyms, per-source indices, diversity, keyword search)
+  stats.py               paired tests and 95 % intervals
   llm.py                 optional LLM generation
 data/
   documents.{json,csv}   minimal example
@@ -194,7 +203,7 @@ data/
 results/
   *.csv                  per-query and aggregated metrics
   tables.md              summary tables T1–T8 and robustness tables
-  plots/                 figures G1–G6 (Italian), plots/en/ (English)
+  plots/                 figures 1–8 (Italian), plots/en/ (English)
   llm_cache.jsonl        cached LLM responses
 assets/                  README banner and its generator
 ```

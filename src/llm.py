@@ -2,7 +2,8 @@
 
 Same model, prompt, temperature 0, seed 0 and token limit for every system; counting never goes to the LLM.
 With ER, each document in the context carries its entity label. Responses are cached in results/llm_cache.jsonl.
-Usage: python src/llm.py [minimo|parametrico|tutto]
+Usage: python src/llm.py [minimo|parametrico|tutto]   (LLM_SEEDS=0,1,2,3,4 for more grid seeds)
+       python src/llm.py unisci <responses.jsonl>    (adds remote responses to the cache)
 """
 import hashlib
 import json
@@ -27,7 +28,8 @@ KEY_FILE = os.environ.get("LLM_KEY_FILE", "")
 TAG = os.environ.get("LLM_TAG", "qwen3.8")
 RACCOGLI = os.environ.get("LLM_RACCOGLI") == "1"     # 1 = collect prompts without calling the model
 CACHE = ROOT / "results" / "llm_cache.jsonl"
-DA_FARE = ROOT / "results" / "llm_todo.jsonl"
+DA_FARE = ROOT / "results" / os.environ.get("LLM_TODO", "llm_todo.jsonl")
+SEEDS = [int(s) for s in os.environ.get("LLM_SEEDS", "0").split(",")]
 PARAMS = {"temperature": 0, "seed": 0, "max_tokens": 400,
           "chat_template_kwargs": {"enable_thinking": False}}
 TUTTI_FARMACI = FARMACI + ["Paracetamolo"]
@@ -151,10 +153,10 @@ def run_minimo(llm, enc):
     return pd.DataFrame(righe)
 
 
-def run_parametrico(llm, enc, N=500, omega=0.5, seed=0, k=4, n_multi=20, n_single=10):
-    """Grid sample: N = 500, omega = 0.5, alpha in {0, 0.5, 1}, seed 0, k = 4."""
+def run_parametrico(llm, enc, N=500, omega=0.5, k=4, n_multi=20, n_single=10):
+    """Grid sample: N = 500, omega = 0.5, alpha in {0, 0.5, 1}, seeds SEEDS, k = 4."""
     righe = []
-    for alpha in (0, 0.5, 1):
+    for seed, alpha in [(s, a) for s in SEEDS for a in (0, 0.5, 1)]:
         docs, info, locali, coorte, compl = genera(N, omega, alpha, seed)
         qs = gen_domande(docs, locali, coorte, compl, np.random.default_rng(1000 + seed))
         qs = [q for q in qs if q["tipo"] == "multi-source"][:n_multi] + \
@@ -168,12 +170,19 @@ def run_parametrico(llm, enc, N=500, omega=0.5, seed=0, k=4, n_multi=20, n_singl
                 out = llm(pr)
                 righe.append({**info, "tipo": q["tipo"], "k": k, "sistema": s, "risposta_llm": out["text"],
                               **valuta(out["text"], q["tipo"], q["risposta"], ret, set())})
-        print(f"parametrico alpha={alpha}: {len(righe)} righe, {llm.n_nuove} richieste nuove", flush=True)
+        print(f"parametrico seed={seed} alpha={alpha}: {len(righe)} righe, {llm.n_nuove} richieste nuove", flush=True)
     return pd.DataFrame(righe)
 
 
 if __name__ == "__main__":
     fase = sys.argv[1] if len(sys.argv) > 1 else "tutto"
+    if fase == "unisci":
+        noti = {json.loads(r)["h"] for r in CACHE.read_text(encoding="utf-8").splitlines()} if CACHE.exists() else set()
+        nuove = [r for r in Path(sys.argv[2]).read_text(encoding="utf-8").splitlines() if json.loads(r)["h"] not in noti]
+        with open(CACHE, "a", encoding="utf-8") as f:
+            f.writelines(r + "\n" for r in nuove)
+        print(f"{len(nuove)} risposte aggiunte alla cache")
+        sys.exit()
     CACHE.parent.mkdir(exist_ok=True)
     enc, llm, t0 = Encoder(), LLM(), time.time()
     print(f"Modello {MODEL} @ {URL}", flush=True)
@@ -185,7 +194,8 @@ if __name__ == "__main__":
                                                        values="accuracy_llm").round(2))
     if fase in ("parametrico", "tutto"):
         dp = run_parametrico(llm, enc)
-        dp.to_csv(ROOT / "results" / f"llm_parametric_{TAG}.csv", index=False)
+        suff = "" if SEEDS == [0] else "_seeds"
+        dp.to_csv(ROOT / "results" / f"llm_parametric_{TAG}{suff}.csv", index=False)
         print(dp.pivot_table(index=["tipo", "alpha"], columns="sistema", values="accuracy_llm").round(2))
     if RACCOGLI:
         with open(DA_FARE, "w", encoding="utf-8") as f:
