@@ -1,8 +1,6 @@
-﻿"""Tabelle riassuntive per la relazione (ipotesi H1-H4, conteggi, estensioni).
+﻿"""Summary tables (hypotheses H1-H4, counting, robustness) written to results/tables.md.
 
-Ogni valore e' "media ± deviazione standard fra i 5 seed": prima si fa la media sulle query di un seed,
-poi media e dispersione fra seed (Sez. 11, 13).
-Output: results/tables.md
+Values are mean ± std over 5 seeds of the per-seed query means.
 """
 from pathlib import Path
 
@@ -14,7 +12,7 @@ SIST = ["BASE", "BASE+seed", "ER+seed", "ER-pool", "ORACLE"]
 
 
 def md(t):
-    """DataFrame/Series -> tabella Markdown (senza dipendenze esterne)."""
+    """DataFrame or Series as a Markdown table."""
     t = t.to_frame() if isinstance(t, pd.Series) else t
     idx = [str(n) for n in t.index.names]
     cols = [" ".join(map(str, c)) if isinstance(c, tuple) else str(c) for c in t.columns]
@@ -26,7 +24,7 @@ def md(t):
 
 
 def ms(serie_per_seed, chiavi):
-    """Media ± deviazione standard fra seed, formattata."""
+    """Mean ± std over seeds."""
     g = serie_per_seed.groupby(chiavi)
     return g.mean().round(2).astype(str) + " ± " + g.std().fillna(0).round(2).astype(str)
 

@@ -1,13 +1,7 @@
-"""Consegnabile Sez. 13: esporta i dataset sintetici dell'esperimento parametrico.
+"""Exports the 180 parametric datasets, regenerated with the seeds of experiment.py.
 
-Rigenera con gli stessi seed di experiment.py (dataset: seed; domande: 1000+seed) i 180 dataset
-N x omega x alpha x seed e li salva in un formato unico:
-  data/parametric/documents.csv  dataset_id, document_id, source, local_id, gid, testo, farmaco, quantita, coorte
-  data/parametric/questions.json   dataset_id, qid, tipologia, domanda, seed (ID locale), ground truth
-Le domande entity-centric sono nello stesso ordine usato in experiment.py (qid = posizione);
-le domande di conteggio hanno come ground truth COUNT(DISTINCT gid).
-Controllo: il numero di domande per dataset coincide con le righe di results/experiment_queries.csv.
-Uso: python src/export_datasets.py
+Output: data/parametric/documents.csv, data/parametric/questions.json
+Usage: python src/export_datasets.py
 """
 import json
 from itertools import product
@@ -48,7 +42,6 @@ if __name__ == "__main__":
                             "domanda": f"Quanti pazienti distinti hanno eventi di {f}?", "seed_locale": None,
                             "gold_docs": None, "risposta": esatto})
 
-    # Controllo di coerenza con i risultati gia' calcolati
     rq = pd.read_csv(ROOT / "results" / "experiment_queries.csv")
     attese = rq.groupby(["N", "omega", "alpha", "seed"]).size() // (len(K_VAL) * len(SISTEMI))
     for key, n in n_entity.items():

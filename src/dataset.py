@@ -1,15 +1,11 @@
-"""Passo A2 - Dataset minimo di documenti (Paper, tabella 4; traccia Sez. 4).
+"""Minimal example: eight drug events as documents, with four alternative ER partitions.
 
-Ogni riga della tabella 4 del paper e' un evento farmacologico e diventa un documento.
-Tre identificativi distinti:
-  - doc_id   = il documento (un evento)
-  - local_id = la persona nella sua sorgente (es. "P:1")
-  - gid_*    = l'entita' globale sotto una delle quattro ipotesi di ER (solo nei metadati)
+doc_id is the document, local_id the person inside its source, gid_* the global entity (metadata only).
 """
 import json
 from pathlib import Path
 
-# Paper, tabella 4: (sito, person_id, farmaco, quantita, GID_0, GID_1, GID_2, GID_3, anno, luogo)
+# (source, person_id, drug, quantity, GID_0, GID_1, GID_2, GID_3, year, place)
 EVENTI = [
     ("H", "H:1", "Metformina", 30,  "H1", "H1",  "HP1", "HP13", 1980, "Modena"),
     ("H", "H:2", "Metformina", 30,  "H2", "HP2", "HP2", "HP2",  1950, "Bologna"),
@@ -28,7 +24,6 @@ def costruisci_documenti():
     for i, (src, lid, farm, q, g0, g1, g2, g3, anno, luogo) in enumerate(EVENTI, start=1):
         docs.append({
             "doc_id": f"d{i}",
-            # Template del codice della traccia (Sez. 4): solo local_id, farmaco e quantita.
             "text": f"{lid} ha ricevuto {farm}, quantità {q}.",
             "metadata": {
                 "source": src, "local_id": lid, "farmaco": farm, "quantita": q,
@@ -40,18 +35,17 @@ def costruisci_documenti():
 
 
 def controlli(docs):
-    """Verifiche automatiche contro i numeri del paper (Paper 2.2-2.4)."""
+    """Checks against the paper."""
     assert len(docs) == 8, "8 eventi"
     identita_locali = {(d["metadata"]["source"], d["metadata"]["local_id"]) for d in docs}
     assert len(identita_locali) == 7, "7 schede: 3 in H, 4 in P (P:1 ha due eventi)"
     attese = {"gid_0": 7, "gid_1": 5, "gid_2": 4, "gid_3": 3}
     for p, v in attese.items():
         assert len({d["metadata"][p] for d in docs}) == v, f"{p}: attese {v} entita'"
-    # Il GID non compare mai nel testo (regola del progetto).
+    # The GID never appears in the text.
     for d in docs:
         for p in PARTIZIONI:
             assert d["metadata"][p] not in d["text"].split(), f"GID nel testo di {d['doc_id']}"
-    # Dentro ogni entita' gli attributi concordano (Paper 2.3: nessuna scelta di Data Fusion).
     for p in PARTIZIONI:
         anni = {}
         for d in docs:
@@ -65,9 +59,8 @@ if __name__ == "__main__":
     out = Path(__file__).resolve().parent.parent / "data" / "documents.json"
     out.parent.mkdir(exist_ok=True)
     out.write_text(json.dumps(docs, ensure_ascii=False, indent=2), encoding="utf-8")
-    # Copia CSV (Sez. 13: dataset JSON/CSV)
     import csv
-    with open(out.with_suffix(".csv"), "w", newline="", encoding="utf-8-sig") as f:  # BOM: Excel legge le lettere accentate
+    with open(out.with_suffix(".csv"), "w", newline="", encoding="utf-8-sig") as f:
         w = csv.writer(f)
         w.writerow(["doc_id", "text"] + list(docs[0]["metadata"]))
         for d in docs:

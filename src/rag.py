@@ -1,14 +1,11 @@
-"""Nucleo del prototipo: indice ChromaDB, sistemi di retrieval, lettori deterministici, metriche.
+"""Core: encoder, federated ChromaDB index, retrieval systems, deterministic readers, metrics.
 
-Riferimenti: traccia Sez. 3 (indice federato unico), 7 (baseline), 8 (espansione per GID),
-9 (metriche), 12 (seed leakage e budget).
-
-Sistemi (tutti restituiscono al massimo k documenti: stesso budget, Sez. 12):
-  BASE       ricerca semantica top-k (Sez. 7)
-  BASE+seed  [MIO] documenti dell'ID locale del seed, riordinati: contrappeso equo di ER+seed
-  ER+seed    documenti del GID del seed, riordinati (Sez. 8)
-  ER-pool    [MIO] top-k di BASE -> GID dei documenti trovati -> espansione e reranking per entita'
-  ORACLE     evidenze della ground truth, riordinate (Abstract)
+Systems (each returns at most k documents):
+  BASE       semantic top-k
+  BASE+seed  documents of the seed's local ID, reranked
+  ER+seed    documents of the seed's GID, reranked
+  ER-pool    BASE top-k, expanded entity by entity through their GIDs
+  ORACLE     ground-truth evidence, reranked
 """
 import numpy as np
 import chromadb
@@ -19,7 +16,7 @@ SISTEMI = ["BASE", "BASE+seed", "ER+seed", "ER-pool", "ORACLE"]
 
 
 class Encoder:
-    """Embedding normalizzati con cache sul testo (stesso testo -> stesso vettore)."""
+    """Normalized embeddings, cached by text."""
 
     def __init__(self):
         self.m = SentenceTransformer(MODELLO, device="cpu")
@@ -42,11 +39,7 @@ _client = chromadb.EphemeralClient()
 
 
 class Indice:
-    """Indice federato unico (Sez. 3): il campo `source` conserva la provenienza,
-    il GID sta solo nei metadati (chiave `gid`), mai nel testo.
-
-    partizione = chiave dei metadati usata come mappa ER (es. "gid_1", oppure "gid_er" con falsi match).
-    """
+    """One index over all sources; `partizione` is the metadata key used as the ER map."""
 
     def __init__(self, docs, partizione, enc, nome="rag"):
         self.docs = {d["doc_id"]: d for d in docs}
@@ -55,9 +48,7 @@ class Indice:
             _client.delete_collection(nome)
         except Exception:
             pass
-        # [MIO] HNSW costruito con un solo thread e ricerca ampia: con i valori predefiniti ChromaDB
-        # restituiva top-k diversi ricostruendo lo stesso indice (3 query su 80); cosi' e' deterministico
-        # e coincide con la ricerca esatta (verificato su N = 1000).
+        # Single-threaded HNSW with a wide search: deterministic and equal to exact search
         self.col = _client.create_collection(nome, configuration={
             "hnsw": {"num_threads": 1, "ef_search": 2000, "ef_construction": 400}})
         ids = [d["doc_id"] for d in docs]
@@ -68,7 +59,6 @@ class Indice:
         for i in range(0, len(ids), 4000):
             self.col.add(ids=ids[i:i + 4000], documents=[d["text"] for d in docs[i:i + 4000]],
                          embeddings=E[i:i + 4000].tolist(), metadatas=metas[i:i + 4000])
-        # Mappa ER: identita' locale -> GID (nota per costruzione, Sez. 8)
         self.mappa_er = {d["metadata"]["local_id"]: d["metadata"][partizione] for d in docs}
         self._where, self._q = {}, {}
 
@@ -84,7 +74,7 @@ class Indice:
         return self._q[query]
 
     def cerca(self, query, n):
-        """Ricerca semantica (embedding normalizzati: ordine L2 = ordine coseno)."""
+        """Semantic search."""
         r = self.col.query(query_embeddings=[self.qvec(query).tolist()], n_results=min(n, len(self.docs)))
         return r["ids"][0]
 
@@ -94,19 +84,19 @@ class Indice:
         return self._where[(chiave, valore)]
 
     def rerank(self, query, ids, k):
-        """Riordino per similarita' coseno con la query (Sez. 8); a parita', per doc_id."""
+        """Reranks by cosine similarity to the query, ties by doc_id."""
         q = self.qvec(query)
         return sorted(ids, key=lambda i: (-float(self.E[i] @ q), i))[:k]
 
 
-# ---------------------------------------------------------------- sistemi
+# ---------------------------------------------------------------- systems
 def sys_base(ix, query, k, seed=None, gold=None):
     return ix.cerca(query, k)
 
 
 def sys_base_seed(ix, query, k, seed=None, gold=None):
     if seed is None:
-        return None                      # non applicabile senza seed
+        return None
     return ix.rerank(query, ix.where("local_id", seed), k)
 
 
@@ -117,9 +107,7 @@ def sys_er_seed(ix, query, k, seed=None, gold=None):
 
 
 def sys_er_pool(ix, query, k, seed=None, gold=None):
-    """[MIO] Stesso accesso di BASE (solo la query): candidati = top-k di BASE.
-    Le entita' sono ordinate per il miglior rango di un loro documento fra i candidati;
-    il budget k si riempie entita' per entita' con i loro documenti riordinati."""
+    """BASE top-k, then the entities found, in order of their best rank, fill the budget with their documents."""
     out = []
     for doc in ix.cerca(query, k):
         for m in ix.rerank(query, ix.where("gid", ix.gid(doc)), k):
@@ -136,22 +124,19 @@ FUNZIONI = dict(zip(SISTEMI, [sys_base, sys_base_seed, sys_er_seed, sys_er_pool,
 USA_ER = {"BASE": False, "BASE+seed": False, "ER+seed": True, "ER-pool": True, "ORACLE": True}
 
 
-# ---------------------------------------------------------------- lettori deterministici [MIO]
-# Simulano un lettore ideale senza LLM (Sez. 9: valutazione senza generazione).
-# Senza ER un documento si attribuisce al seed solo se ne riporta l'ID locale;
-# con ER si usa la mappa ER (GID nei metadati).
+# ---------------------------------------------------------------- deterministic readers
+# Without ER a document belongs to the seed if its text names the local ID; with ER the GID decides.
 def leggi_entity(ix, ret, seed, er):
     if er:
         g = ix.mappa_er[seed]
         att = [d for d in ret if ix.gid(d) == g]
     else:
-        # senza ER si legge l'ID scritto nel testo (diverso dal vero solo con errori sugli ID, punto E)
         att = [d for d in ret if ix.meta(d).get("lid_testo", ix.meta(d)["local_id"]) == seed]
     return sorted({ix.meta(d)["farmaco"] for d in att})
 
 
 def leggi_multihop(ix, ret, f1, f2, er):
-    """Entita' con f1 e f2 su fonti distinte fra i documenti recuperati."""
+    """Entities with f1 and f2 in different sources among the retrieved documents."""
     gruppi = {}
     for d in ret:
         m = ix.meta(d)
@@ -167,15 +152,15 @@ def leggi_multihop(ix, ret, f1, f2, er):
 
 
 def leggi_conteggio(ix, ret, farmaco, er):
-    """Conteggio 'alla RAG' (quello che farebbe un LLM sul contesto): NON e' il metodo corretto."""
+    """Distinct patients counted from the retrieved text, as a RAG would."""
     return len({(ix.gid(d) if er else ix.meta(d)["local_id"]) for d in ret if ix.meta(d)["farmaco"] == farmaco})
 
 
-# ---------------------------------------------------------------- metriche (Sez. 9)
+# ---------------------------------------------------------------- metrics
 def recall_at_k(ret, rel):
     rel = set(rel)
     if not rel:
-        return 1.0 if not ret else 0.0      # definizione della traccia, Sez. 9
+        return 1.0 if not ret else 0.0
     return len(set(ret) & rel) / len(rel)
 
 
@@ -186,7 +171,7 @@ def precision_at_k(ret, rel):
 
 
 def completezza(ix, ret, gold, farmaci_attesi):
-    """Evidenze obbligatorie: almeno un documento pertinente per ogni farmaco della risposta."""
+    """Every drug of the answer is covered by at least one relevant document."""
     coperti = {ix.meta(d)["farmaco"] for d in ret if d in set(gold)}
     return float(set(farmaci_attesi) <= coperti)
 

@@ -208,7 +208,7 @@ assets/                  README banner and its generator
 | `farmaco`, `quantita` | drug and quantity of the event |
 | `tipologia` / `tipo` | query type: single-source, multi-source, counting |
 
-Column names and code comments are in Italian.
+Column names and identifiers are in Italian; comments are in English.
 
 ## Reproducibility
 

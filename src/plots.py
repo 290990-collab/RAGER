@@ -1,10 +1,6 @@
-"""Grafici aggregati con intervalli di variabilita' (traccia Sez. 13).
+"""Figures G1-G6 with bands of ±1 std over 5 seeds.
 
-Fascia colorata = media +/- deviazione standard fra i 5 seed (media prima sulle query di ogni seed).
-Colori: palette categoriale validata (slot fissi per sistema); marcatori e tratteggi come seconda codifica.
-Titolo = il risultato che il grafico mostra; sottotitolo = le condizioni dell'esperimento.
-I valori numerici corrispondenti sono in results/tables.md.
-Output: results/plots/*.png (italiano, per la relazione) e results/plots/en/*.png (inglese, per il README).
+Output: results/plots/ (Italian) and results/plots/en/ (English).
 """
 from pathlib import Path
 
@@ -17,7 +13,7 @@ ROOT = Path(__file__).resolve().parent.parent
 R = ROOT / "results"
 COLORE = {"BASE": "#2a78d6", "BASE+seed": "#eb6834", "ER+seed": "#1baf7a", "ER-pool": "#eda100", "ORACLE": "#e87ba4"}
 MARK = {"BASE": "o", "BASE+seed": "s", "ER+seed": "^", "ER-pool": "D", "ORACLE": "v"}
-SERIE = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100"]          # per serie non legate ai sistemi
+SERIE = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100"]
 MARK_S = ["o", "s", "^", "D"]
 SFONDO, INCHIOSTRO, MUTO = "#fcfcfb", "#0b0b0b", "#6b6a66"
 
@@ -29,7 +25,7 @@ plt.rcParams.update({"figure.facecolor": SFONDO, "axes.facecolor": SFONDO, "axes
                      "lines.markersize": 7, "legend.frameon": False, "axes.titlesize": 10.5,
                      "axes.titleweight": "bold", "axes.titlelocation": "left"})
 
-# Testi dei grafici nelle due lingue. Chiave: (grafico, elemento).
+# Figure texts per language
 T = {
     "it": {
         "sd": "Fascia = ± 1 deviazione standard fra 5 seed.",
@@ -92,11 +88,11 @@ def media_std(df, x, gruppo, metrica):
 
 
 def etichette(ax, finali, xmax, dx, gap):
-    """Etichette dirette a destra della linea; quelle troppo vicine si uniscono o si scostano."""
+    """Direct labels at the line ends, merged or nudged when they overlap."""
     finali = sorted(finali, key=lambda t: t[0])
     gruppi = []
     for y, testo, c in finali:
-        if gruppi and abs(y - gruppi[-1][0]) < 0.005:       # stesse coordinate: un'unica etichetta
+        if gruppi and abs(y - gruppi[-1][0]) < 0.005:
             gruppi[-1][1].append(testo)
             continue
         gruppi.append([y, [testo], c])
@@ -119,14 +115,13 @@ def linee(ax, t, x, gruppo, ordine, colori, marcatori, fmt=str, gap=0.06, sinist
         m = marcatori[g] if isinstance(marcatori, dict) else marcatori[i]
         sd = d["std"].fillna(0)
         ax.fill_between(d[x], d["mean"] - sd, d["mean"] + sd, color=c, alpha=0.16, linewidth=0, zorder=1)
-        # ORACLE tratteggiato e sopra: spesso coincide con ER+seed (accuracy 1) e lo coprirebbe
         ax.plot(d[x], d["mean"], color=c, marker=m, markeredgecolor=SFONDO, markeredgewidth=1.5,
                 linestyle=(0, (4, 2.5)) if g == "ORACLE" else "-", zorder=3 if g == "ORACLE" else 2, label=fmt(g))
         finali.append((d["mean"].iloc[0 if sinistra else -1], fmt(g), c))
         xs.extend(d[x].tolist())
     lo, hi = min(xs), max(xs)
     ax.set_xlim(lo - 0.04 * (hi - lo), hi + 0.04 * (hi - lo))
-    if sinistra:                       # etichette sotto il primo punto, dentro l'area del grafico
+    if sinistra:
         for y, testo, c in finali:
             ax.annotate(testo, (lo, y), xytext=(10, -13), textcoords="offset points", fontsize=9.5,
                         color=INCHIOSTRO, ha="left", va="center")
@@ -135,7 +130,7 @@ def linee(ax, t, x, gruppo, ordine, colori, marcatori, fmt=str, gap=0.06, sinist
 
 
 def percento(ax, lingua, x=False, y=False):
-    """[MIO] Nella versione inglese (README) le quote si leggono in percentuale."""
+    """Percent axes in the English figures."""
     if lingua != "en":
         return
     f = matplotlib.ticker.PercentFormatter(1.0, decimals=0)
@@ -165,7 +160,7 @@ def grafici(lingua, q, e, c):
     sist = list(COLORE)
     nome = lambda g: L["nomi"].get(g, g)
 
-    # G1 (H1, H2): accuracy multi-source al variare di alpha
+    # G1: multi-source accuracy by alpha
     m = q[(q.k == 4) & (q.omega > 0) & (q.tipo == "multi-source")]
     tit, sub, xl, yl = L["G1"]
     fig, ax = figura()
@@ -175,7 +170,7 @@ def grafici(lingua, q, e, c):
     fig.subplots_adjust(right=0.8)
     salva(fig, out, "G1_accuracy_alpha.png", tit, sub, L["sd"])
 
-    # G2 (H4): guadagno del linkage per omega, una linea per alpha
+    # G2: linkage gain by omega
     a = m[m.sistema == "ER+seed"].groupby(["alpha", "omega", "seed"]).accuracy.mean()
     b = m[m.sistema == "BASE+seed"].groupby(["alpha", "omega", "seed"]).accuracy.mean()
     g = (a - b).groupby(["alpha", "omega"]).agg(["mean", "std"]).reset_index()
@@ -186,7 +181,7 @@ def grafici(lingua, q, e, c):
     percento(ax, lingua, x=True, y=True)
     salva(fig, out, "G2_gain_omega.png", tit, sub, L["sd"])
 
-    # G3 (H3): completezza di ER+seed al variare di k con quasi-duplicati
+    # G3: completeness with near-duplicates
     d = e[(e.studio == "duplicati") & (e.tipo == "multi-source") & (e.sistema == "ER+seed")]
     tit, sub, xl, yl = L["G3"]
     fig, ax = figura()
@@ -196,7 +191,7 @@ def grafici(lingua, q, e, c):
     percento(ax, lingua, y=True)
     salva(fig, out, "G3_duplicates_budget.png", tit, sub, "")
 
-    # G4: disambiguazione di BASE per N e k
+    # G4: disambiguation
     b = q[q.sistema == "BASE"]
     tit, sub, xl, yl = L["G4"]
     fig, ax = figura()
@@ -206,7 +201,7 @@ def grafici(lingua, q, e, c):
     ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0))
     salva(fig, out, "G4_disambiguation.png", tit, sub, L["sd"])
 
-    # G5: conteggi, errore relativo per omega
+    # G5: counting error
     c8 = c[(c.k == 8) & (c.sistema == "BASE")].copy()
     c8["locale"] = (c8.somma_locale - c8.esatto) / c8.esatto
     c8["rag"] = (c8.rag - c8.esatto).abs() / c8.esatto
@@ -226,7 +221,7 @@ def grafici(lingua, q, e, c):
     fig.subplots_adjust(right=0.7)
     salva(fig, out, "G5_counts.png", tit, sub, "")
 
-    # G6: falsi match (ER+seed) - falsi positivi su single-source, falsi negativi su multi-source
+    # G6: false matches
     f = e[(e.studio == "falsi") & (e.k == 4)]
     tit, sub, xfp, xfn, yl, t1, t2 = L["G6"]
     fig, (a1, a2) = figura(9.6, 4.2, ncols=2, sharey=True)

@@ -1,19 +1,8 @@
-"""Punto D - Generatore parametrico (traccia Sez. 11; Paper 5.1-5.2).
+"""Parametric generator: sources H and P with N local IDs each and S = round(omega*N) shared entities.
 
-Clean-Clean: due sorgenti H e P con N identita' locali ciascuna, S = round(omega*N) entita' condivise,
-V = 2N - S entita' globali, gamma = 2N / (2N - S).
-Trappola del paper evitata: i GID delle entita' esclusive di H e di P sono disgiunti per costruzione.
-
-Estensione per il RAG [MIO] (forma concreta di quanto chiesto dalla Sez. 11):
-- ogni entita' ha due eventi (documenti) con farmaci presi da FARMACI;
-- esclusive: entrambi gli eventi nella propria sorgente;
-- condivise: un evento in H e uno in P. Con quota alpha (complementarita', Sez. 11) i due farmaci
-  sono diversi -> la risposta completa richiede entrambe le fonti; altrimenti coincidono (ridondanza:
-  sovrapposizione senza complementarita', Sez. 5);
-- i numeri degli ID locali sono permutati a caso in ogni sorgente, cosi' "H:17" e "P:17" non indicano
-  la stessa persona (altrimenti l'identita' trapelerebbe dal testo).
-Dirty ER (punto E; Paper 3.2): D_H e D_P identificatori locali aggiuntivi assegnati a entita' gia'
-presenti nella stessa sorgente, ciascuno con un evento.
+Each entity has two events. A shared entity has one event per source, with different drugs for a share
+alpha of them. Local ID numbers are shuffled per source, so equal numbers never mean the same person.
+Dirty ER adds D_H and D_P extra local IDs to entities already in the same source.
 """
 import numpy as np
 
@@ -25,14 +14,14 @@ def genera(N, omega, alpha, seed, D_H=0, D_P=0):
     rng = np.random.default_rng(seed)
     S = round(omega * N)
     V = 2 * N - S
-    # Entita': 0..S-1 condivise, S..N-1 esclusive di H, N..V-1 esclusive di P
+    # Entities: 0..S-1 shared, S..N-1 only in H, N..V-1 only in P
     coorte = ["condivisa"] * S + ["solo_H"] * (N - S) + ["solo_P"] * (N - S)
     n_compl = round(alpha * S)
     compl = set(rng.choice(S, size=n_compl, replace=False).tolist()) if S else set()
 
     num_H = iter((rng.permutation(N) + 1).tolist())
     num_P = iter((rng.permutation(N) + 1).tolist())
-    locali = {}                                   # entita' -> {sorgente: [local_id, ...]}
+    locali = {}
     for e in range(V):
         locali[e] = {}
         if coorte[e] in ("condivisa", "solo_H"):
@@ -40,7 +29,7 @@ def genera(N, omega, alpha, seed, D_H=0, D_P=0):
         if coorte[e] in ("condivisa", "solo_P"):
             locali[e]["P"] = [f"P:{next(num_P)}"]
 
-    eventi = []                                   # (entita', sorgente, local_id, farmaco)
+    eventi = []
     for e in range(V):
         f1, f2 = rng.choice(FARMACI, size=2, replace=False).tolist()
         if coorte[e] == "condivisa":
@@ -50,7 +39,6 @@ def genera(N, omega, alpha, seed, D_H=0, D_P=0):
             src = "H" if coorte[e] == "solo_H" else "P"
             eventi += [(e, src, locali[e][src][0], f1), (e, src, locali[e][src][0], f2)]
 
-    # Dirty ER: nuovi ID locali (numeri oltre N) per entita' gia' presenti nella stessa sorgente
     for src, D in (("H", D_H), ("P", D_P)):
         presenti = [e for e in range(V) if src in locali[e]]
         for j, e in enumerate(rng.choice(presenti, size=D, replace=False).tolist() if D else []):
@@ -70,7 +58,7 @@ def genera(N, omega, alpha, seed, D_H=0, D_P=0):
 
 
 def domande(docs, locali, coorte, compl, rng, n_per_tipo=40):
-    """Domande entity-centric con seed: single-source (esclusive) e multi-source (condivise)."""
+    """Entity-centric questions with a seed: single-source and multi-source."""
     per_gid = {}
     for d in docs:
         per_gid.setdefault(d["metadata"]["gid"], []).append(d)
@@ -91,7 +79,7 @@ def domande(docs, locali, coorte, compl, rng, n_per_tipo=40):
 
 
 def controlli(docs, info):
-    """Identita' del paper (Paper 5.1): B = 2N + D, V = 2N - S, gamma = B / V."""
+    """Paper identities: B = 2N + D, V = 2N - S, gamma = B / V."""
     N, S, V = info["N"], info["S"], info["V"]
     assert len({d["metadata"]["gid"] for d in docs}) == V
     assert info["B"] == 2 * N + info["D_H"] + info["D_P"]

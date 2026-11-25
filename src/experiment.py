@@ -1,11 +1,7 @@
-"""Punto D - Esperimento parametrico (traccia Sez. 11, 13).
+"""Parametric grid: N x omega x alpha x 5 seeds, k in {2, 4, 8}.
 
-Griglia: N in {100, 500, 1000}, omega in {0, .25, .5, .75}, alpha in {0, .5, 1}, k in {2, 4, 8},
-tipo di query single-source / multi-source / counting, 5 seed casuali (0..4).
-Output: results/experiment_queries.csv (una riga per query, sistema, k)
-        results/experiment_counts.csv (counting: esatto vs somma locale vs 'alla RAG')
-        results/experiment_aggregate.csv (media e deviazione standard fra i seed)
-Uso: python src/experiment.py [--rapido]
+Output: results/experiment_queries.csv, experiment_counts.csv, experiment_aggregate.csv
+Usage: python src/experiment.py [--rapido]
 """
 import sys
 import time
@@ -24,13 +20,12 @@ N_VAL, OMEGA, ALPHA, K_VAL, SEEDS = [100, 500, 1000], [0, 0.25, 0.5, 0.75], [0, 
 
 
 def valuta_dataset(docs, info, qs, enc, partizione="gid", gid_vero="gid", nome="esp"):
-    """Valuta tutti i sistemi su un dataset. `partizione` e' la mappa ER usata dai sistemi;
-    `gid_vero` quella della ground truth (diverse solo con falsi match, punto E)."""
+    """Evaluates every system on one dataset: `partizione` is the ER map used for retrieval,
+    `gid_vero` the one used for the ground truth."""
     ix = Indice(docs, partizione, enc, nome=nome)
     righe = []
     for q, k, s in product(qs, K_VAL, SISTEMI):
         ret = FUNZIONI[s](ix, q["query"], k, seed=q["seed"], gold=q["gold_docs"])
-        # Disambiguazione (Sez. 12, valutata a parte): i top-k di BASE contengono l'entita' del seed?
         g_seed = ix.mappa_er[q["seed"]]
         disamb = float(any(ix.gid(d) == g_seed for d in ix.cerca(q["query"], k)))
         n_doc, n_tok = costo(ix, ret)
@@ -47,7 +42,7 @@ def valuta_dataset(docs, info, qs, enc, partizione="gid", gid_vero="gid", nome="
         del_f = [d for d in docs if d["metadata"]["farmaco"] == f]
         esatto = len({d["metadata"][gid_vero] for d in del_f})                  # COUNT(DISTINCT gid)
         somma_locale = sum(len({d["metadata"]["local_id"] for d in del_f if d["metadata"]["source"] == src})
-                           for src in ("H", "P"))                                # baseline additiva B
+                           for src in ("H", "P"))
         for s in ("BASE", "ER-pool"):
             ret = FUNZIONI[s](ix, query, k)
             conti.append({**info, "farmaco": f, "k": k, "sistema": s, "esatto": esatto,
@@ -57,8 +52,8 @@ def valuta_dataset(docs, info, qs, enc, partizione="gid", gid_vero="gid", nome="
 
 def aggrega(df, chiavi):
     m = ["recall", "precision", "completezza", "accuracy", "n_doc", "n_token", "disambiguazione"]
-    per_seed = df.groupby(chiavi + ["seed"])[m].mean().reset_index()     # media sulle query di un seed
-    agg = per_seed.groupby(chiavi)[m].agg(["mean", "std"])               # media e dispersione fra seed
+    per_seed = df.groupby(chiavi + ["seed"])[m].mean().reset_index()
+    agg = per_seed.groupby(chiavi)[m].agg(["mean", "std"])
     agg.columns = [f"{a}_{b}" for a, b in agg.columns]
     return agg.reset_index()
 
@@ -79,13 +74,11 @@ if __name__ == "__main__":
               f"[{time.time() - t0:.0f}s]", flush=True)
 
     df, dc = pd.DataFrame(righe), pd.DataFrame(conti)
-    # Controllo negativo (con omega = 0 come nel lavoro di riferimento): sulle query single-source il linkage non
-    # aggiunge nulla, quindi ER+seed deve coincidere con BASE+seed.
+    # Sanity checks
     ss = df[df.tipo == "single-source"]
     a = ss[ss.sistema == "ER+seed"].recall.to_numpy()
     b = ss[ss.sistema == "BASE+seed"].recall.to_numpy()
     assert np.array_equal(a, b), "controllo negativo fallito"
-    # Il conteggio esatto non dipende dal retriever e rispetta B = gamma_farmaco * V_farmaco
     assert (dc.somma_locale >= dc.esatto).all()
 
     out = ROOT / "results"

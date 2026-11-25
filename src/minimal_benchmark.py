@@ -1,9 +1,6 @@
-"""Punti B e C - Benchmark sull'esempio del paper (8 documenti, 8 domande).
+"""Benchmark on the minimal example for every ER partition, k in {2, 3, 4} and system.
 
-Per ogni partizione GID_0..GID_3, budget k in {2, 3, 4} e sistema, calcola
-Recall@k, Precision@k, completezza, Answer Accuracy (lettore deterministico) e costo del contesto.
-Le domande di conteggio si risolvono con COUNT(DISTINCT gid) (Sez. 1, 10); accanto si riporta
-il conteggio 'alla RAG' sul contesto solo per mostrare perche' non va usato.
+Counting questions use COUNT(DISTINCT gid); the count from the retrieved text is kept only for comparison.
 """
 import json
 from pathlib import Path
@@ -19,7 +16,7 @@ K_VALORI = [2, 3, 4]
 
 
 def conteggio_esatto(docs, p, farmaco):
-    """COUNT(DISTINCT gid) sui metadati: operatore esatto, indipendente dal retriever."""
+    """Exact COUNT(DISTINCT gid) on the metadata."""
     return len({d["metadata"][p] for d in docs if d["metadata"]["farmaco"] == farmaco})
 
 
@@ -33,7 +30,7 @@ def valuta(docs, domande, enc):
                 for s in SISTEMI:
                     ret = FUNZIONI[s](ix, q["query"], k, seed=q["seed"], gold=gt["gold_docs"])
                     if ret is None:
-                        continue                     # sistema non applicabile (manca il seed)
+                        continue
                     er = USA_ER[s]
                     r = {"partizione": p, "qid": q["qid"], "tipo": q["tipo"], "k": k, "sistema": s,
                          "recuperati": " ".join(ret),
@@ -55,9 +52,9 @@ def valuta(docs, domande, enc):
                         risp = leggi_conteggio(ix, ret, farmaco, er)
                         r["conteggio_rag"] = risp
                         r["conteggio_esatto"] = conteggio_esatto(docs, p, farmaco)
-                        r["accuracy"] = float(r["conteggio_esatto"] == gt["risposta"])  # operatore esatto
+                        r["accuracy"] = float(r["conteggio_esatto"] == gt["risposta"])
                         r["accuracy_rag"] = float(risp == gt["risposta"])
-                    else:                                # negativa
+                    else:
                         risp = [d for d in ret if ix.meta(d)["farmaco"] == "Paracetamolo"]
                         r["accuracy"] = float(risp == [])
                     r["risposta"] = str(risp)
@@ -66,15 +63,12 @@ def valuta(docs, domande, enc):
 
 
 def controlli(df):
-    """Controlli di coerenza (attesi per costruzione)."""
-    # ORACLE ha recall 1 quando le evidenze stanno nel budget
+    """Checks that hold by construction."""
     o = df[(df.sistema == "ORACLE") & (df.tipo != "negativa")]
     assert (o[o.k >= 4].recall == 1).all()
-    # Senza ER (GID_0) ER+seed coincide con BASE+seed: controllo negativo
     a = df[(df.partizione == "gid_0") & (df.sistema == "ER+seed")].set_index(["qid", "k"]).recuperati
     b = df[(df.partizione == "gid_0") & (df.sistema == "BASE+seed")].set_index(["qid", "k"]).recuperati
     assert (a == b).all()
-    # Il conteggio esatto riproduce sempre la ground truth
     assert (df[df.tipo == "counting"].accuracy == 1).all()
 
 
@@ -95,7 +89,6 @@ if __name__ == "__main__":
         print(sel.pivot(index="qid", columns="sistema", values=m).reindex(columns=SISTEMI).round(2).fillna("-"))
     print("\n=== Conteggi (GID_1, k = 3): esatto vs 'alla RAG' ===")
     print(sel[sel.tipo == "counting"][["qid", "sistema", "conteggio_esatto", "conteggio_rag"]].to_string(index=False))
-    # Medie solo a parita' di domande: entity-centric (tutti i sistemi) e multi-hop (sistemi senza seed)
     for tipo in ["entity-centric", "multi-hop"]:
         t = df[df.tipo == tipo]
         for m in ["recall", "accuracy"]:

@@ -1,4 +1,4 @@
-"""Generates the animated README banner: python assets/make_hero.py assets -> hero-light.svg, hero-dark.svg."""
+"""Animated README banner in light and dark themes. Usage: python assets/make_hero.py assets"""
 import sys
 from pathlib import Path
 
@@ -83,7 +83,7 @@ def build(c):
         if kind == "f":
             kf.append(f"@keyframes f{s}{{0%,{s}%{{opacity:0;transform:translateY(6px)}}"
                       f"{s + 4}%,93%{{opacity:1;transform:none}}98%,100%{{opacity:0;transform:none}}}}")
-        else:   # hidden until it starts drawing, so the round caps do not show as dots
+        else:
             kf.append(f"@keyframes d{s}{{0%,{s}%{{stroke-dashoffset:100;opacity:0}}{s + 0.5}%{{opacity:1}}"
                       f"{s + 7}%,93%{{stroke-dashoffset:0;opacity:1}}98%,100%{{stroke-dashoffset:0;opacity:0}}}}")
     style = (f"text{{font-family:{SANS}}}.t{{font-size:15px;fill:{c['ink']}}}.q{{font-size:17px;fill:{c['ink']}}}"

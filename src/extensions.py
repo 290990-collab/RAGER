@@ -1,11 +1,9 @@
-"""Punto E - Estensioni eseguite (traccia Sez. 12, nota Sez. 4; Paper 3.2).
+"""Robustness studies at N = 500, omega = alpha = 0.5, one factor at a time.
 
-Configurazione fissa [MIO]: N = 500, omega = 0.5, alpha = 0.5, seed 0..4, k in {2, 4, 8}.
-Quattro studi, ognuno varia un solo fattore:
-  dirty      D_H = D_P = round(delta*N), delta in {0, 0.1, 0.25}            (Dirty ER)
-  falsi      falsi negativi fn in {0, .25, .5} x falsi positivi fp in {0, .1, .25}  (qualita' del linkage)
-  duplicati  quota eps in {0, .25, .5} di eventi con un quasi-duplicato        (rumore, H3: spreco di budget)
-  errori_id  quota eps in {0, .1, .25} di documenti con l'ID locale sbagliato nel testo (rumore)
+  dirty      extra local IDs per person, delta in {0, 0.1, 0.25}
+  falsi      false negatives fn in {0, .25, .5} x false positives fp in {0, .1, .25}
+  duplicati  near-duplicates for a share eps in {0, .25, .5} of events
+  errori_id  wrong local ID in the text for a share eps in {0, .1, .25} of documents
 Output: results/extension_queries.csv, results/extension_aggregate.csv
 """
 import time
@@ -23,15 +21,15 @@ N, OMEGA, ALPHA, SEEDS = 500, 0.5, 0.5, [0, 1, 2, 3, 4]
 
 
 def falsi_match(docs, coorte, fn, fp, rng):
-    """Mappa ER imperfetta `gid_er`. fn: quota di entita' condivise spezzate (il lato P riceve un GID nuovo);
-    fp: quota di entita' esclusive di H fuse con un'esclusiva di P. Ritorna precision/recall del linkage."""
+    """Imperfect ER map `gid_er`: splits a share fn of shared entities and merges a share fp of
+    exclusive ones. Returns linkage precision and recall."""
     cond = [e for e, c in enumerate(coorte) if c == "condivisa"]
     sh = [e for e, c in enumerate(coorte) if c == "solo_H"]
     sp = [e for e, c in enumerate(coorte) if c == "solo_P"]
     spezzate = set(rng.choice(cond, size=round(fn * len(cond)), replace=False).tolist()) if cond else set()
     n_fp = round(fp * len(sh))
     fusioni = dict(zip(rng.choice(sp, size=n_fp, replace=False).tolist(),
-                       rng.choice(sh, size=n_fp, replace=False).tolist()))   # P-esclusiva -> H-esclusiva
+                       rng.choice(sh, size=n_fp, replace=False).tolist()))
     for d in docs:
         m = d["metadata"]
         e = int(m["gid"][1:])
@@ -46,7 +44,7 @@ def falsi_match(docs, coorte, fn, fp, rng):
 
 
 def quasi_duplicati(docs, eps, rng):
-    """Per una quota eps di eventi aggiunge un quasi-duplicato (stessa entita', testo quasi uguale)."""
+    """Adds a near-duplicate for a share eps of events."""
     scelti = rng.choice(len(docs), size=round(eps * len(docs)), replace=False).tolist()
     nuovi = []
     for j, i in enumerate(scelti):
@@ -57,8 +55,7 @@ def quasi_duplicati(docs, eps, rng):
 
 
 def errori_id(docs, eps, rng):
-    """Per una quota eps di documenti l'ID locale scritto nel testo e' sbagliato (altro ID della stessa
-    sorgente); i metadati restano corretti. Nessun nuovo documento."""
+    """Writes a wrong local ID in the text of a share eps of documents; metadata stay correct."""
     per_src = {}
     for d in docs:
         per_src.setdefault(d["metadata"]["source"], set()).add(d["metadata"]["local_id"])
@@ -74,7 +71,7 @@ def errori_id(docs, eps, rng):
 
 
 def gold_aggiornato(qs, docs):
-    """Ricalcola la ground truth dopo l'aggiunta di documenti (sempre dal GID vero)."""
+    """Ground truth from the true GID."""
     per_gid = {}
     for d in docs:
         per_gid.setdefault(d["metadata"]["gid"], []).append(d)
@@ -116,7 +113,7 @@ if __name__ == "__main__":
     out = ROOT / "results"
     df.to_csv(out / "extension_queries.csv", index=False)
     aggrega(df, ["studio", "x", "y", "k", "tipo", "sistema"]).to_csv(out / "extension_aggregate.csv", index=False)
-    # Controlli: senza perturbazione i quattro studi coincidono con la stessa configurazione di base
+    # Without perturbation every study matches the base configuration
     base = df[(df.x == 0) & (df.y == 0)]
     acc = base.groupby(["studio", "sistema", "k", "tipo"]).accuracy.mean().unstack("studio")
     assert np.allclose(acc.to_numpy(), acc.iloc[:, [0]].to_numpy()), "le configurazioni di controllo differiscono"

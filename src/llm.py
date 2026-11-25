@@ -1,16 +1,8 @@
-"""Punto E - Generazione con LLM locale (traccia Sez. 10, opzionale).
+"""Optional LLM reader over any OpenAI-compatible endpoint.
 
-Stesso modello, stesso prompt, temperatura 0, seed 0, stesso limite di token per tutti i sistemi (Sez. 10).
-Il contesto contiene solo i documenti scelti dal rispettivo retriever. Il conteggio NON si chiede all'LLM.
-
-[MIO] Nei sistemi con ER il contesto riporta l'etichetta dell'entita' di ogni documento ("[d4 | entità HP3]"):
-senza, l'LLM non puo' sapere che P:1 e H:3 sono la stessa persona. Sull'esempio minimo si misura anche la
-variante senza etichetta (sistemi "... nolabel").
-[MIO] Al prompt della traccia si aggiunge una riga finale "RISPOSTA: ..." per la valutazione automatica.
-
-Server: qualunque endpoint compatibile OpenAI. Variabili: LLM_URL, LLM_MODEL, LLM_KEY_FILE (facoltativa).
-Le risposte sono salvate in results/llm_cache.jsonl: se lo script si interrompe, riparte da dove era.
-Uso: python src/llm.py [minimo|parametrico|tutto]
+Same model, prompt, temperature 0, seed 0 and token limit for every system; counting never goes to the LLM.
+With ER, each document in the context carries its entity label. Responses are cached in results/llm_cache.jsonl.
+Usage: python src/llm.py [minimo|parametrico|tutto]
 """
 import hashlib
 import json
@@ -31,9 +23,9 @@ from rag import Encoder, Indice, FUNZIONI, USA_ER
 ROOT = Path(__file__).resolve().parent.parent
 URL = os.environ.get("LLM_URL", "http://127.0.0.1:8080/v1")
 MODEL = os.environ.get("LLM_MODEL", "qwen3.8-flash-next-iq3_xxs")
-KEY_FILE = os.environ.get("LLM_KEY_FILE", "")                  # file con la chiave; vuoto = nessuna chiave
-TAG = os.environ.get("LLM_TAG", "qwen3.8")          # suffisso dei file di risultato
-RACCOGLI = os.environ.get("LLM_RACCOGLI") == "1"     # 1 = non chiama il modello: raccoglie i prompt da fare
+KEY_FILE = os.environ.get("LLM_KEY_FILE", "")
+TAG = os.environ.get("LLM_TAG", "qwen3.8")
+RACCOGLI = os.environ.get("LLM_RACCOGLI") == "1"     # 1 = collect prompts without calling the model
 CACHE = ROOT / "results" / "llm_cache.jsonl"
 DA_FARE = ROOT / "results" / "llm_todo.jsonl"
 PARAMS = {"temperature": 0, "seed": 0, "max_tokens": 400,
@@ -50,8 +42,6 @@ Contesto:
 Domanda: {question}
 Termina con una riga nel formato "RISPOSTA: ..." con l'elenco dei farmaci o dei pazienti richiesti, oppure "RISPOSTA: nessuno".
 Risposta:"""
-# Prima versione (troppo vaga, il modello la ignorava; vedi relazione):
-#   "I documenti con la stessa etichetta "entità" si riferiscono alla stessa persona."
 NOTA_ER = ("Secondo l'Entity Resolution, i documenti con la stessa etichetta \"entità\" riguardano la stessa persona, "
            "anche se riportano identificativi locali diversi: tutto ciò che riportano vale per quella persona.\n")
 
@@ -78,7 +68,7 @@ class LLM:
         h = hashlib.sha256(json.dumps([MODEL, PARAMS, prompt], ensure_ascii=False).encode()).hexdigest()
         if h not in self.cache:
             body = {"model": MODEL, "messages": [{"role": "user", "content": prompt}], **PARAMS}
-            if RACCOGLI:                      # lavoro remoto: si salva la richiesta, la esegue un'altra macchina
+            if RACCOGLI:
                 self.da_fare[h] = body
                 return {"text": "", "usage": {}}
             for tentativo in range(3):
@@ -106,7 +96,7 @@ def contesto(ix, ret, etichetta):
 
 
 def leggi_risposta(testo):
-    """Ultima riga 'RISPOSTA:'; ritorna (farmaci, pazienti, nessuno, formato_ok)."""
+    """Parses the last 'RISPOSTA:' line into (drugs, patients, none, well_formed)."""
     m = re.findall(r"RISPOSTA:\s*(.*)", testo, flags=re.IGNORECASE)
     if not m:
         return set(), set(), False, False
@@ -123,11 +113,10 @@ def valuta(testo, tipo, gt_risposta, ret, locali_gold):
     if tipo in ("entity-centric", "single-source", "multi-source"):
         acc = float(farm == set(gt_risposta))
     elif tipo == "multi-hop":
-        # corretta se nomina l'entita' giusta con gli ID locali (es. H:3, P:1) o con la sua etichetta (es. HP3)
         riga = (re.findall(r"RISPOSTA:\s*(.*)", testo, flags=re.IGNORECASE) or [""])[-1]
         etich = any(re.search(rf"\b{re.escape(g)}\b", riga) for g in gt_risposta)
         acc = float(nessuno) if not gt_risposta else float((bool(paz) or etich) and paz <= locali_gold)
-    else:                                                       # negativa
+    else:
         acc = float(nessuno)
     return {"accuracy_llm": acc, "formato_ok": float(ok),
             "citazioni_valide": float(citati <= set(ret)) if citati else np.nan,
@@ -138,7 +127,7 @@ def valuta(testo, tipo, gt_risposta, ret, locali_gold):
 def run_minimo(llm, enc):
     docs = json.loads((ROOT / "data" / "documents.json").read_text(encoding="utf-8"))
     dom = [q for q in json.loads((ROOT / "data" / "questions.json").read_text(encoding="utf-8"))
-           if q["tipo"] != "counting"]                         # Sez. 10: il conteggio resta deterministico
+           if q["tipo"] != "counting"]
     righe = []
     for p in PARTIZIONI:
         ix = Indice(docs, p, enc, nome=f"llm_{p}")
@@ -163,7 +152,7 @@ def run_minimo(llm, enc):
 
 
 def run_parametrico(llm, enc, N=500, omega=0.5, seed=0, k=4, n_multi=20, n_single=10):
-    """[MIO] Campione: N = 500, omega = 0.5, alpha in {0, 0.5, 1}, seed 0, k = 4."""
+    """Grid sample: N = 500, omega = 0.5, alpha in {0, 0.5, 1}, seed 0, k = 4."""
     righe = []
     for alpha in (0, 0.5, 1):
         docs, info, locali, coorte, compl = genera(N, omega, alpha, seed)
