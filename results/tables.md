@@ -154,3 +154,85 @@ Valori: media ± deviazione standard fra 5 seed. Accuracy = lettore deterministi
 | 0.5 | 0.0 | 1.0 | 0.5 | 1.0 ± 0.0 | 0.73 ± 0.04 | 0.54 ± 0.06 |
 | 0.5 | 0.1 | 0.833 | 0.5 | 0.9 ± 0.05 | 0.73 ± 0.04 | 0.54 ± 0.06 |
 | 0.5 | 0.25 | 0.668 | 0.5 | 0.8 ± 0.04 | 0.73 ± 0.04 | 0.54 ± 0.06 |
+
+## F - Omonimi (x = quota di persone con un omonimo), k = 4; ER ideale vs ER per nome: accuracy, query single-source
+
+| x | er | BASE | BASE+seed | ER+seed | ER-pool |
+|---|---|---|---|---|---|
+| 0.0 | ideal | 0.0 ± 0.01 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.07 ± 0.02 |
+| 0.0 | names | 0.0 ± 0.01 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.07 ± 0.02 |
+| 0.1 | ideal | 0.0 ± 0.01 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.06 ± 0.03 |
+| 0.1 | names | 0.0 ± 0.01 | 1.0 ± 0.0 | 0.92 ± 0.05 | 0.06 ± 0.02 |
+| 0.25 | ideal | 0.0 ± 0.01 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.06 ± 0.01 |
+| 0.25 | names | 0.0 ± 0.01 | 1.0 ± 0.0 | 0.76 ± 0.09 | 0.05 ± 0.02 |
+
+## F - Omonimi (x = quota di persone con un omonimo), k = 4; ER ideale vs ER per nome: accuracy, query multi-source
+
+| x | er | BASE | BASE+seed | ER+seed | ER-pool |
+|---|---|---|---|---|---|
+| 0.0 | ideal | 0.03 ± 0.01 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.04 ± 0.01 |
+| 0.0 | names | 0.03 ± 0.01 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.04 ± 0.01 |
+| 0.1 | ideal | 0.03 ± 0.01 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.03 ± 0.01 |
+| 0.1 | names | 0.03 ± 0.01 | 0.54 ± 0.06 | 0.9 ± 0.05 | 0.03 ± 0.01 |
+| 0.25 | ideal | 0.03 ± 0.01 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.03 ± 0.02 |
+| 0.25 | names | 0.03 ± 0.01 | 0.54 ± 0.06 | 0.76 ± 0.07 | 0.02 ± 0.02 |
+
+## F - Un indice per fonte, k = 4: accuracy, query single-source
+
+| x | BASE | BASE split, merged | BASE split, k/2 each | ER-pool | ER-pool split, k/2 each |
+|---|---|---|---|---|---|
+| 0.0 | 0.02 ± 0.03 | 0.02 ± 0.03 | 0.0 ± 0.01 | 0.18 ± 0.07 | 0.08 ± 0.06 |
+
+## F - Un indice per fonte, k = 4: accuracy, query multi-source
+
+| x | BASE | BASE split, merged | BASE split, k/2 each | ER-pool | ER-pool split, k/2 each |
+|---|---|---|---|---|---|
+| 0.0 | 0.08 ± 0.04 | 0.08 ± 0.04 | 0.06 ± 0.04 | 0.11 ± 0.03 | 0.04 ± 0.03 |
+
+## F - Quasi-duplicati e reranking con varietà, k = 2 (x = quota eps): completezza, query single-source
+
+| x | BASE+seed | ER+seed | ER+seed, source variety | ER+seed, MMR |
+|---|---|---|---|---|
+| 0.0 | 1.0 ± 0.0 | 1.0 ± 0.0 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| 0.25 | 0.77 ± 0.07 | 0.77 ± 0.07 | 0.77 ± 0.07 | 1.0 ± 0.0 |
+| 0.5 | 0.61 ± 0.11 | 0.61 ± 0.11 | 0.61 ± 0.11 | 1.0 ± 0.0 |
+
+## F - Quasi-duplicati e reranking con varietà, k = 2 (x = quota eps): completezza, query multi-source
+
+| x | BASE+seed | ER+seed | ER+seed, source variety | ER+seed, MMR |
+|---|---|---|---|---|
+| 0.0 | 0.54 ± 0.06 | 1.0 ± 0.0 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| 0.25 | 0.54 ± 0.06 | 0.88 ± 0.02 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| 0.5 | 0.54 ± 0.06 | 0.76 ± 0.05 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+
+## F - Retriever lessicale e ibrido, per k: accuracy, query single-source
+
+| k | BASE | BM25 | BM25 + ER | Hybrid | Hybrid + ER | ER+seed |
+|---|---|---|---|---|---|---|
+| 2 | 0.0 ± 0.01 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.32 ± 0.09 | 0.8 ± 0.04 | 1.0 ± 0.0 |
+| 4 | 0.02 ± 0.03 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.53 ± 0.04 | 0.92 ± 0.04 | 1.0 ± 0.0 |
+| 8 | 0.05 ± 0.03 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.76 ± 0.07 | 0.97 ± 0.02 | 1.0 ± 0.0 |
+
+## F - Retriever lessicale e ibrido, per k: accuracy, query multi-source
+
+| k | BASE | BM25 | BM25 + ER | Hybrid | Hybrid + ER | ER+seed |
+|---|---|---|---|---|---|---|
+| 2 | 0.06 ± 0.04 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.32 ± 0.05 | 0.5 ± 0.05 | 1.0 ± 0.0 |
+| 4 | 0.08 ± 0.04 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.43 ± 0.05 | 0.6 ± 0.03 | 1.0 ± 0.0 |
+| 8 | 0.1 ± 0.04 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.46 ± 0.06 | 0.78 ± 0.02 | 1.0 ± 0.0 |
+
+## F - Retriever lessicale e ibrido, per k: trova_paziente, query single-source
+
+| k | BASE | BM25 | BM25 + ER | Hybrid | Hybrid + ER | ER+seed |
+|---|---|---|---|---|---|---|
+| 2 | 0.18 ± 0.07 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.92 ± 0.04 | 0.8 ± 0.04 | 1.0 ± 0.0 |
+| 4 | 0.26 ± 0.07 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.97 ± 0.03 | 0.92 ± 0.04 | 1.0 ± 0.0 |
+| 8 | 0.35 ± 0.07 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.99 ± 0.01 | 0.97 ± 0.02 | 1.0 ± 0.0 |
+
+## F - Retriever lessicale e ibrido, per k: trova_paziente, query multi-source
+
+| k | BASE | BM25 | BM25 + ER | Hybrid | Hybrid + ER | ER+seed |
+|---|---|---|---|---|---|---|
+| 2 | 0.11 ± 0.03 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.6 ± 0.03 | 0.5 ± 0.05 | 1.0 ± 0.0 |
+| 4 | 0.14 ± 0.05 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.78 ± 0.02 | 0.6 ± 0.03 | 1.0 ± 0.0 |
+| 8 | 0.19 ± 0.03 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.86 ± 0.04 | 0.78 ± 0.02 | 1.0 ± 0.0 |

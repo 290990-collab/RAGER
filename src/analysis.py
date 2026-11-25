@@ -109,6 +109,28 @@ def main():
                                    ["x", "y"])
         out.append(md(lk))
 
+    fu = R / "followup_queries.csv"
+    if fu.exists():
+        fq = pd.read_csv(fu)
+
+        def blocco(studio, titolo, metrica, ordine, k=None, chiavi=("x",)):
+            s = fq[fq.studio == studio] if k is None else fq[(fq.studio == studio) & (fq.k == k)]
+            for tipo in ["single-source", "multi-source"]:
+                t = ms(per_seed(s[s.tipo == tipo], list(chiavi) + ["sistema"], metrica), list(chiavi) + ["sistema"])
+                t = t.unstack("sistema").reindex(columns=[c for c in ordine if c in set(s.sistema)])
+                out.append(f"\n## F - {titolo}: {metrica}, query {tipo}\n")
+                out.append(md(t))
+
+        blocco("omonimi", "Omonimi (x = quota di persone con un omonimo), k = 4; ER ideale vs ER per nome",
+               "accuracy", ["BASE", "BASE+seed", "ER+seed", "ER-pool"], k=4, chiavi=("x", "er"))
+        blocco("indici", "Un indice per fonte, k = 4", "accuracy",
+               ["BASE", "BASE split, merged", "BASE split, k/2 each", "ER-pool", "ER-pool split, k/2 each"], k=4)
+        blocco("diversita", "Quasi-duplicati e reranking con varietà, k = 2 (x = quota eps)", "completezza",
+               ["BASE+seed", "ER+seed", "ER+seed, source variety", "ER+seed, MMR"], k=2)
+        ib = ["BASE", "BM25", "BM25 + ER", "Hybrid", "Hybrid + ER", "ER+seed"]
+        blocco("ibrido", "Retriever lessicale e ibrido, per k", "accuracy", ib, chiavi=("k",))
+        blocco("ibrido", "Retriever lessicale e ibrido, per k", "trova_paziente", ib, chiavi=("k",))
+
     (R / "tables.md").write_text("\n".join(out) + "\n", encoding="utf-8")
     print("\n".join(out))
 
