@@ -131,6 +131,20 @@ def main():
         blocco("ibrido", "Retriever lessicale e ibrido, per k", "accuracy", ib, chiavi=("k",))
         blocco("ibrido", "Retriever lessicale e ibrido, per k", "trova_paziente", ib, chiavi=("k",))
 
+    rt = R / "robustness_text_queries.csv"
+    if rt.exists():
+        tq = pd.read_csv(rt)
+        tq = tq[tq.k == 4]
+        ordine = ["BASE", "ER-pool", "BM25", "BM25 + ER", "Hybrid", "Hybrid + ER", "BASE+seed", "ER+seed"]
+        chiavi = ["modello", "condizione"]
+        righe = [(m, c) for m in ["MiniLM", "E5-small"] for c in ["fisso", "variato", "refusi", "nome"]]
+        for metrica in ["trova_paziente", "accuracy"]:
+            for tipo in ["single-source", "multi-source"]:
+                t = ms(per_seed(tq[tq.tipo == tipo], chiavi + ["sistema"], metrica), chiavi + ["sistema"])
+                t = t.unstack("sistema").reindex(columns=ordine).reindex(righe)
+                out.append(f"\n## G - Testi variati e secondo embedding, k = 4: {metrica}, query {tipo}\n")
+                out.append(md(t))
+
     sg = R / "significance.csv"
     if sg.exists():
         s = pd.read_csv(sg)

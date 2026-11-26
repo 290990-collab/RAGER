@@ -18,16 +18,23 @@ SISTEMI = ["BASE", "BASE+seed", "ER+seed", "ER-pool", "ORACLE"]
 class Encoder:
     """Normalized embeddings, cached by text."""
 
-    def __init__(self):
-        self.m = SentenceTransformer(MODELLO, device="cpu")
+    def __init__(self, modello=MODELLO, prefissi=("", "")):
+        """prefissi = (query, document): some models, such as E5, expect a role prefix."""
+        self.m = SentenceTransformer(modello, device="cpu")
+        self.pq, self.pd = prefissi
         self.cache, self.tok = {}, {}
 
-    def encode(self, texts):
+    def encode(self, texts, prefisso=None):
+        p = self.pd if prefisso is None else prefisso
+        texts = [p + t for t in texts]
         nuovi = [t for t in dict.fromkeys(texts) if t not in self.cache]
         if nuovi:
             E = self.m.encode(nuovi, batch_size=256, normalize_embeddings=True, show_progress_bar=False)
             self.cache.update(zip(nuovi, E))
         return np.stack([self.cache[t] for t in texts])
+
+    def encode_query(self, query):
+        return self.encode([query], self.pq)[0]
 
     def n_token(self, text):
         if text not in self.tok:
@@ -70,7 +77,7 @@ class Indice:
 
     def qvec(self, query):
         if query not in self._q:
-            self._q[query] = self.enc.encode([query])[0]
+            self._q[query] = self.enc.encode_query(query)
         return self._q[query]
 
     def cerca(self, query, n):

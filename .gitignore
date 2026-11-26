@@ -15,8 +15,8 @@ __pycache__/
 chroma_db/
 src/llm_remote.py
 results/log_*
-results/llm_todo.jsonl
-results/llm_responses.jsonl
+results/llm_todo*.jsonl
+results/llm_responses*.jsonl
 results/*_quick.csv
 *api_key*
 .env

@@ -1,4 +1,4 @@
-"""Figures 1-8, each one question and its answer, in Italian (results/plots/) and English (results/plots/en/).
+"""Figures 1-9, each one question and its answer, in Italian (results/plots/) and English (results/plots/en/).
 
 Lines are means over 5 seeds; light bands show the spread between seeds; bars carry 95 % intervals.
 """
@@ -46,7 +46,8 @@ T = {
         "f3": ("La ricerca semantica trova il paziente nominato nella domanda?",
                "Quasi mai: lo trova in 1 domanda su 4–7. La ricerca per parole esatte lo trova sempre.",
                "Documenti nel contesto", "Paziente trovato",
-               "La domanda contiene l'ID locale del paziente (es. «H:3»)."),
+               "La domanda contiene l'ID locale del paziente (es. «H:3»). Embedding MiniLM; con un altro modello "
+               "cambia: figura 9."),
         "f4": ("Se il sistema riceve solo la domanda, quale strategia risponde?",
                "Cercare l'ID per parole e poi collegare: 100 %, come se l'ID fosse già noto.",
                "Risposte corrette", "con l'ID già noto", "Domande su pazienti in entrambe le fonti, "
@@ -72,6 +73,11 @@ T = {
                 "Contare i GID distinti (esatto)"],
                "8 documenti nel contesto. La somma delle fonti sbaglia esattamente del sovraconteggio previsto "
                "dal paper."),
+        "f9": ("Questi risultati dipendono dalle frasi e dal modello?",
+               "Con frasi variate la semantica perde l'ID anche con E5; le parole reggono, tranne sui refusi.",
+               "Paziente trovato", ["Frase\nfissa", "Frasi\nvariate", "Con\nrefusi", "Per\nnome"],
+               "Domande su pazienti in entrambe le fonti, 4 documenti nel contesto. Refusi: ID scritto «H-37» "
+               "o «H37» nel 20 % dei documenti."),
     },
     "en": {
         "piede": "Mean over 5 runs with different data; the light band shows how much they vary.",
@@ -94,7 +100,8 @@ T = {
         "f3": ("Does semantic search find the patient named in the question?",
                "Rarely: in 1 question out of 4 to 7. Keyword search always finds it.",
                "Records in the context", "Patient found",
-               "The question names the patient's local ID (e.g. \"H:3\")."),
+               "The question names the patient's local ID (e.g. \"H:3\"). MiniLM embeddings; another model "
+               "changes this: figure 9."),
         "f4": ("Given only the question, which strategy answers?",
                "Find the ID by keywords, then link: 100 %, as if the ID were known.",
                "Correct answers", "with the ID known", "Questions about patients in both sources, 4 records "
@@ -119,6 +126,11 @@ T = {
                ["Count from retrieved records (RAG)", "Add up the two sources' counts",
                 "Count distinct GIDs (exact)"],
                "8 records in the context. Adding up the sources overcounts exactly as the paper predicts."),
+        "f9": ("Do these results depend on the wording and the model?",
+               "With varied sentences, semantic search loses the ID even with E5; keywords hold, except on typos.",
+               "Patient found", ["Fixed\nsentence", "Varied\nsentences", "With\ntypos", "By\nname"],
+               "Questions about patients in both sources, 4 records in the context. Typos: ID written \"H-37\" "
+               "or \"H37\" in 20 % of the records."),
     },
 }
 
@@ -160,11 +172,11 @@ def figura(w=8.2, h=4.8, **kw):
     return plt.subplots(figsize=(w, h), **kw)
 
 
-def salva(fig, cartella, nome, titolo, risposta, nota, piede, destra=0.74):
+def salva(fig, cartella, nome, titolo, risposta, nota, piede, destra=0.74, basso=0.09):
     fig.text(0.02, 0.975, titolo, ha="left", va="top", fontsize=13.5, fontweight="bold")
     fig.text(0.02, 0.915, risposta, ha="left", va="top", fontsize=10.5, color=INCHIOSTRO)
     fig.text(0.02, 0.02, nota + "\n" + piede, ha="left", va="bottom", fontsize=8.5, color=MUTO, linespacing=1.4)
-    fig.tight_layout(rect=(0, 0.09, destra, 0.86))
+    fig.tight_layout(rect=(0, basso, destra, 0.86))
     fig.savefig(cartella / nome, dpi=200)
     plt.close(fig)
 
@@ -175,7 +187,7 @@ def ic95(x):
 
 
 # ---------------------------------------------------------------- figures
-def grafici(lingua, q, e, c, f):
+def grafici(lingua, q, e, c, f, t=None):
     L = T[lingua]
     out = R / "plots" if lingua == "it" else R / "plots" / "en"
     out.mkdir(parents=True, exist_ok=True)
@@ -226,8 +238,7 @@ def grafici(lingua, q, e, c, f):
     # 4. Strategies given only the question
     tit, ris, xl, rif, nota = L["f4"]
     ms = f[(f.k == 4) & (f.tipo == "multi-source")]
-    voci = [("ibrido", "BASE", "sem"), ("indici", "ER-pool", "pool"), ("ibrido", "Hybrid", "ibrido"),
-            ("ibrido", "BM25", "parole"), ("ibrido", "Hybrid + ER", "ibrido_link"),
+    voci = [("ibrido", "BASE", "sem"), ("indici", "ER-pool", "pool"), ("ibrido", "BM25", "parole"),
             ("ibrido", "BM25 + ER", "parole_link")]
     fig, ax = figura(8.2, 4.6)
     for i, (st, s, k) in enumerate(voci):
@@ -310,6 +321,28 @@ def grafici(lingua, q, e, c, f):
     percento(ax, x=True)
     etichette(ax, fin, gap=0.08)
     salva(fig, out, "fig8_counting.png", tit, ris, nota, L["piede"], destra=0.7)
+
+    # 9. Wording and embedding model
+    if t is not None:
+        tit, ris, yl, condizioni, nota = L["f9"]
+        tm = t[(t.k == 4) & (t.tipo == "multi-source")]
+        sistemi = [("BASE", "sem", C["sem"]), ("BM25", "parole", C["parole"])]
+        fig, assi = figura(10.4, 5.0, ncols=2, sharey=True)
+        w = 0.34
+        for ax, modello in zip(assi, ["MiniLM", "E5-small"]):
+            for j, (s, k, col) in enumerate(sistemi):
+                for i, cond in enumerate(["fisso", "variato", "refusi", "nome"]):
+                    p, h = ic95(tm[(tm.modello == modello) & (tm.condizione == cond) & (tm.sistema == s)].trova_paziente)
+                    x = i + (j - 0.5) * w
+                    ax.bar(x, p, width=w * 0.9, color=col, zorder=2, label=L[k] if i == 0 else None)
+                    ax.errorbar(x, p, yerr=h, color=INCHIOSTRO, lw=1.2, zorder=3)
+                    ax.text(x, p + h + 0.02, f"{100 * p:.0f}", ha="center", fontsize=8.5)
+            ax.set(xticks=range(4), xticklabels=condizioni, ylim=(0, 1.15), title=f"Embedding: {modello}")
+            percento(ax)
+        assi[0].set_ylabel(yl)
+        h, lab = assi[0].get_legend_handles_labels()
+        fig.legend(h, lab, loc="lower center", bbox_to_anchor=(0.5, 0.1), ncol=2, fontsize=9.5)
+        salva(fig, out, "fig9_wording_and_model.png", tit, ris, nota, L["piede_barre"], destra=1, basso=0.15)
     print("Grafici salvati in", out)
 
 
@@ -318,8 +351,10 @@ def main():
     e = pd.read_csv(R / "extension_queries.csv")
     c = pd.read_csv(R / "experiment_counts.csv")
     f = pd.read_csv(R / "followup_queries.csv")
+    rt = R / "robustness_text_queries.csv"
+    t = pd.read_csv(rt) if rt.exists() else None
     for lingua in ("it", "en"):
-        grafici(lingua, q, e, c, f)
+        grafici(lingua, q, e, c, f, t)
 
 
 if __name__ == "__main__":

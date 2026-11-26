@@ -237,6 +237,58 @@ Valori: media ± deviazione standard fra 5 seed. Accuracy = lettore deterministi
 | 4 | 0.14 ± 0.05 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.78 ± 0.02 | 0.6 ± 0.03 | 1.0 ± 0.0 |
 | 8 | 0.19 ± 0.03 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.86 ± 0.04 | 0.78 ± 0.02 | 1.0 ± 0.0 |
 
+## G - Testi variati e secondo embedding, k = 4: trova_paziente, query single-source
+
+| modello | condizione | BASE | ER-pool | BM25 | BM25 + ER | Hybrid | Hybrid + ER | BASE+seed | ER+seed |
+|---|---|---|---|---|---|---|---|---|---|
+| MiniLM | fisso | 0.26 ± 0.07 | 0.18 ± 0.07 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.97 ± 0.03 | 0.92 ± 0.04 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| MiniLM | variato | 0.17 ± 0.02 | 0.12 ± 0.03 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.71 ± 0.11 | 0.6 ± 0.11 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| MiniLM | refusi | 0.08 ± 0.03 | 0.06 ± 0.02 | 0.96 ± 0.05 | 0.96 ± 0.05 | 0.61 ± 0.07 | 0.53 ± 0.06 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| MiniLM | nome | 0.25 ± 0.06 | 0.18 ± 0.05 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.6 ± 0.06 | 0.54 ± 0.09 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| E5-small | fisso | 0.96 ± 0.02 | 0.88 ± 0.03 | 1.0 ± 0.0 | 1.0 ± 0.0 | 1.0 ± 0.0 | 1.0 ± 0.0 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| E5-small | variato | 0.62 ± 0.06 | 0.52 ± 0.05 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.98 ± 0.02 | 0.95 ± 0.05 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| E5-small | refusi | 0.63 ± 0.03 | 0.54 ± 0.06 | 0.96 ± 0.05 | 0.96 ± 0.05 | 0.92 ± 0.08 | 0.9 ± 0.09 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| E5-small | nome | 0.6 ± 0.1 | 0.5 ± 0.08 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.91 ± 0.07 | 0.86 ± 0.06 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+
+## G - Testi variati e secondo embedding, k = 4: trova_paziente, query multi-source
+
+| modello | condizione | BASE | ER-pool | BM25 | BM25 + ER | Hybrid | Hybrid + ER | BASE+seed | ER+seed |
+|---|---|---|---|---|---|---|---|---|---|
+| MiniLM | fisso | 0.14 ± 0.05 | 0.11 ± 0.03 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.78 ± 0.02 | 0.6 ± 0.03 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| MiniLM | variato | 0.08 ± 0.03 | 0.06 ± 0.02 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.5 ± 0.1 | 0.42 ± 0.1 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| MiniLM | refusi | 0.08 ± 0.05 | 0.06 ± 0.05 | 0.8 ± 0.07 | 0.8 ± 0.07 | 0.41 ± 0.06 | 0.36 ± 0.04 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| MiniLM | nome | 0.26 ± 0.1 | 0.21 ± 0.09 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.58 ± 0.11 | 0.54 ± 0.1 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| E5-small | fisso | 0.82 ± 0.1 | 0.72 ± 0.09 | 1.0 ± 0.0 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.99 ± 0.01 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| E5-small | variato | 0.37 ± 0.04 | 0.3 ± 0.06 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.9 ± 0.05 | 0.84 ± 0.03 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| E5-small | refusi | 0.4 ± 0.07 | 0.34 ± 0.05 | 0.8 ± 0.07 | 0.8 ± 0.07 | 0.72 ± 0.1 | 0.66 ± 0.1 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| E5-small | nome | 0.65 ± 0.06 | 0.51 ± 0.07 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.92 ± 0.04 | 0.88 ± 0.02 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+
+## G - Testi variati e secondo embedding, k = 4: accuracy, query single-source
+
+| modello | condizione | BASE | ER-pool | BM25 | BM25 + ER | Hybrid | Hybrid + ER | BASE+seed | ER+seed |
+|---|---|---|---|---|---|---|---|---|---|
+| MiniLM | fisso | 0.02 ± 0.03 | 0.18 ± 0.07 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.53 ± 0.04 | 0.92 ± 0.04 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| MiniLM | variato | 0.0 ± 0.0 | 0.12 ± 0.03 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.33 ± 0.09 | 0.6 ± 0.11 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| MiniLM | refusi | 0.0 ± 0.01 | 0.06 ± 0.02 | 0.63 ± 0.04 | 0.96 ± 0.05 | 0.23 ± 0.03 | 0.53 ± 0.06 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| MiniLM | nome | 0.06 ± 0.01 | 0.18 ± 0.05 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.28 ± 0.03 | 0.54 ± 0.09 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| E5-small | fisso | 0.69 ± 0.06 | 0.88 ± 0.03 | 1.0 ± 0.0 | 1.0 ± 0.0 | 1.0 ± 0.0 | 1.0 ± 0.0 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| E5-small | variato | 0.22 ± 0.08 | 0.52 ± 0.05 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.84 ± 0.06 | 0.95 ± 0.05 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| E5-small | refusi | 0.14 ± 0.07 | 0.54 ± 0.06 | 0.63 ± 0.04 | 0.96 ± 0.05 | 0.57 ± 0.07 | 0.9 ± 0.09 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| E5-small | nome | 0.23 ± 0.04 | 0.5 ± 0.08 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.62 ± 0.05 | 0.86 ± 0.06 | 1.0 ± 0.0 | 1.0 ± 0.0 |
+
+## G - Testi variati e secondo embedding, k = 4: accuracy, query multi-source
+
+| modello | condizione | BASE | ER-pool | BM25 | BM25 + ER | Hybrid | Hybrid + ER | BASE+seed | ER+seed |
+|---|---|---|---|---|---|---|---|---|---|
+| MiniLM | fisso | 0.08 ± 0.04 | 0.11 ± 0.03 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.43 ± 0.05 | 0.6 ± 0.03 | 0.54 ± 0.06 | 1.0 ± 0.0 |
+| MiniLM | variato | 0.03 ± 0.03 | 0.06 ± 0.02 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.29 ± 0.05 | 0.42 ± 0.1 | 0.54 ± 0.06 | 1.0 ± 0.0 |
+| MiniLM | refusi | 0.04 ± 0.03 | 0.06 ± 0.05 | 0.43 ± 0.04 | 0.8 ± 0.07 | 0.22 ± 0.06 | 0.36 ± 0.04 | 0.54 ± 0.06 | 1.0 ± 0.0 |
+| MiniLM | nome | 0.06 ± 0.04 | 0.21 ± 0.09 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.22 ± 0.03 | 0.54 ± 0.1 | 0.54 ± 0.06 | 1.0 ± 0.0 |
+| E5-small | fisso | 0.42 ± 0.09 | 0.72 ± 0.09 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.54 ± 0.06 | 0.99 ± 0.01 | 0.54 ± 0.06 | 1.0 ± 0.0 |
+| E5-small | variato | 0.18 ± 0.08 | 0.3 ± 0.06 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.5 ± 0.05 | 0.84 ± 0.03 | 0.54 ± 0.06 | 1.0 ± 0.0 |
+| E5-small | refusi | 0.2 ± 0.05 | 0.34 ± 0.05 | 0.43 ± 0.04 | 0.8 ± 0.07 | 0.37 ± 0.06 | 0.66 ± 0.1 | 0.54 ± 0.06 | 1.0 ± 0.0 |
+| E5-small | nome | 0.18 ± 0.1 | 0.51 ± 0.07 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.38 ± 0.09 | 0.88 ± 0.02 | 0.54 ± 0.06 | 1.0 ± 0.0 |
+
 ## S - Confronti appaiati: differenza (B - A), intervallo al 95 % (bootstrap) e test di McNemar
 
 Stesse domande nelle due condizioni. "reale" = intervallo che esclude lo zero e p < 0,05.
@@ -276,3 +328,13 @@ Stesse domande nelle due condizioni. "reale" = intervallo che esclude lo zero e 
 | Ricerca per parole e ibrida, k = 4 | multi-source: BM25 + ER → ER+seed | accuracy | 1.0 | 1.0 | 0.0 | [0.0, 0.0] | 1.000 | non distinguibile |
 | Ricerca per parole e ibrida, k = 4 | multi-source: BM25 → Hybrid | accuracy | 0.54 | 0.43 | -0.11 | [-0.155, -0.07] | < 0,001 | reale |
 | Ricerca per parole e ibrida, k = 4 | multi-source: Hybrid → Hybrid + ER | accuracy | 0.43 | 0.595 | 0.165 | [0.085, 0.245] | < 0,001 | reale |
+| Testi variati e secondo embedding, k = 4 | single-source, testo fisso, semantica: MiniLM → E5-small | trova_paziente | 0.26 | 0.96 | 0.7 | [0.635, 0.76] | < 0,001 | reale |
+| Testi variati e secondo embedding, k = 4 | multi-source, testo fisso, semantica: MiniLM → E5-small | trova_paziente | 0.135 | 0.825 | 0.69 | [0.625, 0.755] | < 0,001 | reale |
+| Testi variati e secondo embedding, k = 4 | multi-source, semantica MiniLM: testo fisso → variato | trova_paziente | 0.135 | 0.075 | -0.06 | [-0.115, -0.005] | 0.058 | non distinguibile |
+| Testi variati e secondo embedding, k = 4 | multi-source, semantica MiniLM: testo variato → nome | trova_paziente | 0.075 | 0.26 | 0.185 | [0.12, 0.25] | < 0,001 | reale |
+| Testi variati e secondo embedding, k = 4 | multi-source, semantica E5-small: testo fisso → variato | trova_paziente | 0.825 | 0.37 | -0.455 | [-0.535, -0.38] | < 0,001 | reale |
+| Testi variati e secondo embedding, k = 4 | multi-source, semantica E5-small: testo variato → nome | trova_paziente | 0.37 | 0.65 | 0.28 | [0.205, 0.36] | < 0,001 | reale |
+| Testi variati e secondo embedding, k = 4 | multi-source, BM25: testo variato → refusi | trova_paziente | 1.0 | 0.8 | -0.2 | [-0.255, -0.145] | < 0,001 | reale |
+| Testi variati e secondo embedding, k = 4 | multi-source, refusi, MiniLM: BM25 → Hybrid | trova_paziente | 0.8 | 0.405 | -0.395 | [-0.46, -0.325] | < 0,001 | reale |
+| Testi variati e secondo embedding, k = 4 | multi-source, refusi, E5-small: BM25 → Hybrid | trova_paziente | 0.8 | 0.72 | -0.08 | [-0.13, -0.03] | 0.004 | reale |
+| Testi variati e secondo embedding, k = 4 | multi-source, testo fisso, ER-pool: MiniLM → E5-small | accuracy | 0.105 | 0.725 | 0.62 | [0.55, 0.69] | < 0,001 | reale |

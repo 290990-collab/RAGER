@@ -32,3 +32,13 @@ gruppo,confronto,metrica,n_coppie,media_a,media_b,differenza,ic95_basso,ic95_alt
 "Ricerca per parole e ibrida, k = 4",multi-source: BM25 + ER → ER+seed,accuracy,200,1.0,1.0,0.0,0.0,0.0,0,0,1.0,non distinguibile
 "Ricerca per parole e ibrida, k = 4",multi-source: BM25 → Hybrid,accuracy,200,0.54,0.43,-0.11,-0.155,-0.07,0,22,4.76837158203125e-07,reale
 "Ricerca per parole e ibrida, k = 4",multi-source: Hybrid → Hybrid + ER,accuracy,200,0.43,0.595,0.165,0.08487500000000002,0.245,54,21,0.00017630923003028777,reale
+"Testi variati e secondo embedding, k = 4","single-source, testo fisso, semantica: MiniLM → E5-small",trova_paziente,200,0.26,0.96,0.7,0.635,0.76,141,1,5.12987341820029e-41,reale
+"Testi variati e secondo embedding, k = 4","multi-source, testo fisso, semantica: MiniLM → E5-small",trova_paziente,200,0.135,0.825,0.69,0.624875,0.755,140,2,3.642568859329073e-39,reale
+"Testi variati e secondo embedding, k = 4","multi-source, semantica MiniLM: testo fisso → variato",trova_paziente,200,0.135,0.075,-0.06,-0.115,-0.005,11,23,0.05761267291381955,non distinguibile
+"Testi variati e secondo embedding, k = 4","multi-source, semantica MiniLM: testo variato → nome",trova_paziente,200,0.075,0.26,0.185,0.12,0.25,45,8,2.3683513772354559e-07,reale
+"Testi variati e secondo embedding, k = 4","multi-source, semantica E5-small: testo fisso → variato",trova_paziente,200,0.825,0.37,-0.455,-0.535,-0.38,7,98,1.2065431169279858e-21,reale
+"Testi variati e secondo embedding, k = 4","multi-source, semantica E5-small: testo variato → nome",trova_paziente,200,0.37,0.65,0.28,0.205,0.36,68,12,1.201648635082027e-10,reale
+"Testi variati e secondo embedding, k = 4","multi-source, BM25: testo variato → refusi",trova_paziente,200,1.0,0.8,-0.2,-0.255,-0.145,0,40,1.8189894035458565e-12,reale
+"Testi variati e secondo embedding, k = 4","multi-source, refusi, MiniLM: BM25 → Hybrid",trova_paziente,200,0.8,0.405,-0.395,-0.46,-0.325,0,79,3.308722450212111e-24,reale
+"Testi variati e secondo embedding, k = 4","multi-source, refusi, E5-small: BM25 → Hybrid",trova_paziente,200,0.8,0.72,-0.08,-0.13,-0.03,6,22,0.0037191659212112427,reale
+"Testi variati e secondo embedding, k = 4","multi-source, testo fisso, ER-pool: MiniLM → E5-small",accuracy,200,0.105,0.725,0.62,0.55,0.69,128,4,4.579367465026631e-33,reale

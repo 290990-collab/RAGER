@@ -96,6 +96,36 @@ def main():
             confronti.append(("Ricerca per parole e ibrida, k = 4", f"{tipo}: {a} → {b}", ib,
                               dict(sistema=a, tipo=tipo), dict(sistema=b, tipo=tipo), "accuracy", []))
 
+    rt = R / "robustness_text_queries.csv"
+    if rt.exists():
+        tq = pd.read_csv(rt)
+        tq = con_indice(tq[tq.k == 4], ["modello", "condizione"])
+        g = "Testi variati e secondo embedding, k = 4"
+        for tipo in ("single-source", "multi-source"):
+            confronti.append((g, f"{tipo}, testo fisso, semantica: MiniLM → E5-small", tq,
+                              dict(sistema="BASE", modello="MiniLM", condizione="fisso", tipo=tipo),
+                              dict(sistema="BASE", modello="E5-small", condizione="fisso", tipo=tipo),
+                              "trova_paziente", []))
+        for modello in ("MiniLM", "E5-small"):
+            for a, b in (("fisso", "variato"), ("variato", "nome")):
+                confronti.append((g, f"multi-source, semantica {modello}: testo {a} → {b}", tq,
+                                  dict(sistema="BASE", modello=modello, condizione=a, tipo="multi-source"),
+                                  dict(sistema="BASE", modello=modello, condizione=b, tipo="multi-source"),
+                                  "trova_paziente", []))
+        confronti.append((g, "multi-source, BM25: testo variato → refusi", tq,
+                          dict(sistema="BM25", modello="MiniLM", condizione="variato", tipo="multi-source"),
+                          dict(sistema="BM25", modello="MiniLM", condizione="refusi", tipo="multi-source"),
+                          "trova_paziente", []))
+        for modello in ("MiniLM", "E5-small"):
+            confronti.append((g, f"multi-source, refusi, {modello}: BM25 → Hybrid", tq,
+                              dict(sistema="BM25", modello=modello, condizione="refusi", tipo="multi-source"),
+                              dict(sistema="Hybrid", modello=modello, condizione="refusi", tipo="multi-source"),
+                              "trova_paziente", []))
+        confronti.append((g, "multi-source, testo fisso, ER-pool: MiniLM → E5-small", tq,
+                          dict(sistema="ER-pool", modello="MiniLM", condizione="fisso", tipo="multi-source"),
+                          dict(sistema="ER-pool", modello="E5-small", condizione="fisso", tipo="multi-source"),
+                          "accuracy", []))
+
     righe = []
     for gruppo, nome, df, a, b, metrica, extra in confronti:
         if extra:
