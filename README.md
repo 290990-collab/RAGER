@@ -44,7 +44,11 @@ Share of correct answers with 4 records in the context, mean over 5 seeds ([all 
 - **Semantic search is unreliable on IDs.** With MiniLM it puts the asked-about patient in its top results
   for only 11–46 % of questions. A retrieval-trained model (E5) does better on identical sentences, 82 %,
   but falls to 37 % once the wording varies. Keyword search (BM25) finds the ID every time.
-- **An LLM agrees.** Two local Qwen models reproduce these verdicts in 97 % of cases.
+- **Computed ER works across a wide band of thresholds.** Linking from a noisy registry (name, birth year,
+  town; Fellegi–Sunter with blocking) answers as well as perfect ER at the chosen threshold. Too low a
+  threshold breaks single-source answers (61 %), too high breaks multi-source ones (90 %).
+- **An LLM agrees.** Two local Qwen models reproduce these verdicts in 97–99 % of 2,250 grid answers
+  over 5 seeds.
 
 ![When does linking the two sources pay off?](results/plots/en/fig1_when_linking_helps.png)
 
@@ -87,7 +91,8 @@ synthetic sources → documents (local_id, source, GID in metadata) → embeddin
   `ef_search = 2000`, so top-k is deterministic and equal to exact search.
 - **The GID lives in metadata only.** In the text, the embedding would do the linkage for free.
 - **ER is a parameter, not an algorithm.** The GID is known by construction. The minimal example has four
-  alternative partitions; imperfect ER is simulated with false-negative and false-positive links.
+  alternative partitions; imperfect ER is simulated with false-negative and false-positive links, then
+  computed from a synthetic registry with a Fellegi–Sunter score and a threshold.
 
 ### Systems
 
@@ -129,6 +134,7 @@ Means are taken over the queries of a seed, then reported as mean ± standard de
 | Parametric grid | N ∈ {100, 500, 1000} × ω ∈ {0, .25, .5, .75} × α ∈ {0, .5, 1} × 5 seeds = 180 datasets; k ∈ {2, 4, 8}; 40 single-source, 40 multi-source and 6 counting queries per dataset |
 | Robustness (N = 500, ω = α = 0.5) | dirty ER (several local IDs per person), false matches, near-duplicates, wrong IDs in text |
 | Wording and model (same setting) | 3 sentence forms per source, 5 question paraphrases, typos in 20 % of records, patient named by name; MiniLM and multilingual E5-small |
+| Computed ER (same setting) | registry with typos, blocking on birth year ± 1, Fellegi–Sunter weights from a separate training set, one-to-one links above a threshold t swept from −14 to 16; ID normalization for BM25 |
 | LLM generation | minimal example plus a sample of the grid, two local models |
 
 Generator: two sources with N local identities each, S = round(ωN) shared entities, V = 2N − S global
@@ -164,6 +170,8 @@ entities the two sources report different drugs, so a complete answer needs both
 
 ![Do these results depend on the wording and the model?](results/plots/en/fig9_wording_and_model.png)
 
+![What if the links must be computed from the registry, with a threshold?](results/plots/en/fig10_er_threshold.png)
+
 ## Optional: LLM generation
 
 Any OpenAI-compatible endpoint works (`/v1/chat/completions`), for example a local llama.cpp server.
@@ -196,10 +204,11 @@ src/
   extensions.py          robustness studies
   export_datasets.py     exports the 180 generated datasets
   analysis.py            summary tables
-  plots.py               figures 1–9
+  plots.py               figures 1–10
   followups.py           follow-up studies (homonyms, per-source indices, diversity, keyword search)
   stats.py               paired tests and 95 % intervals
   robustness_text.py     varied wording, typos, names, second embedding model
+  er_real.py             ER computed from a registry: blocking, Fellegi–Sunter, threshold
   llm.py                 optional LLM generation
 data/
   documents.{json,csv}   minimal example
@@ -208,7 +217,7 @@ data/
 results/
   *.csv                  per-query and aggregated metrics
   tables.md              summary tables T1–T8 and robustness tables
-  plots/                 figures 1–9 (Italian), plots/en/ (English)
+  plots/                 figures 1–10 (Italian), plots/en/ (English)
   llm_cache.jsonl        cached LLM responses
 assets/                  README banner and its generator
 ```

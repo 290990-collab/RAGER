@@ -289,6 +289,135 @@ Valori: media ± deviazione standard fra 5 seed. Accuracy = lettore deterministi
 | E5-small | refusi | 0.2 ± 0.05 | 0.34 ± 0.05 | 0.43 ± 0.04 | 0.8 ± 0.07 | 0.37 ± 0.06 | 0.66 ± 0.1 | 0.54 ± 0.06 | 1.0 ± 0.0 |
 | E5-small | nome | 0.18 ± 0.1 | 0.51 ± 0.07 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.38 ± 0.09 | 0.88 ± 0.02 | 0.54 ± 0.06 | 1.0 ± 0.0 |
 
+## H - ER calcolata dall'anagrafe (Fellegi–Sunter), k = 4
+
+Soglie dal dataset di addestramento (seed 100): t* = 2.38 (F1 massimo), zona di revisione [4.31, 8.17].
+
+| t | linkage_precision | linkage_recall | n_link | errore_conteggio |
+|---|---|---|---|---|
+| revisione | 0.992 | 0.994 | 250.4 | -0.0 |
+| -14.0 | 0.541 | 0.998 | 461.8 | -0.1 |
+| -12.0 | 0.571 | 0.998 | 436.8 | -0.088 |
+| -10.0 | 0.571 | 0.998 | 436.8 | -0.088 |
+| -8.0 | 0.726 | 0.998 | 343.6 | -0.041 |
+| -6.0 | 0.844 | 0.998 | 295.6 | -0.02 |
+| -4.0 | 0.844 | 0.998 | 295.6 | -0.02 |
+| -2.0 | 0.972 | 0.998 | 256.8 | -0.003 |
+| 0.0 | 0.972 | 0.998 | 256.8 | -0.003 |
+| 2.0 | 0.972 | 0.998 | 256.8 | -0.003 |
+| 2.38 | 0.972 | 0.998 | 256.8 | -0.003 |
+| 4.0 | 0.976 | 0.994 | 254.4 | -0.002 |
+| 4.31 | 0.976 | 0.994 | 254.4 | -0.002 |
+| 6.0 | 0.987 | 0.986 | 249.6 | 0.001 |
+| 8.0 | 0.992 | 0.97 | 244.4 | 0.003 |
+| 8.17 | 0.996 | 0.897 | 225.2 | 0.009 |
+| 10.0 | 0.995 | 0.868 | 218.0 | 0.013 |
+| 12.0 | 1.0 | 0.816 | 204.0 | 0.018 |
+| 14.0 | 1.0 | 0.575 | 143.8 | 0.04 |
+| 16.0 | 1.0 | 0.0 | 0.0 | 0.091 |
+
+Blocking (anno ± 1): 11548 coppie confrontate, 95.4 % in meno del confronto completo, recall del blocking 1.000. Zona di revisione: 19.4 coppie da rivedere in media.
+
+
+## H - Accuracy per soglia t, query single-source (t = ideale: ER vera)
+
+| t | BASE+seed | ER+seed | ER-pool |
+|---|---|---|---|
+| -14.0 | 1.0 ± 0.0 | 0.18 ± 0.09 | 0.04 ± 0.03 |
+| -12.0 | 1.0 ± 0.0 | 0.28 ± 0.06 | 0.05 ± 0.04 |
+| -10.0 | 1.0 ± 0.0 | 0.28 ± 0.06 | 0.05 ± 0.04 |
+| -8.0 | 1.0 ± 0.0 | 0.61 ± 0.08 | 0.1 ± 0.04 |
+| -6.0 | 1.0 ± 0.0 | 0.82 ± 0.07 | 0.15 ± 0.07 |
+| -4.0 | 1.0 ± 0.0 | 0.82 ± 0.07 | 0.15 ± 0.07 |
+| -2.0 | 1.0 ± 0.0 | 0.98 ± 0.03 | 0.18 ± 0.08 |
+| 0.0 | 1.0 ± 0.0 | 0.98 ± 0.03 | 0.18 ± 0.08 |
+| 2.0 | 1.0 ± 0.0 | 0.98 ± 0.03 | 0.18 ± 0.08 |
+| 2.38 | 1.0 ± 0.0 | 0.98 ± 0.03 | 0.18 ± 0.08 |
+| 4.0 | 1.0 ± 0.0 | 0.98 ± 0.03 | 0.18 ± 0.08 |
+| 4.31 | 1.0 ± 0.0 | 0.98 ± 0.03 | 0.18 ± 0.08 |
+| 6.0 | 1.0 ± 0.0 | 0.99 ± 0.01 | 0.18 ± 0.08 |
+| 8.0 | 1.0 ± 0.0 | 0.99 ± 0.01 | 0.18 ± 0.08 |
+| 8.17 | 1.0 ± 0.0 | 0.99 ± 0.01 | 0.18 ± 0.07 |
+| 10.0 | 1.0 ± 0.0 | 0.99 ± 0.01 | 0.18 ± 0.07 |
+| 12.0 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.18 ± 0.07 |
+| 14.0 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.18 ± 0.07 |
+| 16.0 | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.19 ± 0.07 |
+| ideale | 1.0 ± 0.0 | 1.0 ± 0.0 | 0.18 ± 0.07 |
+
+## H - Accuracy per soglia t, query multi-source (t = ideale: ER vera)
+
+| t | BASE+seed | ER+seed | ER-pool |
+|---|---|---|---|
+| -14.0 | 0.54 ± 0.06 | 0.99 ± 0.01 | 0.09 ± 0.01 |
+| -12.0 | 0.54 ± 0.06 | 0.99 ± 0.01 | 0.1 ± 0.02 |
+| -10.0 | 0.54 ± 0.06 | 0.99 ± 0.01 | 0.1 ± 0.02 |
+| -8.0 | 0.54 ± 0.06 | 0.99 ± 0.01 | 0.11 ± 0.03 |
+| -6.0 | 0.54 ± 0.06 | 0.99 ± 0.01 | 0.11 ± 0.03 |
+| -4.0 | 0.54 ± 0.06 | 0.99 ± 0.01 | 0.11 ± 0.03 |
+| -2.0 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.11 ± 0.03 |
+| 0.0 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.11 ± 0.03 |
+| 2.0 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.11 ± 0.03 |
+| 2.38 | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.11 ± 0.03 |
+| 4.0 | 0.54 ± 0.06 | 0.99 ± 0.01 | 0.11 ± 0.03 |
+| 4.31 | 0.54 ± 0.06 | 0.99 ± 0.01 | 0.11 ± 0.03 |
+| 6.0 | 0.54 ± 0.06 | 0.99 ± 0.01 | 0.11 ± 0.03 |
+| 8.0 | 0.54 ± 0.06 | 0.99 ± 0.01 | 0.11 ± 0.03 |
+| 8.17 | 0.54 ± 0.06 | 0.94 ± 0.05 | 0.1 ± 0.04 |
+| 10.0 | 0.54 ± 0.06 | 0.93 ± 0.06 | 0.1 ± 0.04 |
+| 12.0 | 0.54 ± 0.06 | 0.9 ± 0.05 | 0.1 ± 0.04 |
+| 14.0 | 0.54 ± 0.06 | 0.81 ± 0.04 | 0.08 ± 0.03 |
+| 16.0 | 0.54 ± 0.06 | 0.54 ± 0.06 | 0.06 ± 0.04 |
+| ideale | 0.54 ± 0.06 | 1.0 ± 0.0 | 0.11 ± 0.03 |
+
+## H - Normalizzazione degli ID («H-37» → «H:37») sui testi con refusi: paziente trovato, k = 4
+
+| normalizzazione | tipo | BM25 | BM25 + ER |
+|---|---|---|---|
+| False | multi-source | 0.8 ± 0.07 | 0.8 ± 0.07 |
+| False | single-source | 0.96 ± 0.05 | 0.96 ± 0.05 |
+| True | multi-source | 1.0 ± 0.0 | 1.0 ± 0.0 |
+| True | single-source | 1.0 ± 0.0 | 1.0 ± 0.0 |
+
+## L - LLM e lettore deterministico sulle stesse domande (N = 500, omega = 0.5, k = 4, 5 seed)
+
+Accordo = quota di domande in cui l'LLM e il lettore deterministico danno lo stesso esito.
+
+- qwen3.6: accordo 98.6 % su 2250 risposte.
+- qwen3.8: accordo 96.7 % su 2250 risposte.
+
+| tipo | alpha | sistema | qwen3.6 | qwen3.6 accordo | qwen3.8 | qwen3.8 accordo | lettore |
+|---|---|---|---|---|---|---|---|
+| multi-source | 0.0 | BASE | 0.18 | 1.0 | 0.18 | 1.0 | 0.18 |
+| multi-source | 0.0 | BASE+seed | 1.0 | 1.0 | 0.64 | 0.64 | 1.0 |
+| multi-source | 0.0 | ER+seed | 0.99 | 0.99 | 1.0 | 1.0 | 1.0 |
+| multi-source | 0.0 | ER-pool | 0.13 | 1.0 | 0.09 | 0.96 | 0.13 |
+| multi-source | 0.0 | ORACLE | 0.99 | 0.99 | 1.0 | 1.0 | 1.0 |
+| multi-source | 0.5 | BASE | 0.06 | 1.0 | 0.06 | 1.0 | 0.06 |
+| multi-source | 0.5 | BASE+seed | 0.51 | 1.0 | 0.4 | 0.89 | 0.51 |
+| multi-source | 0.5 | ER+seed | 0.93 | 0.93 | 0.97 | 0.97 | 1.0 |
+| multi-source | 0.5 | ER-pool | 0.07 | 0.95 | 0.06 | 0.94 | 0.12 |
+| multi-source | 0.5 | ORACLE | 0.93 | 0.93 | 0.97 | 0.97 | 1.0 |
+| multi-source | 1.0 | BASE | 0.0 | 1.0 | 0.0 | 1.0 | 0.0 |
+| multi-source | 1.0 | BASE+seed | 0.0 | 1.0 | 0.0 | 1.0 | 0.0 |
+| multi-source | 1.0 | ER+seed | 0.99 | 0.99 | 0.96 | 0.96 | 1.0 |
+| multi-source | 1.0 | ER-pool | 0.04 | 0.93 | 0.07 | 0.96 | 0.11 |
+| multi-source | 1.0 | ORACLE | 0.99 | 0.99 | 0.96 | 0.96 | 1.0 |
+| single-source | 0.0 | BASE | 0.02 | 1.0 | 0.02 | 1.0 | 0.02 |
+| single-source | 0.0 | BASE+seed | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
+| single-source | 0.0 | ER+seed | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
+| single-source | 0.0 | ER-pool | 0.18 | 1.0 | 0.18 | 1.0 | 0.18 |
+| single-source | 0.0 | ORACLE | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
+| single-source | 0.5 | BASE | 0.02 | 1.0 | 0.02 | 1.0 | 0.02 |
+| single-source | 0.5 | BASE+seed | 0.98 | 0.98 | 1.0 | 1.0 | 1.0 |
+| single-source | 0.5 | ER+seed | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
+| single-source | 0.5 | ER-pool | 0.22 | 1.0 | 0.22 | 1.0 | 0.22 |
+| single-source | 0.5 | ORACLE | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
+| single-source | 1.0 | BASE | 0.06 | 1.0 | 0.06 | 1.0 | 0.06 |
+| single-source | 1.0 | BASE+seed | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
+| single-source | 1.0 | ER+seed | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
+| single-source | 1.0 | ER-pool | 0.3 | 1.0 | 0.3 | 1.0 | 0.3 |
+| single-source | 1.0 | ORACLE | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
+
 ## S - Confronti appaiati: differenza (B - A), intervallo al 95 % (bootstrap) e test di McNemar
 
 Stesse domande nelle due condizioni. "reale" = intervallo che esclude lo zero e p < 0,05.
@@ -338,3 +467,8 @@ Stesse domande nelle due condizioni. "reale" = intervallo che esclude lo zero e 
 | Testi variati e secondo embedding, k = 4 | multi-source, refusi, MiniLM: BM25 → Hybrid | trova_paziente | 0.8 | 0.405 | -0.395 | [-0.46, -0.325] | < 0,001 | reale |
 | Testi variati e secondo embedding, k = 4 | multi-source, refusi, E5-small: BM25 → Hybrid | trova_paziente | 0.8 | 0.72 | -0.08 | [-0.13, -0.03] | 0.004 | reale |
 | Testi variati e secondo embedding, k = 4 | multi-source, testo fisso, ER-pool: MiniLM → E5-small | accuracy | 0.105 | 0.725 | 0.62 | [0.55, 0.69] | < 0,001 | reale |
+| ER calcolata dall'anagrafe, ER+seed, k = 4 | single-source: ER ideale → t* (scelta) | accuracy | 1.0 | 0.98 | -0.02 | [-0.04, -0.005] | 0.125 | non distinguibile |
+| ER calcolata dall'anagrafe, ER+seed, k = 4 | multi-source: ER ideale → t* (scelta) | accuracy | 1.0 | 1.0 | 0.0 | [0.0, 0.0] | 1.000 | non distinguibile |
+| ER calcolata dall'anagrafe, ER+seed, k = 4 | single-source: ER ideale → t = -8 (bassa) | accuracy | 1.0 | 0.61 | -0.39 | [-0.46, -0.325] | < 0,001 | reale |
+| ER calcolata dall'anagrafe, ER+seed, k = 4 | multi-source: ER ideale → t = 12 (alta) | accuracy | 1.0 | 0.9 | -0.1 | [-0.145, -0.06] | < 0,001 | reale |
+| ER calcolata dall'anagrafe, BM25, k = 4 | multi-source, testi con refusi: ID così come sono → normalizzati | trova_paziente | 0.8 | 1.0 | 0.2 | [0.145, 0.255] | < 0,001 | reale |

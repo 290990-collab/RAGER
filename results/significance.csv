@@ -42,3 +42,8 @@ gruppo,confronto,metrica,n_coppie,media_a,media_b,differenza,ic95_basso,ic95_alt
 "Testi variati e secondo embedding, k = 4","multi-source, refusi, MiniLM: BM25 → Hybrid",trova_paziente,200,0.8,0.405,-0.395,-0.46,-0.325,0,79,3.308722450212111e-24,reale
 "Testi variati e secondo embedding, k = 4","multi-source, refusi, E5-small: BM25 → Hybrid",trova_paziente,200,0.8,0.72,-0.08,-0.13,-0.03,6,22,0.0037191659212112427,reale
 "Testi variati e secondo embedding, k = 4","multi-source, testo fisso, ER-pool: MiniLM → E5-small",accuracy,200,0.105,0.725,0.62,0.55,0.69,128,4,4.579367465026631e-33,reale
+"ER calcolata dall'anagrafe, ER+seed, k = 4",single-source: ER ideale → t* (scelta),accuracy,200,1.0,0.98,-0.02,-0.04,-0.005,0,4,0.125,non distinguibile
+"ER calcolata dall'anagrafe, ER+seed, k = 4",multi-source: ER ideale → t* (scelta),accuracy,200,1.0,1.0,0.0,0.0,0.0,0,0,1.0,non distinguibile
+"ER calcolata dall'anagrafe, ER+seed, k = 4",single-source: ER ideale → t = -8 (bassa),accuracy,200,1.0,0.61,-0.39,-0.46,-0.325,0,78,6.617444900424222e-24,reale
+"ER calcolata dall'anagrafe, ER+seed, k = 4",multi-source: ER ideale → t = 12 (alta),accuracy,200,1.0,0.9,-0.1,-0.145,-0.06,0,20,1.9073486328125e-06,reale
+"ER calcolata dall'anagrafe, BM25, k = 4","multi-source, testi con refusi: ID così come sono → normalizzati",trova_paziente,200,0.8,1.0,0.2,0.145,0.255,40,0,1.8189894035458565e-12,reale

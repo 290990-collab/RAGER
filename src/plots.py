@@ -1,4 +1,4 @@
-"""Figures 1-9, each one question and its answer, in Italian (results/plots/) and English (results/plots/en/).
+"""Figures 1-10, each one question and its answer, in Italian (results/plots/) and English (results/plots/en/).
 
 Lines are means over 5 seeds; light bands show the spread between seeds; bars carry 95 % intervals.
 """
@@ -78,6 +78,15 @@ T = {
                "Paziente trovato", ["Frase\nfissa", "Frasi\nvariate", "Con\nrefusi", "Per\nnome"],
                "Domande su pazienti in entrambe le fonti, 4 documenti nel contesto. Refusi: ID scritto «H-37» "
                "o «H37» nel 20 % dei documenti."),
+        "f10": ("E se il collegamento va calcolato dall'anagrafe, con una soglia?",
+                "Su un'ampia fascia di soglie si risponde come con l'ER perfetta. Soglia bassa: collegamenti "
+                "sbagliati;\nsoglia alta: collegamenti mancanti.",
+                "Soglia sul punteggio (Fellegi–Sunter)",
+                ["Collegamenti giusti (precision)", "Coppie vere trovate (recall)", "Paziente in 1 fonte",
+                 "Paziente in 2 fonti"], "soglia\nscelta", "da rivedere\na mano",
+                "Anagrafe con nome, anno e comune; nel 30 % dei pazienti condivisi il nome ha un refuso. "
+                "Pesi e soglie stimati su un dataset a parte.\nRisposte di ID + collegamento con 4 documenti nel "
+                "contesto.", ("Qualità del collegamento", "Risposte corrette")),
     },
     "en": {
         "piede": "Mean over 5 runs with different data; the light band shows how much they vary.",
@@ -131,6 +140,15 @@ T = {
                "Patient found", ["Fixed\nsentence", "Varied\nsentences", "With\ntypos", "By\nname"],
                "Questions about patients in both sources, 4 records in the context. Typos: ID written \"H-37\" "
                "or \"H37\" in 20 % of the records."),
+        "f10": ("What if the links must be computed from the registry, with a threshold?",
+                "Over a wide range of thresholds answers match perfect ER. Low threshold: wrong links;\n"
+                "high threshold: missing links.",
+                "Threshold on the score (Fellegi–Sunter)",
+                ["Links that are right (precision)", "True pairs found (recall)", "Patient in 1 source",
+                 "Patient in 2 sources"], "chosen\nthreshold", "manual\nreview",
+                "Registry with name, birth year and town; 30 % of shared patients have a typo in the name. "
+                "Weights and thresholds estimated on a separate dataset.\nAnswers of patient ID + linking with 4 "
+                "records in the context.", ("Linking quality", "Correct answers")),
     },
 }
 
@@ -187,7 +205,7 @@ def ic95(x):
 
 
 # ---------------------------------------------------------------- figures
-def grafici(lingua, q, e, c, f, t=None):
+def grafici(lingua, q, e, c, f, t=None, er=None):
     L = T[lingua]
     out = R / "plots" if lingua == "it" else R / "plots" / "en"
     out.mkdir(parents=True, exist_ok=True)
@@ -343,6 +361,35 @@ def grafici(lingua, q, e, c, f, t=None):
         h, lab = assi[0].get_legend_handles_labels()
         fig.legend(h, lab, loc="lower center", bbox_to_anchor=(0.5, 0.1), ncol=2, fontsize=9.5)
         salva(fig, out, "fig9_wording_and_model.png", tit, ris, nota, L["piede_barre"], destra=1, basso=0.15)
+
+    # 10. ER computed from a registry, by threshold
+    if er is not None:
+        eq, lk, (t_star, t_basso, t_alto) = er
+        tit, ris, xl, nomi, scelta, zona, nota, titoli = L["f10"]
+        lk = lk[lk.t != "revisione"].astype({"t": float})
+        lk = lk[lk.t % 2 == 0]
+        eq = eq[(eq.k == 4) & (eq.er == "calcolata") & (eq.sistema == "ER+seed") & (eq.t % 2 == 0)]
+        tratto = (0, (4, 2.5))
+        fig, assi = figura(10.4, 5.2, ncols=2, sharey=True)
+        serie = [[(lk, "linkage_precision", GRIGIO, "-", "o", nomi[0]),
+                  (lk, "linkage_recall", GRIGIO, tratto, "s", nomi[1])],
+                 [(eq[eq.tipo == "single-source"], "accuracy", C["link"], "-", "o", nomi[2]),
+                  (eq[eq.tipo == "multi-source"], "accuracy", C["link"], tratto, "s", nomi[3])]]
+        for ax, righe, titolo in zip(assi, serie, titoli):
+            ax.axvspan(t_basso, t_alto, color=GRIGIO, alpha=0.14, linewidth=0, zorder=0)
+            ax.axvline(t_star, color=MUTO, lw=1, ls=":", zorder=1)
+            ax.text(t_star - 0.4, 0.3, scelta, ha="right", fontsize=8.5, color=MUTO)
+            ax.text((t_basso + t_alto) / 2, 0.06, zona, ha="center", fontsize=8.5, color=MUTO)
+            for df, met, col, st, mk, nome in righe:
+                tt = per_seed(df, "t", met)
+                sd = tt["std"].fillna(0)
+                ax.fill_between(tt.t, tt["mean"] - sd, tt["mean"] + sd, color=col, alpha=0.15, linewidth=0)
+                ax.plot(tt.t, tt["mean"], color=col, linestyle=st, marker=mk, markeredgecolor=SFONDO,
+                        markeredgewidth=1.2, markersize=6, label=nome, zorder=3)
+            ax.set(xlabel=xl, ylim=(-0.03, 1.06), title=titolo)
+            ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.17), ncol=2, fontsize=9)
+            percento(ax)
+        salva(fig, out, "fig10_er_threshold.png", tit, ris, nota, L["piede"], destra=1, basso=0.13)
     print("Grafici salvati in", out)
 
 
@@ -353,8 +400,13 @@ def main():
     f = pd.read_csv(R / "followup_queries.csv")
     rt = R / "robustness_text_queries.csv"
     t = pd.read_csv(rt) if rt.exists() else None
+    er = None
+    if (R / "er_real_queries.csv").exists():
+        s = pd.read_csv(R / "er_real_thresholds.csv").iloc[0]
+        er = (pd.read_csv(R / "er_real_queries.csv"), pd.read_csv(R / "er_real_linkage.csv"),
+              (s.t_star, s.t_basso, s.t_alto))
     for lingua in ("it", "en"):
-        grafici(lingua, q, e, c, f, t)
+        grafici(lingua, q, e, c, f, t, er)
 
 
 if __name__ == "__main__":

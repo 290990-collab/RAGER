@@ -126,6 +126,23 @@ def main():
                           dict(sistema="ER-pool", modello="E5-small", condizione="fisso", tipo="multi-source"),
                           "accuracy", []))
 
+    er = R / "er_real_queries.csv"
+    if er.exists():
+        s = pd.read_csv(R / "er_real_thresholds.csv").iloc[0]
+        eq = pd.read_csv(er)
+        eq = con_indice(eq[(eq.k == 4) & (eq.sistema == "ER+seed")].assign(t=lambda d: d.t.fillna(-999)), ["er", "t"])
+        g = "ER calcolata dall'anagrafe, ER+seed, k = 4"
+        for tipo, t, nome in [("single-source", round(s.t_star, 2), "t* (scelta)"),
+                              ("multi-source", round(s.t_star, 2), "t* (scelta)"),
+                              ("single-source", -8.0, "t = -8 (bassa)"),
+                              ("multi-source", 12.0, "t = 12 (alta)")]:
+            confronti.append((g, f"{tipo}: ER ideale → {nome}", eq, dict(t=-999, tipo=tipo), dict(t=t, tipo=tipo),
+                              "accuracy", []))
+        ni = con_indice(pd.read_csv(R / "er_real_ids.csv").query("k == 4"), ["normalizzazione"])
+        confronti.append((g.replace("ER+seed", "BM25"), "multi-source, testi con refusi: ID così come sono → normalizzati",
+                          ni, dict(sistema="BM25", normalizzazione=False, tipo="multi-source"),
+                          dict(sistema="BM25", normalizzazione=True, tipo="multi-source"), "trova_paziente", []))
+
     righe = []
     for gruppo, nome, df, a, b, metrica, extra in confronti:
         if extra:

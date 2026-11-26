@@ -145,6 +145,53 @@ def main():
                 out.append(f"\n## G - Testi variati e secondo embedding, k = 4: {metrica}, query {tipo}\n")
                 out.append(md(t))
 
+    ee = R / "er_real_queries.csv"
+    if ee.exists():
+        s = pd.read_csv(R / "er_real_thresholds.csv").iloc[0]
+        out.append(f"\n## H - ER calcolata dall'anagrafe (Fellegi–Sunter), k = 4\n\nSoglie dal dataset di "
+                   f"addestramento (seed 100): t* = {s.t_star:.2f} (F1 massimo), zona di revisione "
+                   f"[{s.t_basso:.2f}, {s.t_alto:.2f}].\n")
+        lk = pd.read_csv(R / "er_real_linkage.csv")
+        t = lk.groupby("t", sort=False)[["linkage_precision", "linkage_recall", "n_link", "errore_conteggio"]].mean()
+        out.append(md(t.round(3)))
+        r = lk[lk.t == "revisione"]
+        out.append(f"\nBlocking (anno ± 1): {r.coppie_confrontate.mean():.0f} coppie confrontate, "
+                   f"{100 * r.riduzione_blocking.mean():.1f} % in meno del confronto completo, recall del blocking "
+                   f"{r.recall_blocking.mean():.3f}. Zona di revisione: {r.coppie_da_rivedere.mean():.1f} coppie "
+                   f"da rivedere in media.\n")
+        q = pd.read_csv(ee)
+        q = q[q.k == 4].assign(t=lambda d: d.t.fillna(-999).map(lambda v: "ideale" if v == -999 else v))
+        for tipo in ["single-source", "multi-source"]:
+            t = ms(per_seed(q[q.tipo == tipo], ["t", "sistema"], "accuracy"), ["t", "sistema"])
+            out.append(f"\n## H - Accuracy per soglia t, query {tipo} (t = ideale: ER vera)\n")
+            out.append(md(t.unstack("sistema")[["BASE+seed", "ER+seed", "ER-pool"]]))
+        ni = pd.read_csv(R / "er_real_ids.csv")
+        ni = ni[ni.k == 4]
+        out.append("\n## H - Normalizzazione degli ID («H-37» → «H:37») sui testi con refusi: paziente trovato, k = 4\n")
+        out.append(md(ms(per_seed(ni, ["normalizzazione", "tipo", "sistema"], "trova_paziente"),
+                         ["normalizzazione", "tipo", "sistema"]).unstack("sistema")))
+
+    lp = sorted(R.glob("llm_parametric_*_seeds.csv"))
+    if lp:
+        ex = pd.read_csv(R / "experiment_queries.csv").query("N == 500 and omega == 0.5 and k == 4").copy()
+        chiavi = ["seed", "alpha", "tipo", "sistema"]
+        ex["q"] = ex.groupby(chiavi).cumcount()
+        out.append("\n## L - LLM e lettore deterministico sulle stesse domande (N = 500, omega = 0.5, k = 4, 5 seed)\n")
+        out.append("Accordo = quota di domande in cui l'LLM e il lettore deterministico danno lo stesso esito.\n")
+        acc = {}
+        for f in lp:
+            l = pd.read_csv(f)
+            l["q"] = l.groupby(chiavi).cumcount()
+            m = l.merge(ex[chiavi + ["q", "accuracy"]], on=chiavi + ["q"])
+            assert len(m) == len(l)
+            m["accordo"] = (m.accuracy_llm == m.accuracy).astype(float)
+            tag = f.stem.replace("llm_parametric_", "").replace("_seeds", "")
+            acc[tag] = m.groupby(["tipo", "alpha", "sistema"]).accuracy_llm.mean().round(2)
+            acc[f"{tag} accordo"] = m.groupby(["tipo", "alpha", "sistema"]).accordo.mean().round(2)
+            out.append(f"- {tag}: accordo {100 * m.accordo.mean():.1f} % su {len(m)} risposte.")
+        acc["lettore"] = m.groupby(["tipo", "alpha", "sistema"]).accuracy.mean().round(2)
+        out.append("\n" + md(pd.DataFrame(acc)))
+
     sg = R / "significance.csv"
     if sg.exists():
         s = pd.read_csv(sg)
