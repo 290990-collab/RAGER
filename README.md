@@ -41,8 +41,9 @@ Share of correct answers with 4 records in the context, mean over 5 seeds ([all 
   with the wrong people: 11 % against 100 % for linking the patient that was asked about.
 - **Never let RAG count.** Counting distinct patients from the retrieved text misses by 76–99 %.
   A `COUNT(DISTINCT gid)` on the metadata is exact.
-- **Semantic search does not read IDs.** It puts the asked-about patient in its top results for only
-  11–46 % of questions.
+- **Semantic search is unreliable on IDs.** With MiniLM it puts the asked-about patient in its top results
+  for only 11–46 % of questions. A retrieval-trained model (E5) does better on identical sentences, 82 %,
+  but falls to 37 % once the wording varies. Keyword search (BM25) finds the ID every time.
 - **An LLM agrees.** Two local Qwen models reproduce these verdicts in 97 % of cases.
 
 ![When does linking the two sources pay off?](results/plots/en/fig1_when_linking_helps.png)
@@ -127,6 +128,7 @@ Means are taken over the queries of a seed, then reported as mean ± standard de
 | Minimal example | 8 clinical events, 2 sources, 4 ER partitions; entity-centric, multi-hop, counting and negative queries |
 | Parametric grid | N ∈ {100, 500, 1000} × ω ∈ {0, .25, .5, .75} × α ∈ {0, .5, 1} × 5 seeds = 180 datasets; k ∈ {2, 4, 8}; 40 single-source, 40 multi-source and 6 counting queries per dataset |
 | Robustness (N = 500, ω = α = 0.5) | dirty ER (several local IDs per person), false matches, near-duplicates, wrong IDs in text |
+| Wording and model (same setting) | 3 sentence forms per source, 5 question paraphrases, typos in 20 % of records, patient named by name; MiniLM and multilingual E5-small |
 | LLM generation | minimal example plus a sample of the grid, two local models |
 
 Generator: two sources with N local identities each, S = round(ωN) shared entities, V = 2N − S global
@@ -160,6 +162,8 @@ entities the two sources report different drugs, so a complete answer needs both
 
 ![Can RAG count how many patients received a drug?](results/plots/en/fig8_counting.png)
 
+![Do these results depend on the wording and the model?](results/plots/en/fig9_wording_and_model.png)
+
 ## Optional: LLM generation
 
 Any OpenAI-compatible endpoint works (`/v1/chat/completions`), for example a local llama.cpp server.
@@ -192,9 +196,10 @@ src/
   extensions.py          robustness studies
   export_datasets.py     exports the 180 generated datasets
   analysis.py            summary tables
-  plots.py               figures 1–8
+  plots.py               figures 1–9
   followups.py           follow-up studies (homonyms, per-source indices, diversity, keyword search)
   stats.py               paired tests and 95 % intervals
+  robustness_text.py     varied wording, typos, names, second embedding model
   llm.py                 optional LLM generation
 data/
   documents.{json,csv}   minimal example
@@ -203,7 +208,7 @@ data/
 results/
   *.csv                  per-query and aggregated metrics
   tables.md              summary tables T1–T8 and robustness tables
-  plots/                 figures 1–8 (Italian), plots/en/ (English)
+  plots/                 figures 1–9 (Italian), plots/en/ (English)
   llm_cache.jsonl        cached LLM responses
 assets/                  README banner and its generator
 ```
